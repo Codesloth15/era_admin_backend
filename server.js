@@ -4,7 +4,7 @@ const admin = require('firebase-admin');
 const cors = require('cors');
 require('dotenv').config();
 
-const serviceAccount = require('../backend/firebase/serviceAccountKey.json');
+const serviceAccount = require('./firebase/serviceAccountKey.json');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -17,76 +17,51 @@ app.use(bodyParser.json());
 
 /**
  * -----------------------
- * Manual send notifications route
+ * Listen for new warnings
  * -----------------------
  */
-app.post('/api/notification/send', async (req, res) => {
-  const { title, body } = req.body;
+const warningsRef = admin.database().ref('WARNINGS/LOCATION');
+
+warningsRef.on('child_added', async (snapshot) => {
+  const warning = snapshot.val();
+  const warningId = snapshot.key;
 
   try {
-    // Fetch responder tokens from Firebase
-    const snapshot = await admin.database().ref('responder/TOKEN').once('value');
-    const tokensData = snapshot.val();
-
-    if (!tokensData) {
-      return res.status(404).json({ message: 'No tokens found' });
+    // Skip if already notified (safety check)
+    if (warning.notified) {
+      console.log(`Warning ${warningId} already notified, skipping...`);
+      return;
     }
 
-    // Normalize tokens (handle string, array, or object)
-    let tokens;
-    if (typeof tokensData === 'string') {
-      tokens = [tokensData]; // single token
-    } else if (Array.isArray(tokensData)) {
-      tokens = tokensData;   // already array
-    } else {
-      tokens = Object.values(tokecdnsData); // object → array of tokens
+    if (!warning.Token) {
+      console.warn(`Warning ${warningId} has no device token, skipping...`);
+      return;
     }
 
-    // Create FCM message
+    // Create notification message
     const message = {
-      notification: { title, body },
-      tokens,
+      notification: {
+        title: warning.Warning.replace(/_/g, ' '),
+        body: `Location: ${warning.AreaName}`,
+      },
+      token: warning.Token, // single device token
     };
 
-    // Send push notifications
-    const response = await admin.messaging().sendEachForMulticast(message);
+    // Send push notification
+    const response = await admin.messaging().send(message);
+    console.log(`Notification sent for warning ${warningId}:`, response);
 
-    // Track results
-    const sentTokens = [];
-    const failedTokens = [];
-
-    response.responses.forEach((resp, idx) => {
-      if (resp.success) {
-        sentTokens.push(tokens[idx]);
-      } else {
-        failedTokens.push({
-          token: tokens[idx],
-          error: resp.error?.message || 'Unknown error',
-        });
-      }
-    });
-
-    console.log('Manual notification sent to tokens:', sentTokens);
-    if (failedTokens.length > 0) {
-      console.warn('Failed tokens:', failedTokens);
-    }
-
-    // Send response to client
-    res.json({
-      success: true,
-      sent: response.successCount,
-      failed: response.failureCount,
-      sentTokens,
-      failedTokens,
-    });
+    // Mark as notified in DB
+    await warningsRef.child(warningId).update({ notified: true });
   } catch (err) {
-    console.error('Error sending notification:', err);
-    res.status(500).json({ error: err.message });
+    console.error(`Error sending notification for warning ${warningId}:`, err);
   }
 });
 
-// -----------------------
-// Start server
-// -----------------------
+/**
+ * -----------------------
+ * Start server
+ * -----------------------
+ */
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
