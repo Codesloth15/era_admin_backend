@@ -1,0 +1,24 @@
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        "displayName": {
+          ".write": "auth != null && auth.uid === $uid && data.parent().exists() && data.parent().child('active').val() === true && newData.isString()",
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100"
+        }
+      }
+    },
+    "server": {
+      "City of Tabuk": {
+        "users": {
+          "$uid": {
+            "displayName": {
+              ".write": "auth != null && auth.uid === $uid && data.parent().exists() && data.parent().child('active').val() === true && newData.isString()",
+              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100"
+            }
+          }
+        }
+      }
+    }
+  }
+}

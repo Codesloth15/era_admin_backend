@@ -1,19 +1,53 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const admin = require('firebase-admin');
 const cors = require('cors');
 require('dotenv').config();
 
-const serviceAccount = require('./firebase/serviceAccountKey.json');
+const { randomUUID } = require('node:crypto');
+const { createFirebaseDependencies } = require('./src/infrastructure/firebase/createFirebaseDependencies.cjs');
+const { createService } = require('./src/application/createService.cjs');
+const { createApp } = require('./src/app.cjs');
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
-});
+// Request uncompressed OAuth responses to avoid premature-close errors.
+if (!admin.apps.length) {
+  let credential;
+  if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+    credential = admin.credential.applicationDefault();
+  } else {
+    const serviceAccount = require('./firebase/serviceAccountKey.json');
+    credential = admin.credential.cert(serviceAccount);
+    const { JWT } = require('google-auth-library');
+    const client = new JWT({
+      email: serviceAccount.client_email,
+      key: serviceAccount.private_key,
+      scopes: [
+        'https://www.googleapis.com/auth/cloud-platform',
+        'https://www.googleapis.com/auth/firebase.database',
+        'https://www.googleapis.com/auth/firebase.messaging',
+        'https://www.googleapis.com/auth/identitytoolkit',
+        'https://www.googleapis.com/auth/userinfo.email',
+      ],
+    });
+    client.transporter.defaults = { headers: { 'Accept-Encoding': 'identity' } };
+    credential.getAccessToken = async () => {
+      await client.getAccessToken();
+      return {
+        access_token: client.credentials.access_token,
+        expires_in: Math.max(1, Math.floor((client.credentials.expiry_date - Date.now()) / 1000)),
+      };
+    };
+  }
+  admin.initializeApp({
+    credential,
+    databaseURL: process.env.FIREBASE_DATABASE_URL || process.env.REACT_APP_FIREBASE_DATABASE_URL,
+  });
+}
 
+const dependencies = createFirebaseDependencies(process.env, admin.app());
+const service = createService({ ...dependencies, id: randomUUID });
 const app = express();
 app.use(cors());
-app.use(bodyParser.json());
+createApp({ service, auth: dependencies.auth, app });
 
 /**
  * -----------------------
