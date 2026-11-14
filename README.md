@@ -13,12 +13,12 @@ The command and agency portals share the existing React application, theme and F
 
 Use Node.js 22.9 or later. Frontend dependencies are installed in `era_web_admin`. Backend dependencies have their own lockfile in `era_admin_backend`.
 
-1. Copy `era_admin_backend/.env.example` to `era_admin_backend/.env` and configure `FIREBASE_DATABASE_URL` and `GOOGLE_APPLICATION_CREDENTIALS` with the existing project's credentials. Keep service account files outside the repository. The frontend's Firebase API key is not an Admin credential.
+1. Copy `era_admin_backend/.env.example` to `era_admin_backend/.env` and fill in `FIREBASE_DATABASE_URL`, `FIREBASE_STORAGE_BUCKET` and `FIREBASE_SERVICE_ACCOUNT_PATH` (the path to a service account key file). Keep key files outside the repository. Every setting is read in one place, `src/config.cjs`, and `.env` is found even when the server is started from another folder. The frontend's Firebase API key is not an Admin credential.
 2. From `era_admin_backend`, run `npm ci` then `npm start`.
-3. From `era_web_admin`, run `npm start`. The development proxy forwards `/api/agencies` to the API on port 5000.
+3. From `era_web_admin`, run `npm start`. The development proxy forwards `/api/agencies` to `AGENCY_API_TARGET` (default `http://127.0.0.1:5000`).
 4. Sign in with an existing active `SYSTEM_ADMIN` account. Legacy profiles remain supported at `users/{actualUid}`. Canonical city profiles, when present, take precedence over legacy profiles even when inactive.
 
-In production, serve the built React app with SPA fallback, and reverse proxy `/api/agencies` to the Node service on the same origin. Bind the API to the private interface or internal service network. Supply credentials through the host environment or workload identity. The combined backend also supports the existing firebase/serviceAccountKey.json credentials and REACT_APP_FIREBASE_DATABASE_URL setting. Set PORT to change the default port 5000 and update the frontend proxy to match. Never expose Admin credentials to the React build.
+In production, serve the built React app with SPA fallback, and reverse proxy `/api/agencies` to the Node service on the same origin. Bind the API to the private interface or internal service network. Supply credentials through the host environment or workload identity: leave `FIREBASE_SERVICE_ACCOUNT_PATH` empty and Application Default Credentials are used (`GOOGLE_APPLICATION_CREDENTIALS`, or the service account attached to a Google Cloud host). The old `REACT_APP_FIREBASE_DATABASE_URL` and `REACT_APP_FIREBASE_STORAGE_BUCKET` names are still read when the new names are not set. Set PORT to change the default port 5000 and set `AGENCY_API_TARGET` in `era_web_admin/.env.local` to match. Never expose Admin credentials to the React build.
 
 ## Server architecture
 
@@ -29,6 +29,7 @@ era_admin_backend/
   server.js                     # Startup and dependency composition
   src/
     app.cjs                     # Express application assembly
+    config.cjs                  # Every environment setting, read in one place
     domain/
       agencyRules.cjs           # Validation and business rules
     application/
@@ -78,6 +79,14 @@ The first System Administrator must already be provisioned through a trusted ope
 Agency navigation includes the citywide feed, accounts and invitations, approved responder registrations, station and team forms, dispatch and response history references, and account settings. Station and team changes preserve operational fields. Settings supports appearance preferences and Firebase password-reset requests. The new feature adds no dispatch commands.
 
 The API filters simulated incidents and exposes a summary without citizen contact information. It reads the canonical feed and original incident records. If the city feed has not been established, it makes a read-only projection of existing root incidents. It does not duplicate or migrate the originals. Existing operational web collections exclude records explicitly marked `isSimulation: true`; the simulation selectors and overview counters have been removed. Historical simulation records remain in Firebase.
+
+## Hotlines
+
+Each agency profile and each station can store one `hotline`, the public emergency number: a short code (911, 160), a landline such as (074) 627-1234, a mobile number such as 0917 123 4567, or a toll-free number. Text that isn't a phone number is rejected. The agency hotline is separate from the office `contactNumber`.
+
+- `POST /api/agencies/:code/hotline` with `{ hotline }` sets or, when empty, removes an agency's hotline. Allowed for that agency's own administrator and for System Administrators; recorded in the audit log as `AGENCY_HOTLINE_UPDATED`.
+- Station hotlines are part of the station form (`POST /api/agencies/:code/stations`). A station edit that sends no `hotline` keeps the saved one.
+- `GET /api/agencies/directory` returns every agency's public details (`name`, `type`, `active`, `hotline`) to any signed-in administrator. It never includes members, emails or invitations.
 
 ## Database rules and deployment
 

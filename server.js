@@ -1,21 +1,31 @@
 const express = require('express');
 const admin = require('firebase-admin');
 const cors = require('cors');
-require('dotenv').config();
+const fs = require('node:fs');
+const { loadEnvFile, readConfig } = require('./src/config.cjs');
+
+loadEnvFile();
+const config = readConfig();
 
 const { randomUUID } = require('node:crypto');
 const { createFirebaseDependencies } = require('./src/infrastructure/firebase/createFirebaseDependencies.cjs');
 const { createService } = require('./src/application/createService.cjs');
 const { createApp } = require('./src/app.cjs');
 
-// Request uncompressed OAuth responses to avoid premature-close errors.
+function readServiceAccount(file) {
+  try {
+    return JSON.parse(fs.readFileSync(file, 'utf8'));
+  } catch (error) {
+    throw new Error(`Could not read the service account key file ${file}. Check FIREBASE_SERVICE_ACCOUNT_PATH in era_admin_backend/.env. (${error.message})`);
+  }
+}
+
 if (!admin.apps.length) {
   let credential;
-  if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
-    credential = admin.credential.applicationDefault();
-  } else {
-    const serviceAccount = require('./firebase/serviceAccountKey.json');
+  if (config.firebase.serviceAccountPath) {
+    const serviceAccount = readServiceAccount(config.firebase.serviceAccountPath);
     credential = admin.credential.cert(serviceAccount);
+    // Request uncompressed OAuth responses to avoid premature-close errors.
     const { JWT } = require('google-auth-library');
     const client = new JWT({
       email: serviceAccount.client_email,
@@ -36,10 +46,14 @@ if (!admin.apps.length) {
         expires_in: Math.max(1, Math.floor((client.credentials.expiry_date - Date.now()) / 1000)),
       };
     };
+  } else {
+    // GOOGLE_APPLICATION_CREDENTIALS, or the service account attached to the host on Google Cloud.
+    credential = admin.credential.applicationDefault();
   }
   admin.initializeApp({
     credential,
-    databaseURL: process.env.FIREBASE_DATABASE_URL || process.env.REACT_APP_FIREBASE_DATABASE_URL,
+    databaseURL: config.firebase.databaseURL,
+    ...(config.firebase.projectId ? { projectId: config.firebase.projectId } : {}),
   });
 }
 
@@ -186,5 +200,5 @@ app.put("/api/users/:id", async (req, res) => {
  * Start server
  * -----------------------
  */
-const PORT = process.env.PORT || 5000;
+const PORT = config.port;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

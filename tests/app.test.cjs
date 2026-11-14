@@ -55,6 +55,26 @@ test('HTTP API verifies tokens, returns permission errors, and binds the actor t
   } finally { await new Promise(resolve => server.close(resolve)); }
 });
 
+test('hotline routes reach the hotline handlers, not the station and team handler', async () => {
+  const calls = [];
+  const auth = { async verifyIdToken() { return { uid: 'actual-actor' }; } };
+  const service = {
+    async agencyDirectory(uid) { calls.push({ directoryFor: uid }); return { data: { BFP: { hotline: '160' } } }; },
+    async updateAgencyHotline(uid, agencyId, body) { calls.push({ uid, agencyId, body }); return { message: 'Hotline saved.' }; },
+    async saveResource() { throw new Error('The hotline request reached the station and team handler.'); },
+  };
+  const server = createApp({ service, auth }).listen(0, '127.0.0.1');
+  await new Promise(resolve => server.once('listening', resolve));
+  const base = `http://127.0.0.1:${server.address().port}/api/agencies`;
+  const headers = { Authorization: 'Bearer valid-token', 'Content-Type': 'application/json' };
+  try {
+    assert.deepEqual(await (await fetch(`${base}/directory`, { headers })).json(), { data: { BFP: { hotline: '160' } } });
+    const saved = await fetch(`${base}/BFP/hotline`, { method: 'POST', headers, body: JSON.stringify({ hotline: '160' }) });
+    assert.equal(saved.status, 200);
+    assert.deepEqual(calls, [{ directoryFor: 'actual-actor' }, { uid: 'actual-actor', agencyId: 'BFP', body: { hotline: '160' } }]);
+  } finally { await new Promise(resolve => server.close(resolve)); }
+});
+
 
 test('unexpected Firebase failures return a diagnostic code without exposing upstream details', () => {
   const { errorHandler } = require('../src/presentation/middleware/errorHandler.cjs');

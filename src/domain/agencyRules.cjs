@@ -22,11 +22,25 @@ const email = v => {
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) fail('Invalid email.');
   return v;
 };
+// A public emergency hotline: a short code (911, 160), a landline such as (074) 627-1234,
+// a mobile number such as 0917 123 4567, or a toll-free number.
+// Empty means no hotline. Returns the number as typed, with spaces tidied.
+const hotline = value => {
+  if (value === undefined || value === null) return '';
+  if (typeof value !== 'string' || value.length > 40) fail('Invalid hotline.');
+  const text = value.trim().replace(/\s+/g, ' ');
+  if (!text) return '';
+  const digits = text.replace(/\D/g, '');
+  if (!/^\+?[\d\s().-]+$/.test(text) || digits.length < 3 || digits.length > 15) fail('Enter a hotline such as 911, (074) 627-1234 or 0917 123 4567.');
+  return text;
+};
 function stationInput(input) {
   if (input.latitude === '' || input.longitude === '' || input.latitude == null || input.longitude == null
     || !Number.isFinite(Number(input.latitude)) || !Number.isFinite(Number(input.longitude))
     || Math.abs(Number(input.latitude)) > 90 || Math.abs(Number(input.longitude)) > 180) fail('Valid latitude and longitude are required.');
-  return { name: str(input.name, 'station name'), location: str(input.location, 'station location'), latitude: Number(input.latitude), longitude: Number(input.longitude) };
+  // Only a request that sends a hotline changes it, so other station edits keep the saved one.
+  return { name: str(input.name, 'station name'), location: str(input.location, 'station location'), latitude: Number(input.latitude), longitude: Number(input.longitude),
+    ...(input.hotline !== undefined ? { hotline: hotline(input.hotline) } : {}) };
 }
 
 // Personal details kept on a responder's profile. Phone is required; the rest is optional.
@@ -203,4 +217,4 @@ function applyAgencyCommand(state, uid, input, ids, timestamp) {
   state.audit_logs ||= {}; state.audit_logs[ids.auditId] = { action: type, actorId: uid, resourceId: incidentId, timestamp, isSimulation: simulation, ...attribution, ...detail };
   return state;
 }
-module.exports = { roles, retiredRoleTargets, fail, str, key, code, email, stationInput, responderInput, responderProfileInput, stationMapRecords, requireAgencyDispatch, agencyIncident, agencyInvolvedInIncident, applyAgencyCommand };
+module.exports = { roles, retiredRoleTargets, fail, str, key, code, email, hotline, stationInput, responderInput, responderProfileInput, stationMapRecords, requireAgencyDispatch, agencyIncident, agencyInvolvedInIncident, applyAgencyCommand };

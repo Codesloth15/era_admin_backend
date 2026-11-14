@@ -18,6 +18,7 @@ function createAgencyRouter(service) {
   router.post('/advisories/:id/image/delete', controller.removeAdvisoryImage);
   router.get('/', controller.list);
   router.get('/stations', controller.stationDirectory);
+  router.get('/directory', controller.agencyDirectory);
   router.post('/account-role', controller.consolidateAccountRole);
   router.get('/owner/session', controller.ownerSession);
   router.get('/owner', controller.ownerList);
@@ -34,6 +35,8 @@ function createAgencyRouter(service) {
   router.post('/invitations/:id/provision', controller.provision);
   router.post('/invitations/:id/:action', controller.invitationAction);
   router.post('/:code/status', controller.status);
+  // Before the /:code/:collection catch-all.
+  router.post('/:code/hotline', controller.updateAgencyHotline);
   router.post('/:code/:collection', controller.saveResource);
   return router;
 }

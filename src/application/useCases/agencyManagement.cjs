@@ -1,5 +1,5 @@
 const { CITY } = require('../dataPaths.cjs');
-const { fail, str, key, code, email, stationInput, responderInput, responderProfileInput } = require('../../domain/agencyRules.cjs');
+const { fail, str, key, code, email, hotline, stationInput, responderInput, responderProfileInput } = require('../../domain/agencyRules.cjs');
 const { requireAgencyDispatch, applyAgencyCommand, retiredRoleTargets, stationMapRecords } = require('../../domain/agencyRules.cjs');
 
 const CLOSED_ASSIGNMENT_STATUSES = ['COMPLETED', 'CANCELLED', 'REJECTED', 'DECLINED', 'EXPIRED'];
@@ -13,6 +13,25 @@ function createAgencyManagement(context) {
       const operator = await actor(uid);
       const [legacy, shared, agencies] = await Promise.all([repo.read('stations'), repo.read(`${CITY}/stations`), repo.read(`${CITY}/agency`)]);
       return { data: stationMapRecords(legacy || {}, shared || {}, agencies || {}, operator.role === 'AGENCY_ADMIN' ? operator.agencyId : null) };
+    },
+    // Public details of every agency for directories and incident cards: no members, emails or invitations.
+    async agencyDirectory(uid) {
+      await actor(uid);
+      const agencies = await repo.read(`${CITY}/agency`) || {};
+      return { data: Object.fromEntries(Object.entries(agencies).filter(([, agency]) => agency?.profile).map(([agencyId, { profile }]) => [agencyId, {
+        id: agencyId, name: profile.name || agencyId, type: profile.type || '', active: profile.active === true, hotline: profile.hotline || '',
+      }])) };
+    },
+    // The agency's own administrator or a System Administrator. An empty hotline removes it.
+    async updateAgencyHotline(uid, agencyId, input) {
+      agencyId = code(agencyId);
+      const value = hotline(input?.hotline);
+      await mutate(uid, agencyId, false, 'AGENCY_HOTLINE_UPDATED', null, state => {
+        const profile = state.agency?.[agencyId]?.profile;
+        if (!profile) fail('Agency not found.', 404);
+        if (value) profile.hotline = value; else delete profile.hotline;
+      });
+      return { message: value ? 'Hotline saved.' : 'Hotline removed.' };
     },
     async consolidateAccountRole(uid) {
       const original = await context.profile(uid);
@@ -239,9 +258,11 @@ function createAgencyManagement(context) {
       const agencyId = code(input.code);
       if (input.active !== undefined && typeof input.active !== 'boolean') fail('Agency status must be a boolean.');
       if (agencyId === 'CDRRMO' && ((await repo.read('agencies/CDRRMC')) || (await repo.read('agency/CDRRMC')))) fail('Legacy CDRRMC exists. Migrate it before creating CDRRMO.', 409);
+      const agencyHotline = hotline(input.hotline);
       const agency = { name: str(input.name, 'agency name'), code: agencyId, type: str(input.type, 'agency type'),
         description: str(input.description || '', 'description', false), contactEmail: email(input.contactEmail),
         contactNumber: str(input.contactNumber, 'contact number'), address: str(input.address, 'office address'),
+        ...(agencyHotline ? { hotline: agencyHotline } : {}),
         active: input.active !== false, createdAt: now(), createdBy: uid };
       let station;
       if (input.station?.name) station = stationInput(input.station);

@@ -2,6 +2,8 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { createService, CITY, code } = require('../service.cjs');
 const { createFirebaseDependencies } = require('../src/infrastructure/firebase/createFirebaseDependencies.cjs');
+const { readConfig } = require('../src/config.cjs');
+const { hotline } = require('../src/domain/agencyRules.cjs');
 
 test('response reports enforce team submission, agency review, correction and immutable approval', async () => {
   const s = await responderSetup();
@@ -110,6 +112,78 @@ test('command admins manage stations and responder assignments without privilege
 test('missing database configuration gives setup instructions before initializing Firebase', () => {
   assert.throws(() => createFirebaseDependencies({}), /FIREBASE_DATABASE_URL is required.*era_admin_backend\/\.env/);
   assert.throws(() => createFirebaseDependencies({ FIREBASE_DATABASE_URL: '  ' }), /FIREBASE_DATABASE_URL is required/);
+});
+
+test('settings: server names first, old REACT_APP_ names still work, key path starts from era_admin_backend', () => {
+  const config = readConfig({
+    FIREBASE_DATABASE_URL: ' https://new-db ', REACT_APP_FIREBASE_DATABASE_URL: 'https://old-db',
+    REACT_APP_FIREBASE_STORAGE_BUCKET: 'old-bucket', FIREBASE_SERVICE_ACCOUNT_PATH: './keys/admin.json', PORT: ' ',
+  });
+  assert.equal(config.port, 5000);
+  assert.equal(config.firebase.databaseURL, 'https://new-db');
+  assert.equal(config.firebase.storageBucket, 'old-bucket');
+  assert.equal(config.firebase.serviceAccountPath, require('node:path').resolve(__dirname, '..', 'keys', 'admin.json'));
+  assert.equal(readConfig({}).firebase.serviceAccountPath, undefined);
+});
+
+test('hotlines accept short codes, landlines, mobile and toll-free numbers', () => {
+  assert.equal(hotline('911'), '911');
+  assert.equal(hotline('  (074)   627-1234 '), '(074) 627-1234');
+  assert.equal(hotline('+63 74 627 1234'), '+63 74 627 1234');
+  assert.equal(hotline('1-800-10-123-4567'), '1-800-10-123-4567');
+  assert.equal(hotline('09776226185'), '09776226185');
+  assert.equal(hotline('+63 977 622 6185'), '+63 977 622 6185');
+  assert.equal(hotline(''), '');
+  assert.equal(hotline(undefined), '');
+  assert.throws(() => hotline('call 911'), /hotline such as 911/);
+  assert.throws(() => hotline('12'), /hotline such as 911/);
+  assert.throws(() => hotline(160), /Invalid hotline/);
+});
+
+test('agency hotline: the agency admin sets their own, system admins any agency, others are refused', async () => {
+  const s = await responderSetup();
+  assert.equal((await s.service.updateAgencyHotline('fireAdmin', 'BFP', { hotline: ' 160 ' })).message, 'Hotline saved.');
+  assert.equal(s.city().agency.BFP.profile.hotline, '160');
+  await assert.rejects(s.service.updateAgencyHotline('fireAdmin', 'PNP', { hotline: '117' }), /denied/);
+  await assert.rejects(s.service.updateAgencyHotline('fireAdmin', 'BFP', { hotline: 'call 160' }), /hotline such as 911/);
+  await s.service.updateAgencyHotline('root', 'PNP', { hotline: '117' });
+  assert.equal(s.city().agency.PNP.profile.hotline, '117');
+  s.city().users.command = { role: 'COMMAND_ADMIN', active: true };
+  await assert.rejects(s.service.updateAgencyHotline('command', 'BFP', { hotline: '911' }), /permission/);
+  assert.equal((await s.service.updateAgencyHotline('fireAdmin', 'BFP', { hotline: '' })).message, 'Hotline removed.');
+  assert.equal('hotline' in s.city().agency.BFP.profile, false);
+  const audit = Object.values(s.city().command_center.audit_logs).filter(entry => entry.action === 'AGENCY_HOTLINE_UPDATED');
+  assert.deepEqual(audit.map(entry => [entry.actorUid, entry.agencyId]), [['fireAdmin', 'BFP'], ['root', 'PNP'], ['fireAdmin', 'BFP']]);
+});
+
+test('agency directory gives signed-in staff public agency details with hotlines only', async () => {
+  const s = await responderSetup();
+  await s.service.updateAgencyHotline('root', 'BFP', { hotline: '(074) 627-1234' });
+  const { data } = await s.service.agencyDirectory('policeAdmin');
+  assert.deepEqual(Object.keys(data.BFP).sort(), ['active', 'hotline', 'id', 'name', 'type']);
+  assert.equal(data.BFP.hotline, '(074) 627-1234');
+  assert.equal(data.PNP.hotline, '');
+  s.city().users.responder = { role: 'RESPONDER', agencyId: 'BFP', active: true };
+  await assert.rejects(s.service.agencyDirectory('responder'), /permission/);
+});
+
+test('station hotline is saved with the station and kept when an edit sends none', async () => {
+  const s = await responderSetup();
+  const station = { id: 'fireStation', name: 'Fire station', location: 'Bulanao', latitude: 17.45, longitude: 121.45 };
+  await s.service.saveResource('fireAdmin', 'BFP', 'stations', { ...station, hotline: '160' });
+  assert.equal(s.city().agency.BFP.stations.fireStation.hotline, '160');
+  await s.service.saveResource('fireAdmin', 'BFP', 'stations', { ...station, location: 'Bulanao, Tabuk' });
+  assert.equal(s.city().agency.BFP.stations.fireStation.hotline, '160');
+  await assert.rejects(s.service.saveResource('fireAdmin', 'BFP', 'stations', { ...station, hotline: 'call us' }), /hotline such as 911/);
+  assert.equal((await s.service.stationDirectory('root')).data.fireStation.hotline, '160');
+});
+
+test('a new agency can start with a hotline', async () => {
+  const s = setup();
+  await s.service.createAgency('root', { name: 'Bureau of Fire Protection', code: 'BFP', type: 'FIRE', contactEmail: 'bfp@example.com', contactNumber: '0746271234', address: 'Tabuk', hotline: '160' });
+  assert.equal(s.city().agency.BFP.profile.hotline, '160');
+  await s.create('PNP');
+  assert.equal('hotline' in s.city().agency.PNP.profile, false);
 });
 function setup() {
   const data = { users: { root: { role: 'SYSTEM_ADMIN', active: true } }, server: { 'City of Tabuk': {} } };

@@ -21,6 +21,8 @@ function createAgencyController(service) {
     removeAdvisoryImage: respond(req => service.removeAdvisoryImage(req.uid, req.params.id)),
     list: respond(req => service.list(req.uid)),
     stationDirectory: respond(req => service.stationDirectory(req.uid)),
+    agencyDirectory: respond(req => service.agencyDirectory(req.uid)),
+    updateAgencyHotline: respond(req => service.updateAgencyHotline(req.uid, req.params.code, req.body)),
     consolidateAccountRole: respond(req => service.consolidateAccountRole(req.uid)),
     ownerSession: respond(req => service.ownerSession(req.uid)),
     ownerList: respond(req => service.ownerList(req.uid)),
