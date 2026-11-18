@@ -13,7 +13,7 @@ The command and agency portals share the existing React application, theme and F
 
 Use Node.js 22.9 or later. Frontend dependencies are installed in `era_web_admin`. Backend dependencies have their own lockfile in `era_admin_backend`.
 
-1. Copy `era_admin_backend/.env.example` to `era_admin_backend/.env` and fill in `FIREBASE_DATABASE_URL`, `FIREBASE_STORAGE_BUCKET` and `FIREBASE_SERVICE_ACCOUNT_PATH` (the path to a service account key file). Keep key files outside the repository. Every setting is read in one place, `src/config.cjs`, and `.env` is found even when the server is started from another folder. The frontend's Firebase API key is not an Admin credential.
+1. Copy `era_admin_backend/.env.example` to `era_admin_backend/.env` and fill in `FIREBASE_DATABASE_URL`, `FIREBASE_STORAGE_BUCKET` and `FIREBASE_SERVICE_ACCOUNT_PATH` (the path to a service account key file). Keep key files outside the repository. Every setting is read in one place, `config/env.js`, and `.env` is found even when the server is started from another folder. The frontend's Firebase API key is not an Admin credential.
 2. From `era_admin_backend`, run `npm ci` then `npm start`.
 3. From `era_web_admin`, run `npm start`. The development proxy forwards `/api/agencies` to `AGENCY_API_TARGET` (default `http://127.0.0.1:5000`).
 4. Sign in with an existing active `SYSTEM_ADMIN` account. Legacy profiles remain supported at `users/{actualUid}`. Canonical city profiles, when present, take precedence over legacy profiles even when inactive.
@@ -22,41 +22,50 @@ In production, serve the built React app with SPA fallback, and reverse proxy `/
 
 ## Server architecture
 
-The Node.js/Express server uses CommonJS modules with these responsibilities:
+The Node.js/Express server uses ES modules (`"type": "module"`) and the same flat layered layout as seasonal-harvest-backend:
 
 ```text
 era_admin_backend/
-  server.js                     # Startup and dependency composition
-  src/
-    app.cjs                     # Express application assembly
-    config.cjs                  # Every environment setting, read in one place
-    domain/
-      agencyRules.cjs           # Validation and business rules
-    application/
-      createService.cjs         # Compose the use cases
-      createAgencyContext.cjs   # Authorization and audited mutations
-      dataPaths.cjs             # Existing data hierarchy
-      useCases/
-        accountLocation.cjs
-        agencyManagement.cjs
-        invitations.cjs
-        agencyDashboard.cjs
-    infrastructure/
-      firebase/
-        createFirebaseDependencies.cjs
-        createRepository.cjs
-    presentation/
-      controllers/
-      middleware/
-      routes/
-  tests/                        # Automated service and HTTP tests
+  server.js                     # Startup only: settings, Firebase, compose services, listen
+  app.js                        # Express app: middleware, routers, error middleware
+  config/
+    env.js                      # Every environment setting, read in one place
+    data-paths.js               # Existing data hierarchy (CITY)
+  database/
+    firebase.js                 # Firebase Admin app and the adapters handed to services
+  model/
+    repository.model.js         # read(path) / transact(path, change) on the Realtime Database
+    file-storage.model.js       # Firebase Storage uploads
+  routes/                       # One router per resource (*.routes.js)
+    agency.routes.js            # /api/agencies; mounts the routers below
+    advisory.routes.js          # /api/agencies/advisories
+    response-report.routes.js   # /api/agencies/response-reports
+    incident.routes.js          # /api/agencies/incidents
+    owner.routes.js             # /api/agencies/owner
+    invitation.routes.js        # /api/agencies/invitations
+    user.routes.js              # /api/users (older user management)
+  controller/                   # One controller per resource (*.controller.js)
+  middleware/
+    auth.middleware.js          # Firebase ID token check, sets req.uid
+    error.middleware.js         # The one place errors become HTTP responses
+  services/
+    agency.service.js           # Composes the agency services
+    agency-context.service.js   # Authorization and audited mutations
+    *.service.js                # Advisories, invitations, reports, dashboard, user API, warning listener
+    rules/                      # Validation and business rules (no Express or Firebase)
+  utils/
+    http-error.js               # HttpError and fail(message, status)
+    respond.js                  # Sends a handler's result as JSON, passes errors on
+  tests/                        # Vitest service and HTTP tests
 ```
 
-Domain rules do not import Express or Firebase. Application use cases depend on injected repository, identity lookup, ID generation, and clock capabilities. Infrastructure implements persistence; presentation handles HTTP authentication, routing, responses, and errors. `server.js` wires the concrete dependencies together. No Firebase initialization occurs when importing application use cases or creating the Express app. The entry point shares one Firebase Admin app with the existing user APIs and warning notification listener.
+Rules in `services/rules` do not import Express or Firebase. Services depend on injected repository, identity lookup, file storage, ID generation and clock capabilities. `model/` and `database/` implement persistence; routes, controllers and middleware handle HTTP. `server.js` wires the concrete dependencies together. No Firebase initialization occurs when importing services or creating the Express app. The agency API, the user API and the warning notification listener share one Firebase Admin app.
+
+Errors: services throw with `fail(message, status)` from `utils/http-error.js`. `middleware/error.middleware.js` returns `{ error, code? }` with that status. Any error without a status is logged and returns a generic 500 message.
 
 The repository contract is `read(path)` and `transact(path, change)`. Transaction callbacks must be synchronous and safe to retry; all related authorization, membership, invitation, and audit changes remain in one transaction. The identity adapter uses `getUser(uid)`, `getUserByEmail(email)`, `createUser(details)`, and `deleteUser(uid)`; HTTP authentication separately uses `verifyIdToken(token, checkRevoked)`. Tests supply in-memory implementations without importing Firebase.
 
-Keep new business rules in domain, orchestration in application, SDK access in infrastructure, and HTTP concerns in presentation. Extend only the relevant use case or adapter. Root `app.cjs` and `service.cjs` remain compatibility exports for existing consumers; implementation lives under `src`. Existing endpoint paths, data paths, and response shapes are preserved.
+Keep new business rules in `services/rules`, orchestration in `services`, SDK access in `model`/`database`, and HTTP concerns in routes, controllers and middleware. A new resource gets its own `*.routes.js` and `*.controller.js`, mounted in `agency.routes.js` before the `/:code/...` routes. Existing endpoint paths, data paths, and response shapes are preserved.
 
 Run the server's automated tests from the workspace root with `npm test --prefix era_admin_backend`. Manual and live Firebase testing require user approval.
 

@@ -1,0 +1,9 @@
+import { respond } from '../utils/respond.js';
+
+export function createResponseReportController(service) {
+  return {
+    responseReportData: respond(req => service.responseReportData(req.uid)),
+    submitResponseReport: respond(req => service.submitResponseReport(req.uid, req.body)),
+    reviewResponseReport: respond(req => service.reviewResponseReport(req.uid, req.params.id, req.body)),
+  };
+}

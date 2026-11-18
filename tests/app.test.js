@@ -1,6 +1,7 @@
-﻿const { test } = require('node:test');
-const assert = require('node:assert/strict');
-const { createApp } = require('../src/app.cjs');
+import { test } from 'vitest';
+import assert from 'node:assert/strict';
+import { createApp } from '../app.js';
+import { errorHandler } from '../middleware/error.middleware.js';
 test('HTTP API verifies tokens, returns permission errors, and binds the actor to the verified UID', async () => {
   const calls = [];
   const auth = { async verifyIdToken(token, revoked) { assert.equal(revoked, true); if (token !== 'valid-token') throw new Error('Invalid'); return { uid: 'actual-actor' }; } };
@@ -77,7 +78,6 @@ test('hotline routes reach the hotline handlers, not the station and team handle
 
 
 test('unexpected Firebase failures return a diagnostic code without exposing upstream details', () => {
-  const { errorHandler } = require('../src/presentation/middleware/errorHandler.cjs');
   const original = console.error;
   const logs = [];
   console.error = (...args) => logs.push(args);

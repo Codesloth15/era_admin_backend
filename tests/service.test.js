@@ -1,9 +1,12 @@
-const { test } = require('node:test');
-const assert = require('node:assert/strict');
-const { createService, CITY, code } = require('../service.cjs');
-const { createFirebaseDependencies } = require('../src/infrastructure/firebase/createFirebaseDependencies.cjs');
-const { readConfig } = require('../src/config.cjs');
-const { hotline } = require('../src/domain/agencyRules.cjs');
+import { test } from 'vitest';
+import assert from 'node:assert/strict';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { createService } from '../services/agency.service.js';
+import { CITY } from '../config/data-paths.js';
+import { code, hotline } from '../services/rules/agency.rules.js';
+import { createFirebaseDependencies } from '../database/firebase.js';
+import { readConfig } from '../config/env.js';
 
 test('response reports enforce team submission, agency review, correction and immutable approval', async () => {
   const s = await responderSetup();
@@ -122,7 +125,7 @@ test('settings: server names first, old REACT_APP_ names still work, key path st
   assert.equal(config.port, 5000);
   assert.equal(config.firebase.databaseURL, 'https://new-db');
   assert.equal(config.firebase.storageBucket, 'old-bucket');
-  assert.equal(config.firebase.serviceAccountPath, require('node:path').resolve(__dirname, '..', 'keys', 'admin.json'));
+  assert.equal(config.firebase.serviceAccountPath, path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', 'keys', 'admin.json'));
   assert.equal(readConfig({}).firebase.serviceAccountPath, undefined);
 });
 
