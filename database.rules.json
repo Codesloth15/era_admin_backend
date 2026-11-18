@@ -1,0 +1,88 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "users": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": false,
+        "displayName": {
+          ".write": "auth != null && auth.uid === $uid && data.parent().exists() && data.parent().child('active').val() === true && newData.isString()",
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100"
+        }
+      }
+    },
+    "server": {
+      "City of Tabuk": {
+        ".read": false,
+        ".write": false,
+        "users": {
+          "$uid": {
+            ".read": "auth != null && auth.uid === $uid",
+            ".write": false,
+            "displayName": {
+              ".write": "auth != null && auth.uid === $uid && data.parent().exists() && data.parent().child('active').val() === true && newData.isString()",
+              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100"
+            }
+          }
+        },
+        "agency": {
+          ".read": false,
+          ".write": false
+        },
+        "agency_invitations": {
+          ".read": false,
+          ".write": false
+        },
+        "command_center": {
+          ".read": false,
+          ".write": false
+        },
+        "system_config": {
+          ".read": false,
+          ".write": false
+        },
+        "advisories": {
+          ".read": false,
+          ".write": false
+        },
+        "public_advisories": {
+          ".read": "auth != null",
+          ".write": false,
+          ".indexOn": ["issuedAt"]
+        },
+        "shared_locations": {
+          ".read": "auth != null && (root.child('server/City of Tabuk/users').child(auth.uid).child('active').val() === true || (!root.child('server/City of Tabuk/users').child(auth.uid).exists() && root.child('users').child(auth.uid).child('active').val() === true))",
+          ".indexOn": [
+            "updatedAt"
+          ],
+          "$uid": {
+            ".write": "auth != null && auth.uid === $uid && ((!newData.exists() && data.exists()) || ((root.child('server/City of Tabuk/users').child(auth.uid).child('active').val() === true && root.child('server/City of Tabuk/users').child(auth.uid).child('role').val().matches(/^(SYSTEM_ADMIN|COMMAND_ADMIN|AGENCY_ADMIN|RESPONDER)$/) && (root.child('server/City of Tabuk/users').child(auth.uid).child('role').val() !== 'AGENCY_ADMIN' || root.child('server/City of Tabuk/users').child(auth.uid).child('authProvisioned').val() === true)) || (!root.child('server/City of Tabuk/users').child(auth.uid).exists() && (root.child('users').child(auth.uid).child('active').val() === true && root.child('users').child(auth.uid).child('role').val().matches(/^(SYSTEM_ADMIN|COMMAND_ADMIN|AGENCY_ADMIN|RESPONDER)$/) && (root.child('users').child(auth.uid).child('role').val() !== 'AGENCY_ADMIN' || root.child('users').child(auth.uid).child('authProvisioned').val() === true)))))",
+            ".validate": "newData.hasChildren(['latitude','longitude','displayLabel','source','isSimulated','updatedAt']) && newData.child('latitude').isNumber() && newData.child('latitude').val() >= -90 && newData.child('latitude').val() <= 90 && newData.child('longitude').isNumber() && newData.child('longitude').val() >= -180 && newData.child('longitude').val() <= 180 && newData.child('displayLabel').isString() && newData.child('displayLabel').val().length > 0 && newData.child('displayLabel').val().length <= 100 && newData.child('source').val() === 'MANUAL' && newData.child('isSimulated').val() === false && newData.child('updatedAt').val() === now",
+            "latitude": {
+              ".validate": true
+            },
+            "longitude": {
+              ".validate": true
+            },
+            "displayLabel": {
+              ".validate": true
+            },
+            "source": {
+              ".validate": true
+            },
+            "isSimulated": {
+              ".validate": true
+            },
+            "updatedAt": {
+              ".validate": true
+            },
+            "$other": {
+              ".validate": false
+            }
+          }
+        }
+      }
+    }
+  }
+}

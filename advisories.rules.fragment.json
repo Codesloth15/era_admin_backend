@@ -1,0 +1,17 @@
+{
+  "rules": {
+    "server": {
+      "City of Tabuk": {
+        "advisories": {
+          ".read": false,
+          ".write": false
+        },
+        "public_advisories": {
+          ".read": "auth != null",
+          ".write": false,
+          ".indexOn": ["issuedAt"]
+        }
+      }
+    }
+  }
+}

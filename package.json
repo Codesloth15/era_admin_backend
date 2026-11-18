@@ -2,9 +2,11 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +16,14 @@
     "cors": "^2.8.5",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
-    "firebase-admin": "^13.5.0"
+    "firebase-admin": "^13.5.0",
+    "google-auth-library": "^9.15.1"
+  },
+  "engines": {
+    "node": ">=22.9.0"
+  },
+  "type": "module",
+  "devDependencies": {
+    "vitest": "^4.1.12"
   }
 }

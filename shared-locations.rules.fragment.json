@@ -1,0 +1,39 @@
+{
+  "rules": {
+    "server": {
+      "City of Tabuk": {
+        "shared_locations": {
+          ".read": "auth != null && (root.child('server/City of Tabuk/users').child(auth.uid).child('active').val() === true || (!root.child('server/City of Tabuk/users').child(auth.uid).exists() && root.child('users').child(auth.uid).child('active').val() === true))",
+          ".indexOn": [
+            "updatedAt"
+          ],
+          "$uid": {
+            ".write": "auth != null && auth.uid === $uid && ((!newData.exists() && data.exists()) || ((root.child('server/City of Tabuk/users').child(auth.uid).child('active').val() === true && root.child('server/City of Tabuk/users').child(auth.uid).child('role').val().matches(/^(SYSTEM_ADMIN|COMMAND_ADMIN|AGENCY_ADMIN|RESPONDER)$/) && (root.child('server/City of Tabuk/users').child(auth.uid).child('role').val() !== 'AGENCY_ADMIN' || root.child('server/City of Tabuk/users').child(auth.uid).child('authProvisioned').val() === true)) || (!root.child('server/City of Tabuk/users').child(auth.uid).exists() && (root.child('users').child(auth.uid).child('active').val() === true && root.child('users').child(auth.uid).child('role').val().matches(/^(SYSTEM_ADMIN|COMMAND_ADMIN|AGENCY_ADMIN|RESPONDER)$/) && (root.child('users').child(auth.uid).child('role').val() !== 'AGENCY_ADMIN' || root.child('users').child(auth.uid).child('authProvisioned').val() === true)))))",
+            ".validate": "newData.hasChildren(['latitude','longitude','displayLabel','source','isSimulated','updatedAt']) && newData.child('latitude').isNumber() && newData.child('latitude').val() >= -90 && newData.child('latitude').val() <= 90 && newData.child('longitude').isNumber() && newData.child('longitude').val() >= -180 && newData.child('longitude').val() <= 180 && newData.child('displayLabel').isString() && newData.child('displayLabel').val().length > 0 && newData.child('displayLabel').val().length <= 100 && newData.child('source').val() === 'MANUAL' && newData.child('isSimulated').val() === false && newData.child('updatedAt').val() === now",
+            "latitude": {
+              ".validate": true
+            },
+            "longitude": {
+              ".validate": true
+            },
+            "displayLabel": {
+              ".validate": true
+            },
+            "source": {
+              ".validate": true
+            },
+            "isSimulated": {
+              ".validate": true
+            },
+            "updatedAt": {
+              ".validate": true
+            },
+            "$other": {
+              ".validate": false
+            }
+          }
+        }
+      }
+    }
+  }
+}
