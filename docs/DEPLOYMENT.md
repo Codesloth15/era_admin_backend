@@ -7,7 +7,7 @@ Scope: `era_admin_backend`, the Agency API. The web admin, owner app and citizen
 - **Rotate the Firebase service account key first.** The keys were in the git history (BUGS.md B1). Create a new key in the Firebase console and delete the old one.
 - **Never commit a key file or `.env`.** `.gitignore` already excludes `.env`, `firebase/*.json` and `*service-account*.json`.
 - **Check the Node version.** `package.json` requires Node 22.9 or later. Set Node 22 on Render.
-- **Restrict CORS** before go-live: set `CORS_ALLOWED_ORIGINS` (section 3). Without it, the API accepts requests from every origin and logs a warning at startup.
+- **Set CORS** before go-live: `CORS_ALLOWED_ORIGINS` (section 3) must list the web admin and owner app addresses. Only those addresses can call the API from a browser. If it's empty, browsers on other sites are refused, and the server logs a warning at startup.
 
 ## 2. Create the Render service
 
@@ -33,7 +33,7 @@ Set these in Render under **Environment**. The names match `config/env.js` and `
 | `FIREBASE_STORAGE_BUCKET` | Yes, for advisory images | `era-tabuk-city.firebasestorage.app` | Used to upload cover images |
 | `FIREBASE_SERVICE_ACCOUNT_PATH` | Yes, if not using the option below | `/etc/secrets/firebase-service-account.json` | Path of the Secret File (section 4) |
 | `GOOGLE_APPLICATION_CREDENTIALS` | Alternative to the path above | `/etc/secrets/firebase-service-account.json` | Application Default Credentials. Use one of the two, not both |
-| `CORS_ALLOWED_ORIGINS` | Yes, for production | `https://<web-admin-domain>,https://<owner-app-domain>` | Comma-separated list of web addresses allowed to call the API. Empty allows every origin |
+| `CORS_ALLOWED_ORIGINS` | Yes, for production | `https://<web-admin-domain>,https://<owner-app-domain>` | Comma-separated list of the only web addresses allowed to call the API from a browser. Empty refuses all other sites |
 | `PORT` | No | leave unset | Render sets `PORT` itself. The server reads it. Its default is 5000 for local runs |
 | `NODE_ENV` | Recommended | `production` | |
 
