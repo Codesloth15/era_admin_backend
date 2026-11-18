@@ -43,7 +43,6 @@ era_admin_backend/
     incident.routes.js          # /api/agencies/incidents
     owner.routes.js             # /api/agencies/owner
     invitation.routes.js        # /api/agencies/invitations
-    user.routes.js              # /api/users (older user management)
   controller/                   # One controller per resource (*.controller.js)
   middleware/
     auth.middleware.js          # Firebase ID token check, sets req.uid
@@ -51,7 +50,7 @@ era_admin_backend/
   services/
     agency.service.js           # Composes the agency services
     agency-context.service.js   # Authorization and audited mutations
-    *.service.js                # Advisories, invitations, reports, dashboard, user API, warning listener
+    *.service.js                # Advisories, invitations, reports, dashboard, incidents
     rules/                      # Validation and business rules (no Express or Firebase)
   utils/
     http-error.js               # HttpError and fail(message, status)
@@ -59,9 +58,9 @@ era_admin_backend/
   tests/                        # Vitest service and HTTP tests
 ```
 
-Rules in `services/rules` do not import Express or Firebase. Services depend on injected repository, identity lookup, file storage, ID generation and clock capabilities. `model/` and `database/` implement persistence; routes, controllers and middleware handle HTTP. `server.js` wires the concrete dependencies together. No Firebase initialization occurs when importing services or creating the Express app. The agency API, the user API and the warning notification listener share one Firebase Admin app.
+Rules in `services/rules` do not import Express or Firebase. Services depend on injected repository, identity lookup, file storage, ID generation and clock capabilities. `model/` and `database/` implement persistence; routes, controllers and middleware handle HTTP. `server.js` wires the concrete dependencies together. No Firebase initialization occurs when importing services or creating the Express app. The old `/api/users` routes and the warning push listener were removed on 2026-11-16 (no app called them).
 
-Errors: services throw with `fail(message, status)` from `utils/http-error.js`. `middleware/error.middleware.js` returns `{ error, code? }` with that status. Any error without a status is logged and returns a generic 500 message.
+Errors: services throw with `fail(message, status)` from `utils/http-error.js`. `middleware/error.middleware.js` returns `{ error, code? }` with that status. Express request errors (bad JSON, body too large) keep their 4xx status. Any other error, including upstream errors that carry a status, is logged and returns a generic 500 message. A request without a JSON body is treated as an empty object, so it gets the usual 400 validation messages.
 
 The repository contract is `read(path)` and `transact(path, change)`. Transaction callbacks must be synchronous and safe to retry; all related authorization, membership, invitation, and audit changes remain in one transaction. The identity adapter uses `getUser(uid)`, `getUserByEmail(email)`, `createUser(details)`, and `deleteUser(uid)`; HTTP authentication separately uses `verifyIdToken(token, checkRevoked)`. Tests supply in-memory implementations without importing Firebase.
 

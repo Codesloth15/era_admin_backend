@@ -19,6 +19,8 @@ export function readConfig(environment = process.env) {
   const serviceAccountPath = pick(environment.FIREBASE_SERVICE_ACCOUNT_PATH);
   return {
     port: pick(environment.PORT) || 5000,
+    // Browser origins allowed to call the API, comma-separated. Empty means every origin, so set it in production.
+    corsOrigins: (environment.CORS_ALLOWED_ORIGINS || '').split(',').map(origin => origin.trim()).filter(Boolean),
     firebase: {
       projectId: pick(environment.FIREBASE_PROJECT_ID),
       // The REACT_APP_* names are the old ones. They are still read so older .env files keep working.

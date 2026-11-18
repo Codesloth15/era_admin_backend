@@ -20,7 +20,7 @@ function createAgencyDashboard(context) {
         .map(([id, entry]) => [id, { incidentId: entry.incidentId || id, title: entry.title || '', type: entry.type || entry.emergencyType || '', locationName: entry.locationName || entry.location?.address || '', status: entry.status || 'REPORTED', createdAt: entry.createdAt || null }]));
       // Membership records may hold role and status only; show names, contact and personal details from profiles.
       const profiles = await repo.read(`${CITY}/users`) || {};
-      const fields = ['displayName', 'email', 'phoneNumber', 'residentialAddress', 'birthdate', 'sex', 'emergencyContactName', 'emergencyContactPhone', 'stationId'];
+      const fields = ['displayName', 'email', 'phoneNumber', 'residentialAddress', 'birthdate', 'sex', 'emergencyContactName', 'emergencyContactPhone', 'stationId', 'teamId'];
       const members = Object.fromEntries(Object.entries(agency?.members || {}).map(([memberUid, member]) => [memberUid,
         { ...member, ...Object.fromEntries(fields.map(field => [field, member?.[field] || profiles[memberUid]?.[field] || ''])) }]));
       return { agency: agency ? { ...agency, members } : agency, feed: live };

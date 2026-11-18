@@ -2,12 +2,13 @@ import { test } from 'vitest';
 import assert from 'node:assert/strict';
 import { createApp } from '../app.js';
 import { errorHandler } from '../middleware/error.middleware.js';
+import { fail } from '../utils/http-error.js';
 test('HTTP API verifies tokens, returns permission errors, and binds the actor to the verified UID', async () => {
   const calls = [];
   const auth = { async verifyIdToken(token, revoked) { assert.equal(revoked, true); if (token !== 'valid-token') throw new Error('Invalid'); return { uid: 'actual-actor' }; } };
   const service = {
     async list(uid) { calls.push(uid); return { agencies: [], invitations: [] }; },
-    async createAgency(uid, body) { calls.push([uid, body]); throw Object.assign(new Error('System administrator required.'), { status: 403 }); },
+    async createAgency(uid, body) { calls.push([uid, body]); fail('System administrator required.', 403); },
     async createResponder(uid, agencyId, body) { calls.push({ uid, agencyId, body }); return { uid: 'new-responder', agencyId }; },
     async agencyDispatchData(uid, collection) { calls.push({ uid, collection }); return { data: {} }; },
     async agencyDispatchCommand(uid, body) { calls.push({ uid, body }); return { message: 'Saved' }; },
@@ -92,4 +93,28 @@ test('unexpected Firebase failures return a diagnostic code without exposing ups
     assert.equal(body.error.includes('upstream diagnostic'), false);
     assert.equal(logs[0][1].message, 'upstream diagnostic');
   } finally { console.error = original; }
+});
+
+test('upstream errors that carry an HTTP status are not passed through to the client', () => {
+  const original = console.error;
+  console.error = () => {};
+  let status, body;
+  try {
+    errorHandler(Object.assign(new Error('invalid_grant: Invalid JWT Signature.'), { status: 401 }),
+      { method: 'GET', path: '/api/agencies' },
+      { status(value) { status = value; return this; }, json(value) { body = value; } });
+    assert.equal(status, 500);
+    assert.equal(body.error.includes('invalid_grant'), false);
+  } finally { console.error = original; }
+});
+
+test('a POST without a JSON body gets the service validation message, not a server error', async () => {
+  const service = { async createAgency(uid, body) { if (!body.code) fail('Invalid agency ID.'); return {}; } };
+  const server = createApp({ service, auth: { async verifyIdToken() { return { uid: 'actor' }; } } }).listen(0, '127.0.0.1');
+  await new Promise(resolve => server.once('listening', resolve));
+  try {
+    const response = await fetch(`http://127.0.0.1:${server.address().port}/api/agencies`, { method: 'POST', headers: { Authorization: 'Bearer token' } });
+    assert.equal(response.status, 400);
+    assert.equal((await response.json()).error, 'Invalid agency ID.');
+  } finally { await new Promise(resolve => server.close(resolve)); }
 });

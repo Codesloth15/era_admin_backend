@@ -7,5 +7,7 @@ export function createOwnerRouter(service) {
   const controller = createOwnerController(service);
   router.get('/session', controller.ownerSession);
   router.get('/', controller.ownerList);
+  router.post('/command-admins', controller.createCommandAdmin);
+  router.post('/agencies/:code/emergencies', controller.setAgencyEmergencies);
   return router;
 }

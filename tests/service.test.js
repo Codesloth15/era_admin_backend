@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { createService } from '../services/agency.service.js';
 import { CITY } from '../config/data-paths.js';
 import { code, hotline } from '../services/rules/agency.rules.js';
+import { routeIncident } from '../services/rules/incident.rules.js';
 import { createFirebaseDependencies } from '../database/firebase.js';
 import { readConfig } from '../config/env.js';
 
@@ -68,7 +69,9 @@ test('response reports enforce team submission, agency review, correction and im
     patients: [{ Firstname: 'Ana', Lastname: 'Cruz', PATIENT_AGE: 30, PATIENT_ADDRESS: 'Tabuk', PATIENT_RELIGION: 'Catholic', PATIENT_STATUS: 'Stable', PATIENT_INJURY: 'Arm injury', PATIENT_GENDER_spinner: 'Female', PATIENT_CIVIL_STATUS_spinner: 'Single' }] };
   const xmlResult = await s.service.submitResponseReport('fireAdmin', xmlInput);
   const xmlSaved = s.city().command_center.response_reports[xmlResult.id];
-  for (const field of Object.keys(xmlInput)) assert.deepEqual(xmlSaved[field], xmlInput[field]);
+  for (const field of Object.keys(xmlInput).filter(name => name !== 'patients')) assert.deepEqual(xmlSaved[field], xmlInput[field]);
+  // Structured answers are stored as empty when not given (older reports have none).
+  assert.deepEqual(xmlSaved.patients, xmlInput.patients.map(patient => ({ ...patient, VICTIM_ROLE: '', LICENSED: '', SEVERITY: '' })));
   assert.equal(xmlSaved.status, 'APPROVED'); assert.equal(xmlSaved.incidentId, null);
   assert.equal(xmlSaved.sceneAssessment, undefined); assert.equal(xmlSaved.schemaVersion, 2);
   const responderXml = await s.service.submitResponseReport('responder', { ...xmlInput, assignmentId: 'assignment', status: 'APPROVED' });
@@ -104,7 +107,7 @@ test('command admins manage stations and responder assignments without privilege
   await assert.rejects(s.service.assignStation('command', 'PNP', { uid: responder.uid, stationId: null }), /does not belong/);
   await assert.rejects(s.service.assignStation('command', 'BFP', { uid: responder.uid, stationId: 'missing' }), /Station does not belong/);
   await assert.rejects(s.service.saveResource('command', 'BFP', 'teams', { name: 'Team' }), /permission/);
-  await assert.rejects(s.service.createAgency('command', { name: 'Other', code: 'OTHER', type: 'OTHER', contactEmail: 'office@example.com', contactNumber: '123', address: 'Tabuk' }), /permission/);
+  await assert.rejects(s.service.createAgency('command', { emergencyTypes: ['FIRE'], name: 'Other', code: 'OTHER', type: 'OTHER', contactEmail: 'office@example.com', contactNumber: '123', address: 'Tabuk' }), /permission/);
   await assert.rejects(s.service.status('command', 'BFP', { active: false }), /permission/);
   await s.service.assignStation('command', 'BFP', { uid: responder.uid, stationId: null });
   assert.equal(s.city().users[responder.uid].stationId, null);
@@ -163,7 +166,7 @@ test('agency directory gives signed-in staff public agency details with hotlines
   const s = await responderSetup();
   await s.service.updateAgencyHotline('root', 'BFP', { hotline: '(074) 627-1234' });
   const { data } = await s.service.agencyDirectory('policeAdmin');
-  assert.deepEqual(Object.keys(data.BFP).sort(), ['active', 'hotline', 'id', 'name', 'type']);
+  assert.deepEqual(Object.keys(data.BFP).sort(), ['active', 'emergencyTypes', 'hotline', 'id', 'name', 'type', 'types']);
   assert.equal(data.BFP.hotline, '(074) 627-1234');
   assert.equal(data.PNP.hotline, '');
   s.city().users.responder = { role: 'RESPONDER', agencyId: 'BFP', active: true };
@@ -183,7 +186,7 @@ test('station hotline is saved with the station and kept when an edit sends none
 
 test('a new agency can start with a hotline', async () => {
   const s = setup();
-  await s.service.createAgency('root', { name: 'Bureau of Fire Protection', code: 'BFP', type: 'FIRE', contactEmail: 'bfp@example.com', contactNumber: '0746271234', address: 'Tabuk', hotline: '160' });
+  await s.service.createAgency('root', { emergencyTypes: ['FIRE'], name: 'Bureau of Fire Protection', code: 'BFP', type: 'FIRE', contactEmail: 'bfp@example.com', contactNumber: '0746271234', address: 'Tabuk', hotline: '160' });
   assert.equal(s.city().agency.BFP.profile.hotline, '160');
   await s.create('PNP');
   assert.equal('hotline' in s.city().agency.PNP.profile, false);
@@ -223,7 +226,7 @@ function setup() {
   const files = { async save(path, buffer, contentType) { stored.set(path, { buffer, contentType }); return `https://files.test/${path}`; }, async remove(path) { stored.delete(path); } };
   const service = createService({ repository: repo, auth, files, id: () => `id_${++counter}`, now: () => time });
   const city = () => get(CITY);
-  const create = (agencyCode = 'PNP') => service.createAgency('root', { name: 'Philippine National Police', code: agencyCode, type: 'POLICE', contactEmail: 'office@example.com', contactNumber: '09123456789', address: 'Tabuk' });
+  const create = (agencyCode = 'PNP') => service.createAgency('root', { emergencyTypes: ['FIRE'], name: 'Philippine National Police', code: agencyCode, type: 'POLICE', contactEmail: 'office@example.com', contactNumber: '09123456789', address: 'Tabuk' });
   const invite = () => service.invite('root', 'PNP', { displayName: 'Agency Admin', email: 'admin@example.com' });
   return { data, service, city, create, invite, auth, accounts, repo, stored, tick: () => { time += 1; }, expire: () => { time += 8 * 86400000; } };
 }
@@ -293,7 +296,7 @@ test('station maps include newly saved agency stations and merge legacy records 
 
 test('station maps normalize initial station coordinates without inventing missing coordinates', async () => {
   const s = setup();
-  await s.service.createAgency('root', { name: 'Fire', code: 'BFP', type: 'FIRE', contactEmail: 'office@example.com', contactNumber: '123', address: 'Tabuk', station: { name: 'Initial station', location: 'Tabuk', latitude: 17.4, longitude: 121.4 } });
+  await s.service.createAgency('root', { emergencyTypes: ['FIRE'], name: 'Fire', code: 'BFP', type: 'FIRE', contactEmail: 'office@example.com', contactNumber: '123', address: 'Tabuk', station: { name: 'Initial station', location: 'Tabuk', latitude: 17.4, longitude: 121.4 } });
   s.data.stations = { blank: { latitude: '', longitude: null }, simulation: { name: 'Simulation station', location: { latitude: '17.5', longitude: '121.5', source: 'SIMULATION_ONLY' } } };
   const stations = (await s.service.stationDirectory('root')).data;
   assert.equal(stations.BFP_INITIAL.location.latitude, 17.4);
@@ -381,6 +384,243 @@ test('owner admin creation rechecks access and cleans up Auth after a failed sav
   await assert.rejects(s.service.createAgencyAdmin('root', 'BFP', s.input), /permission/);
   assert.equal(s.accounts.size, 0);
   assert.equal(Object.values(s.city().users).some(user => user.email === 'fire@example.com'), false);
+});
+
+test('agency admins remove a station by hiding it and unassigning its teams and people', async () => {
+  const s = await responderSetup();
+  s.city().agency.BFP.stations.northStation = { name: 'North station', location: 'Tabuk', latitude: 17.4, longitude: 121.4 };
+  s.city().agency.BFP.teams = { fireTeam: { name: 'Fire team', stationId: 'fireStation' }, northTeam: { name: 'North team', stationId: 'northStation' } };
+  s.city().users.responder = { role: 'RESPONDER', active: true, agencyId: 'BFP', teamId: 'fireTeam', stationId: 'fireStation', displayName: 'Fire responder' };
+  s.city().users.keeper = { role: 'RESPONDER', active: true, agencyId: 'BFP', stationId: 'northStation' };
+  s.city().agency.BFP.members = { responder: { ...s.city().users.responder }, keeper: { ...s.city().users.keeper } };
+  s.city().agency.BFP.responders = { responder: { memberUid: 'responder', active: true, stationId: 'fireStation' } };
+  s.data.teams = { fireTeam: { agencyId: 'BFP', name: 'Fire team', stationId: 'fireStation' } };
+
+  await assert.rejects(s.service.deactivateStation('policeAdmin', 'BFP', 'fireStation', { confirmation: 'Fire station' }), /denied/);
+  await assert.rejects(s.service.deactivateStation('fireAdmin', 'BFP', 'fireStation', { confirmation: 'Fire' }), /Type the station name/);
+  await assert.rejects(s.service.deactivateStation('fireAdmin', 'BFP', 'missing', { confirmation: 'missing' }), /does not belong/);
+  s.data.dispatch_assignments = { busy: { incidentId: 'one', teamId: 'fireTeam', status: 'EN_ROUTE' } };
+  await assert.rejects(s.service.deactivateStation('fireAdmin', 'BFP', 'fireStation', { confirmation: 'fire STATION' }), /active assignment/);
+  s.data.dispatch_assignments.busy.status = 'COMPLETED';
+
+  await s.service.deactivateStation('fireAdmin', 'BFP', 'fireStation', { confirmation: ' fire STATION ' });
+  assert.equal(s.city().agency.BFP.stations.fireStation.active, false);
+  assert.equal(s.city().agency.BFP.teams.fireTeam.stationId, null);
+  assert.equal(s.data.teams.fireTeam.stationId, null);
+  assert.equal(s.city().users.responder.stationId, null);
+  assert.equal(s.city().users.responder.teamId, 'fireTeam');
+  assert.equal(s.city().agency.BFP.members.responder.stationId, null);
+  assert.equal(s.city().agency.BFP.responders.responder.stationId, null);
+  assert.equal(s.city().users.keeper.stationId, 'northStation');
+  assert.equal(s.city().agency.BFP.teams.northTeam.stationId, 'northStation');
+  assert.ok(Object.values(s.city().command_center.audit_logs).some(item => item.action === 'STATION_DEACTIVATED' && item.resourceId === 'fireStation'));
+  assert.equal((await s.service.list('fireAdmin')).agencies[0].stations.fireStation, undefined);
+  await assert.rejects(s.service.assignStation('fireAdmin', 'BFP', { uid: 'responder', stationId: 'fireStation' }), /does not belong/);
+  await assert.rejects(s.service.saveResource('fireAdmin', 'BFP', 'teams', { id: 'fireTeam', name: 'Fire team', stationId: 'fireStation' }), /Invalid agency station/);
+  await assert.rejects(s.service.deactivateStation('fireAdmin', 'BFP', 'northStation', { confirmation: 'North station' }), /at least one station/);
+});
+
+test('only System Administrators create Command Center admins, with a saved record and no password in data', async () => {
+  const s = await responderSetup();
+  const input = { displayName: 'Command Admin', email: ' Command@Example.com ', password: 'secret123' };
+  await assert.rejects(s.service.createCommandAdmin('fireAdmin', input), /denied/);
+  await assert.rejects(s.service.createCommandAdmin('root', { ...input, password: '123' }), /Password must/);
+  const result = await s.service.createCommandAdmin('root', input);
+  const account = s.accounts.get(result.uid);
+  assert.equal(account.email, 'command@example.com');
+  const user = s.city().users[result.uid];
+  assert.equal(user.role, 'COMMAND_ADMIN');
+  assert.equal(user.active, true);
+  assert.equal(user.agencyId, undefined);
+  assert.equal(JSON.stringify(s.data).includes('secret123'), false);
+  assert.equal(JSON.stringify(result).includes('secret123'), false);
+  assert.ok(Object.values(s.city().command_center.audit_logs).some(item => item.action === 'COMMAND_ADMIN_CREATED' && item.targetUid === result.uid));
+  await assert.rejects(s.service.createCommandAdmin('root', input), /already exists/);
+});
+
+test('agencies take several types and keep the first one as the main type', async () => {
+  const s = setup();
+  const base = { name: 'Fire and Rescue', code: 'BFP', contactEmail: 'office@example.com', contactNumber: '09123456789', address: 'Tabuk' };
+  await s.service.createAgency('root', { emergencyTypes: ['FIRE'], ...base, types: ['FIRE', 'RESCUE', 'MEDICAL', 'FIRE'] });
+  const profile = s.city().agency.BFP.profile;
+  assert.deepEqual(profile.types, ['FIRE', 'RESCUE', 'MEDICAL']);
+  assert.equal(profile.type, 'FIRE');
+  await assert.rejects(s.service.createAgency('root', { emergencyTypes: ['FIRE'], ...base, code: 'EMPTY', types: [] }), /at least one/);
+  await assert.rejects(s.service.createAgency('root', { emergencyTypes: ['FIRE'], ...base, code: 'BADTYPE', types: ['FIRE', 'SPACE'] }), /Invalid agency type/);
+  await assert.rejects(s.service.createAgency('root', { emergencyTypes: ['FIRE'], ...base, code: 'NOTYPE' }), /Invalid agency type/);
+  const directory = await s.service.agencyDirectory('root');
+  assert.deepEqual(directory.data.BFP.types, ['FIRE', 'RESCUE', 'MEDICAL']);
+});
+
+test('agency admins choose their own agency station, and no other account can', async () => {
+  const s = await responderSetup();
+  s.city().agency.BFP.stations.northStation = { name: 'North station', location: 'Tabuk', latitude: 17.4, longitude: 121.4 };
+  await s.service.setAdminStation('fireAdmin', { stationId: 'northStation' });
+  assert.equal(s.city().users.fireAdmin.stationId, 'northStation');
+  await assert.rejects(s.service.setAdminStation('fireAdmin', { stationId: 'missing' }), /does not belong/);
+  await assert.rejects(s.service.setAdminStation('policeAdmin', { stationId: 'fireStation' }), /does not belong/);
+  s.city().users.responder = { role: 'RESPONDER', agencyId: 'BFP', active: true };
+  await assert.rejects(s.service.setAdminStation('responder', { stationId: 'fireStation' }), /permission/);
+  await s.service.setAdminStation('fireAdmin', { stationId: null });
+  assert.equal(s.city().users.fireAdmin.stationId, null);
+});
+
+test('agencies record the emergencies they respond to; only System Administrators change them', async () => {
+  const s = setup();
+  const base = { name: 'Fire and Rescue', code: 'BFP', types: ['FIRE'], contactEmail: 'office@example.com', contactNumber: '09123456789', address: 'Tabuk' };
+  await s.service.createAgency('root', { ...base, emergencyTypes: ['FIRE', 'RESCUE', 'FIRE'] });
+  assert.deepEqual(s.city().agency.BFP.profile.emergencyTypes, ['FIRE', 'RESCUE']);
+  await assert.rejects(s.service.createAgency('root', { ...base, code: 'NONE', emergencyTypes: [] }), /at least one emergency/);
+  await assert.rejects(s.service.createAgency('root', { ...base, code: 'BAD', emergencyTypes: ['SPACE'] }), /Invalid emergency type/);
+  s.city().users = { fireAdmin: { role: 'AGENCY_ADMIN', agencyId: 'BFP', active: true, authProvisioned: true } };
+  await assert.rejects(s.service.setAgencyEmergencies('fireAdmin', 'BFP', { emergencyTypes: ['ROAD_ACCIDENT'] }), /denied/);
+  await s.service.setAgencyEmergencies('root', 'BFP', { emergencyTypes: ['ROAD_ACCIDENT', 'POLICE'] });
+  assert.deepEqual(s.city().agency.BFP.profile.emergencyTypes, ['ROAD_ACCIDENT', 'POLICE']);
+  assert.deepEqual((await s.service.agencyDirectory('root')).data.BFP.emergencyTypes, ['ROAD_ACCIDENT', 'POLICE']);
+});
+
+// Routing is automatic: every active agency that covers the type (emergencyTypes) and has a station with an
+// available team inside the radius is recommended; the nearest one leads.
+const routingAgencies = () => [
+  { id: 'BFP', active: true, emergencyTypes: ['FIRE', 'ROAD_ACCIDENT'], stations: [
+    { id: 'bfpMain', active: true, latitude: 17.4125, longitude: 121.444, hasAvailableTeam: true },
+    { id: 'bfpSub', active: true, latitude: 17.42, longitude: 121.45, hasAvailableTeam: true },
+  ] },
+  { id: 'CDRRMC', active: true, emergencyTypes: ['FIRE', 'ROAD_ACCIDENT', 'RESCUE'], stations: [
+    { id: 'cdrrmo', active: true, latitude: 17.415, longitude: 121.446, hasAvailableTeam: true },
+  ] },
+  { id: 'PNP', active: true, emergencyTypes: ['POLICE', 'FIRE', 'ROAD_ACCIDENT'], stations: [
+    { id: 'pnp', active: true, latitude: 17.41, longitude: 121.44, hasAvailableTeam: true },
+  ] },
+];
+const nearTabuk = { latitude: 17.4128, longitude: 121.4441 };
+
+test('a Fire in Tabuk recommends every agency that covers it; the nearest qualifying station leads', () => {
+  const routed = routeIncident('FIRE', nearTabuk, routingAgencies(), {});
+  assert.equal(routed.leadAgencyId, 'BFP');
+  assert.equal(routed.owner, 'BFP');
+  assert.equal(routed.recommendedStations.BFP, 'bfpMain');
+  assert.deepEqual(routed.recommendedAgencies, { BFP: true, CDRRMC: true, PNP: true });
+  assert.equal(routed.routingMethod, 'NEAREST_STATION');
+});
+
+test('an agency that does not cover the type is never recommended', () => {
+  const agencies = routingAgencies();
+  agencies[1].emergencyTypes = ['ROAD_ACCIDENT', 'RESCUE'];
+  const routed = routeIncident('FIRE', nearTabuk, agencies, {});
+  assert.deepEqual(routed.recommendedAgencies, { BFP: true, PNP: true });
+});
+
+test('a Road Accident recommends every agency that covers it, and the nearest station leads', () => {
+  const routed = routeIncident('ROAD_ACCIDENT', nearTabuk, routingAgencies(), {});
+  assert.equal(routed.leadAgencyId, 'BFP');
+  assert.deepEqual(routed.recommendedAgencies, { BFP: true, CDRRMC: true, PNP: true });
+  assert.equal(routed.recommendedStations.CDRRMC, 'cdrrmo');
+});
+
+test('a Rescue incident is recommended only to agencies that cover Medical', () => {
+  const routed = routeIncident('RESCUE', nearTabuk, routingAgencies(), {});
+  assert.deepEqual(routed.recommendedAgencies, { CDRRMC: true });
+  assert.equal(routed.leadAgencyId, 'CDRRMC');
+});
+
+test('agencies saved with the old MEDICAL and OTHER codes are recommended for Rescue and Police', () => {
+  const agencies = routingAgencies();
+  agencies[1].emergencyTypes = ['MEDICAL'];
+  agencies[2].emergencyTypes = ['OTHER'];
+  assert.deepEqual(routeIncident('RESCUE', nearTabuk, agencies, {}).recommendedAgencies, { CDRRMC: true });
+  assert.deepEqual(routeIncident('POLICE', nearTabuk, agencies, {}).recommendedAgencies, { PNP: true });
+});
+
+test('when the nearest station has no available team, that agency uses its next nearest station', () => {
+  const agencies = routingAgencies();
+  agencies[0].stations[0].hasAvailableTeam = false;
+  const routed = routeIncident('FIRE', nearTabuk, agencies, {});
+  assert.equal(routed.recommendedStations.BFP, 'bfpSub');
+  assert.equal(routed.leadAgencyId, 'CDRRMC');
+});
+
+test('an agency with no available team anywhere is not recommended', () => {
+  const agencies = routingAgencies();
+  agencies[0].stations.forEach(station => { station.hasAvailableTeam = false; });
+  const routed = routeIncident('FIRE', nearTabuk, agencies, {});
+  assert.equal(routed.leadAgencyId, 'CDRRMC');
+  assert.deepEqual(routed.recommendedAgencies, { CDRRMC: true, PNP: true });
+});
+
+test('no qualifying station inside the radius leaves the Command Center as owner', () => {
+  const far = { latitude: 18.5, longitude: 121.45 };
+  const routed = routeIncident('FIRE', far, routingAgencies(), {});
+  assert.equal(routed.leadAgencyId, null);
+  assert.equal(routed.owner, 'COMMAND_CENTER');
+  assert.equal(routed.routingMethod, 'NO_LEAD_IN_RANGE');
+});
+
+test('the radius comes from settings: a smaller radius puts the lead out of range', () => {
+  const routed = routeIncident('FIRE', nearTabuk, routingAgencies(), { radiusKm: 0.001 });
+  assert.equal(routed.leadAgencyId, null);
+  assert.equal(routed.owner, 'COMMAND_CENTER');
+});
+
+test('an incident with no location goes to the Command Center, not to an agency picked by type', () => {
+  const routed = routeIncident('FIRE', null, routingAgencies(), {});
+  assert.equal(routed.owner, 'COMMAND_CENTER');
+  assert.equal(routed.leadAgencyId, null);
+  assert.deepEqual(routed.recommendedAgencies, {});
+  assert.equal(routed.routingMethod, 'NO_LOCATION');
+});
+
+test('Command Center verification routes a citizen report once', async () => {
+  const s = await responderSetup();
+  s.city().users.command = { role: 'COMMAND_ADMIN', active: true };
+  s.city().agency.BFP.profile.emergencyTypes = ['FIRE'];
+  s.city().agency.BFP.stations.fireStation = { name: 'Fire station', latitude: 17.4125, longitude: 121.444 };
+  s.city().agency.BFP.teams = { fireTeam: { active: true, status: 'AVAILABLE', stationId: 'fireStation' } };
+  s.data.incidents = { report: { type: 'FIRE', needsOperatorVerification: true, leadAgencyId: 'CDRRMO', recommendedAgencies: { CDRRMO: true }, location: { latitude: 17.4128, longitude: 121.4441 }, version: 1 } };
+  await assert.rejects(s.service.verifyIncident('fireAdmin', 'report'), /Command Center access/);
+  await s.service.verifyIncident('command', 'report');
+  const incident = s.data.incidents.report;
+  assert.equal(incident.leadAgencyId, 'BFP');
+  assert.deepEqual(incident.recommendedAgencies, { BFP: true });
+  assert.equal(incident.needsOperatorVerification, false);
+  assert.equal(incident.version, 2);
+  await assert.rejects(s.service.verifyIncident('command', 'report'), /already been verified/);
+});
+
+test('every administrator creates their own stations and deploys from one; responders are refused', async () => {
+  const s = await responderSetup();
+  s.city().agency.BFP.stations.fireStation = { name: 'Fire station', latitude: 17.4125, longitude: 121.444 };
+  s.city().users.command = { role: 'COMMAND_ADMIN', active: true, displayName: 'Ops' };
+  s.city().users.root = { role: 'SYSTEM_ADMIN', active: true, displayName: 'Owner' };
+  const station = { name: 'Ops post', location: 'Tabuk', latitude: 17.4, longitude: 121.44 };
+  await assert.rejects(s.service.createCommandStation('responder', station), /permission/);
+  await assert.rejects(s.service.setAdminStation('command', { stationId: 'fireStation' }), /station you created/);
+  const agencyCreated = await s.service.createCommandStation('fireAdmin', { ...station, name: 'Fire HQ' });
+  assert.equal(s.city().command_stations[agencyCreated.id].createdBy, 'fireAdmin');
+  assert.equal(s.city().command_stations[agencyCreated.id].agencyId, undefined);
+  await s.service.setAdminStation('fireAdmin', { stationId: agencyCreated.id });
+  assert.equal(s.city().users.fireAdmin.stationSource, 'COMMAND_CENTER');
+  assert.equal((await s.service.agencyDispatchData('fireAdmin', 'stations')).data[agencyCreated.id].latitude, 17.4);
+  assert.equal((await s.service.stationDirectory('fireAdmin')).data[agencyCreated.id].agencyId, 'BFP');
+  await s.service.setAdminStation('fireAdmin', { stationId: 'fireStation' });
+  assert.equal(s.city().users.fireAdmin.stationSource, null);
+  const created = await s.service.createCommandStation('command', station);
+  assert.equal(s.city().command_stations[created.id].createdBy, 'command');
+  await s.service.setAdminStation('command', { stationId: created.id });
+  assert.equal(s.city().users.command.stationId, created.id);
+  assert.equal((await s.service.accountStation('command')).location.stationId, created.id);
+  await assert.rejects(s.service.setAdminStation('command', { stationId: 'missing' }), /station you created/);
+  await s.service.setAdminStation('command', { stationId: null });
+  assert.equal(s.city().users.command.stationId, null);
+  await s.service.setAdminStation('root', { stationId: created.id });
+  assert.equal((await s.service.accountStation('root')).location.stationId, created.id);
+  const listed = await s.service.commandStations('command');
+  assert.deepEqual(Object.keys(listed.data).sort(), [agencyCreated.id, created.id].sort());
+  assert.deepEqual(Object.keys((await s.service.commandStations('fireAdmin')).data).sort(), [agencyCreated.id, created.id].sort());
+  // The station directory lists Command Center stations for command administrators, not for agency-scoped accounts.
+  assert.equal((await s.service.stationDirectory('command')).data[created.id].latitude, 17.4);
+  assert.equal((await s.service.stationDirectory('fireAdmin')).data[created.id], undefined);
+  assert.equal((await s.service.agencyDispatchData('fireAdmin', 'stations')).data[created.id], undefined);
 });
 
 async function responderSetup() {
@@ -523,7 +763,7 @@ test('rejects duplicate invitations, expired invitations and legacy UID overwrit
 test('agency admins cannot create agencies, grant privileged roles or manage another agency', async () => {
   const s = setup(); await s.create(); await s.create('BFP');
   s.city().users = { pnp: { role: 'AGENCY_ADMIN', agencyId: 'PNP', authProvisioned: true, active: true } };
-  await assert.rejects(s.service.createAgency('pnp', { name: 'Other', code: 'OTHER', type: 'OTHER', contactEmail: 'a@b.com', contactNumber: '123', address: 'Tabuk' }), /denied/);
+  await assert.rejects(s.service.createAgency('pnp', { emergencyTypes: ['FIRE'], name: 'Other', code: 'OTHER', type: 'OTHER', contactEmail: 'a@b.com', contactNumber: '123', address: 'Tabuk' }), /denied/);
   await assert.rejects(s.service.invite('pnp', 'PNP', { displayName: 'Escalate', email: 'escalate@example.com', role: 'SYSTEM_ADMIN' }), /denied/);
   await assert.rejects(s.service.saveResource('pnp', 'BFP', 'teams', { name: 'BFP team' }), /denied/);
   await s.service.saveResource('pnp', 'PNP', 'teams', { name: 'PNP team' });
@@ -701,7 +941,6 @@ test('agency admins dispatch through the backend with agency boundaries and atom
   assert.equal(s.data.incidents.police.version, acknowledgedVersion);
   assert.deepEqual(Object.keys((await s.service.agencyDispatchData('fireAdmin', 'teams')).data), ['fireTeam']);
   await assert.rejects(s.service.agencyDispatchData('fireAdmin', 'agency_invitations'), /Unsupported/);
-  await assert.rejects(s.service.agencyDispatchCommand('fireAdmin', { action: 'dispatch', incidentId: 'police', teamId: 'fireTeam', expectedVersion: 1 }), /outside your agency/);
   await assert.rejects(s.service.agencyDispatchCommand('fireAdmin', { action: 'dispatch', incidentId: 'fire', teamId: 'policeTeam', expectedVersion: 1 }), /only from your agency/);
   s.data.incidents.police.recommendedAgencies = { BFP: true };
   await assert.rejects(s.service.agencyDispatchCommand('fireAdmin', { action: 'close', incidentId: 'police', expectedVersion: s.data.incidents.police.version, status: 'CANCELLED' }), /Only the lead agency/);
@@ -727,6 +966,10 @@ test('agency admins dispatch through the backend with agency boundaries and atom
   s.city().command_center ||= {};
   s.city().command_center.incidents = { police: { ...s.data.incidents.police } };
   s.city().command_center.incident_feed = { police: { incidentId: 'police', status: 'VERIFIED' } };
+  // B3: BFP acknowledged this PNP incident but dispatched none of its own teams, so it cannot resolve it.
+  await assert.rejects(s.service.agencyDispatchCommand('fireAdmin', { action: 'close', incidentId: 'police', expectedVersion: s.data.incidents.police.version, status: 'RESOLVED' }), /must dispatch one of its own teams/);
+  assert.equal(s.data.incidents.police.status, 'VERIFIED');
+  s.data.dispatch_assignments.bfpPoliceAssignment = { incidentId: 'police', agencyId: 'BFP', teamId: 'fireTeam', status: 'PENDING_ACKNOWLEDGMENT', isSimulation: false };
   await s.service.agencyDispatchCommand('fireAdmin', { action: 'close', incidentId: 'police', expectedVersion: s.data.incidents.police.version, status: 'RESOLVED' });
   assert.equal((await s.service.dashboard('fireAdmin')).feed.police.status, 'RESOLVED');
   s.city().users.policeAdmin = { role: 'AGENCY_ADMIN', agencyId: 'PNP', active: true, authProvisioned: true };
@@ -734,7 +977,7 @@ test('agency admins dispatch through the backend with agency boundaries and atom
   assert.equal((await s.service.agencyDispatchData('fireAdmin', 'incidents')).data.police.status, 'RESOLVED');
   assert.equal(s.data.incidents.police.closedByAgencyId, 'BFP');
   s.data.incidents.unacknowledged = { leadAgencyId: 'BFP', status: 'RECEIVED', version: 1 };
-  await assert.rejects(s.service.agencyDispatchCommand('fireAdmin', { action: 'close', incidentId: 'unacknowledged', expectedVersion: 1, status: 'RESOLVED' }), /must acknowledge/);
+  await assert.rejects(s.service.agencyDispatchCommand('fireAdmin', { action: 'close', incidentId: 'unacknowledged', expectedVersion: 1, status: 'RESOLVED' }), /must dispatch one of its own teams/);
   s.city().agency.BFP.profile.active = false;
   await assert.rejects(s.service.agencyDispatchData('fireAdmin', 'incidents'), /Active agency/);
 });
@@ -815,6 +1058,53 @@ test('responder registration stores personal details and agency admins can updat
   await assert.rejects(s.service.updateResponderProfile('fireAdmin', 'BFP', result.uid, { phoneNumber: '' }), /phone number/);
 });
 
+test('agency admins can register responders into a team and move or remove them', async () => {
+  const s = await responderSetup();
+  s.city().agency.BFP.teams = { team1: { name: 'Team 1', stationId: 'fireStation', active: true }, team2: { name: 'Team 2', active: true } };
+  const created = await s.service.createResponder('fireAdmin', 'BFP', { ...s.input, teamId: 'team1' });
+  assert.equal(s.city().users[created.uid].teamId, 'team1');
+  assert.equal(s.city().users[created.uid].stationId, 'fireStation');
+  assert.equal(s.city().agency.BFP.members[created.uid].teamId, 'team1');
+  const shown = (await s.service.dashboard('fireAdmin')).agency;
+  assert.equal(shown.members[created.uid].role, 'RESPONDER');
+  assert.equal(shown.members[created.uid].teamId, 'team1');
+  assert.equal(shown.members[created.uid].displayName, 'Fire Responder');
+  assert.equal(shown.teams.team1.name, 'Team 1');
+  await assert.rejects(s.service.createResponder('fireAdmin', 'BFP', { ...s.input, email: 'other@example.com', teamId: 'ghost' }), /Team does not belong/);
+
+  await s.service.assignResponderTeam('fireAdmin', 'BFP', created.uid, { teamId: 'team2' });
+  assert.equal(s.city().users[created.uid].teamId, 'team2');
+  assert.equal(s.city().agency.BFP.members[created.uid].teamId, 'team2');
+  await assert.rejects(s.service.assignResponderTeam('fireAdmin', 'BFP', created.uid, { teamId: 'ghost' }), /Team does not belong/);
+  await assert.rejects(s.service.assignResponderTeam('policeAdmin', 'BFP', created.uid, { teamId: 'team2' }), /denied/);
+
+  await s.service.assignResponderTeam('fireAdmin', 'BFP', created.uid, { teamId: null });
+  assert.equal(s.city().users[created.uid].teamId, null);
+  assert.equal(s.city().agency.BFP.members[created.uid].teamId, null);
+});
+
+test('agency revision marker is returned to agency admins and refused to unknown accounts', async () => {
+  const s = await responderSetup();
+  s.data.data_revision = 7;
+  assert.deepEqual(await s.service.revision('fireAdmin'), { revision: 7 });
+  await assert.rejects(s.service.revision('unknownUser'), /permission/);
+});
+
+test('responder deletion needs the typed email plus delete, stays inside the agency, and keeps the name for history', async () => {
+  const s = await responderSetup();
+  const created = await s.service.createResponder('fireAdmin', 'BFP', { ...s.input });
+  await assert.rejects(s.service.deleteResponder('fireAdmin', 'BFP', created.uid, { confirmation: 'fire@example.com' }), /followed by "delete"/);
+  await assert.rejects(s.service.deleteResponder('policeAdmin', 'BFP', created.uid, { confirmation: 'fire@example.comdelete' }), /denied/);
+  await assert.rejects(s.service.deleteResponder('fireAdmin', 'BFP', 'fireAdmin', { confirmation: 'fire@example.comdelete' }), /own account/);
+  await s.service.deleteResponder('fireAdmin', 'BFP', created.uid, { confirmation: 'fire@example.comdelete' });
+  assert.equal(s.city().users[created.uid].active, false);
+  assert.equal(s.city().users[created.uid].email, undefined);
+  assert.equal(s.city().users[created.uid].displayName, 'Fire Responder');
+  assert.equal(s.city().agency.BFP.members[created.uid], undefined);
+  assert.equal(s.accounts.has(created.uid), false);
+  assert.ok(Object.values(s.city().command_center.audit_logs).some(entry => entry.action === 'RESPONDER_DELETED' && entry.targetUid === created.uid));
+});
+
 test('advisories: drafts stay private, publishing copies to public_advisories, agencies stay in scope', async () => {
   const s = await responderSetup();
   s.city().users.command = { role: 'COMMAND_ADMIN', active: true };
@@ -884,11 +1174,17 @@ test('staff emergencies: created from a map click in the citizen incident shape,
   await assert.rejects(s.service.createStaffIncident('command', { ...click, latitude: 51.5 }), /Click the map/);
   await assert.rejects(s.service.createStaffIncident('command', { ...click, reporterPhone: 'call me' }), /phone number/);
 
+  s.city().agency.BFP.profile.emergencyTypes = ['FIRE'];
+  s.city().agency.BFP.stations.fireStation = { name: 'Fire station', latitude: 17.4125, longitude: 121.4440 };
+  s.city().agency.BFP.teams = { fireTeam: { active: true, status: 'AVAILABLE', stationId: 'fireStation' } };
   const fromCommand = await s.service.createStaffIncident('command', { ...click, description: '  Smoke from a house ', reporterName: ' Juan ', reporterPhone: '0917 123 4567' });
   const incident = s.data.incidents[fromCommand.id];
   assert.equal(incident.status, 'RECEIVED'); assert.equal(incident.priority, 'HIGH'); assert.equal(incident.isSimulation, false);
-  assert.equal(incident.leadAgencyId, 'CDRRMO');
-  assert.deepEqual(incident.recommendedAgencies, { CDRRMO: true, BFP: true, MEDICAL: true });
+  assert.equal(incident.leadAgencyId, 'BFP');
+  assert.deepEqual(incident.recommendedAgencies, { BFP: true });
+  assert.equal(incident.recommendedStations.BFP, 'fireStation');
+  assert.equal(incident.owner, 'BFP');
+  assert.equal(incident.routingMethod, 'NEAREST_STATION');
   assert.equal(incident.location.latitude, 17.412346); assert.equal(incident.location.longitude, 121.444111);
   assert.equal(incident.description, 'Smoke from a house');
   assert.equal(incident.reporterName, 'Juan'); assert.equal(incident.reporterPhone, '0917 123 4567');
@@ -903,7 +1199,7 @@ test('staff emergencies: created from a map click in the citizen incident shape,
   assert.equal(located.address, 'Brgy. Bulanao · pinned on map (17.41235, 121.44411)');
   assert.equal(located.barangay, 'Bulanao'); assert.equal(located.barangayCode, 'PH1403213009');
 
-  const fromAgency = await s.service.createStaffIncident('policeAdmin', { type: 'OTHER', latitude: 17.4, longitude: 121.45 });
+  const fromAgency = await s.service.createStaffIncident('policeAdmin', { type: 'POLICE', latitude: 17.4, longitude: 121.45 });
   const agencyIncident = s.data.incidents[fromAgency.id];
   assert.equal(agencyIncident.leadAgencyId, 'PNP'); assert.equal(agencyIncident.recommendedAgencies.PNP, true);
   assert.equal(agencyIncident.description, ''); assert.equal(agencyIncident.reporterName, undefined);
@@ -977,4 +1273,41 @@ test('advisory cover images: validated, editable until archived, replaced cleanl
   const finalPath = s.city().advisories[other.id].image.path;
   await s.service.deleteAdvisory('command', other.id);
   assert.equal(s.stored.has(finalPath), false);
+});
+
+test('an agency that is not recommended can dispatch its own team once it has acknowledged the incident', async () => {
+  const s = await responderSetup();
+  s.data.incidents = { other: { status: 'VERIFIED', version: 1, leadAgencyId: 'PNP', recommendedAgencies: { PNP: true } } };
+  s.data.agencies = { BFP: { active: true }, PNP: { active: true } };
+  s.data.teams = { fireTeam: { agencyId: 'BFP', name: 'Fire team', stationId: 'fireStation', status: 'AVAILABLE', active: true } };
+  await assert.rejects(s.service.agencyDispatchCommand('fireAdmin', { action: 'dispatch', incidentId: 'other', teamId: 'fireTeam', expectedVersion: 1 }), /must acknowledge/);
+  await s.service.agencyDispatchCommand('fireAdmin', { action: 'acknowledge', incidentId: 'other' });
+  await s.service.agencyDispatchCommand('fireAdmin', { action: 'dispatch', incidentId: 'other', teamId: 'fireTeam', expectedVersion: s.data.incidents.other.version });
+  assert.equal(s.data.teams.fireTeam.status, 'DISPATCHED');
+});
+
+test('the monthly summary counts road crashes by month, type, casualties, severity, licence and barangay', async () => {
+  const s = await responderSetup();
+  s.city().users.command = { role: 'COMMAND_ADMIN', active: true };
+  s.city().command_center = { response_reports: {
+    r1: { status: 'APPROVED', agencyId: 'BFP', DATE: '2026-08-05', TIME_CALL: '12:40', emergencyType: 'ROAD_ACCIDENT', VEHICLE_TYPE: 'MOTORCYCLE', CRASH_TYPE: 'SELF_ACCIDENT', SCENE_LOCATION: 'Brgy. Magsaysay, National Road, Tabuk City', patients: [{ PATIENT_GENDER_spinner: 'Male', VICTIM_ROLE: 'DRIVER', LICENSED: 'UNLICENSED', SEVERITY: 'CRITICAL' }] },
+    r2: { status: 'APPROVED', agencyId: 'BFP', DATE: '2026-08-20', TIME_CALL: '18:10', emergencyType: 'ROAD_ACCIDENT', VEHICLE_TYPE: 'MOTORCYCLE', CRASH_TYPE: 'COLLISION', SCENE_LOCATION: 'Brgy. Casigayan, Tabuk City', patients: [{ PATIENT_GENDER_spinner: 'Male', VICTIM_ROLE: 'DRIVER', LICENSED: 'UNLICENSED', SEVERITY: 'MODERATE' }] },
+    r3: { status: 'APPROVED', agencyId: 'PNP', DATE: '2026-08-21', TIME_CALL: '10:00', emergencyType: 'FIRE', patients: [] },
+    r4: { status: 'RETURNED', agencyId: 'BFP', DATE: '2026-08-22', TIME_CALL: '10:00', emergencyType: 'ROAD_ACCIDENT', patients: [{ PATIENT_GENDER_spinner: 'Female' }] },
+  } };
+  const summary = await s.service.responseSummary('command', { month: '2026-08' });
+  assert.equal(summary.totalIncidents, 2);
+  assert.deepEqual(summary.byCrashType, { SELF_ACCIDENT: 1, COLLISION: 1, NOT_RECORDED: 0 });
+  assert.equal(summary.byVehicleType.MOTORCYCLE, 2);
+  assert.deepEqual(summary.casualties, { total: 2, male: 2, female: 0, unknown: 0 });
+  assert.equal(summary.bySeverity.CRITICAL, 1);
+  assert.equal(summary.bySeverity.MODERATE, 1);
+  assert.equal(summary.byLicence.UNLICENSED, 2);
+  assert.equal(summary.byVictimRole.DRIVER, 2);
+  assert.deepEqual(summary.peakWindow, { from: '12:00', to: '16:00', count: 1 });
+  assert.deepEqual(summary.byBarangay, [{ name: 'Casigayan', count: 1 }, { name: 'Magsaysay', count: 1 }]);
+  // Agency administrators see their own agency's reports only; responders see no summary.
+  assert.equal((await s.service.responseSummary('fireAdmin', { month: '2026-08' })).totalIncidents, 2);
+  await assert.rejects(s.service.responseSummary('responder', { month: '2026-08' }), /staff account required|Administrator access/);
+  await assert.rejects(s.service.responseSummary('command', { month: '2026-13' }), /Choose a month/);
 });

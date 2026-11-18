@@ -33,11 +33,13 @@ function createAccountLocation(context) {
       if (!assigned) return { location: null };
       const stationId = key(assigned, 'assigned station');
 
+      // Stations created by the Command Center or System Administrators are kept apart from agency stations.
+      const commandStation = user.stationSource === 'COMMAND_CENTER' ? await repo.read(CITY + '/command_stations/' + stationId) : null;
       const canonical = agencyId ? await repo.read(CITY + '/agency/' + agencyId + '/stations/' + stationId) : null;
       const shared = await repo.read(CITY + '/stations/' + stationId);
-      const station = canonical && typeof canonical === 'object' ? canonical : shared ?? await repo.read('stations/' + stationId);
+      const station = commandStation && typeof commandStation === 'object' ? commandStation : canonical && typeof canonical === 'object' ? canonical : shared ?? await repo.read('stations/' + stationId);
       if (!station) fail('Your assigned station was not found.', 404);
-      if ((!canonical && agencyId && station.agencyId !== agencyId) || (station.agencyId && agencyId && station.agencyId !== agencyId)) fail('Assigned station does not belong to your agency.', 403);
+      if (!commandStation && ((!canonical && agencyId && station.agencyId !== agencyId) || (station.agencyId && agencyId && station.agencyId !== agencyId))) fail('Assigned station does not belong to your agency.', 403);
       if (station.active === false) fail('Your assigned station is inactive.', 403);
       const point = station.location && typeof station.location === 'object' ? station.location : station;
       const latitude = Number.isFinite(point.latitude) ? point.latitude : station.latitude;

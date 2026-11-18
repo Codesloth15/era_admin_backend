@@ -3,7 +3,10 @@ import { respond } from '../utils/respond.js';
 export function createAgencyController(service) {
   return {
     list: respond(req => service.list(req.uid)),
+    revision: respond(req => service.revision(req.uid)),
     stationDirectory: respond(req => service.stationDirectory(req.uid)),
+    commandStations: respond(req => service.commandStations(req.uid)),
+    createCommandStation: respond(req => service.createCommandStation(req.uid, req.body)),
     agencyDirectory: respond(req => service.agencyDirectory(req.uid)),
     consolidateAccountRole: respond(req => service.consolidateAccountRole(req.uid)),
     createAgency: respond(req => service.createAgency(req.uid, req.body)),
@@ -14,7 +17,11 @@ export function createAgencyController(service) {
     dashboard: respond(req => service.dashboard(req.uid)),
     createResponder: respond(req => service.createResponder(req.uid, req.params.code, req.body)),
     updateResponderProfile: respond(req => service.updateResponderProfile(req.uid, req.params.code, req.params.uid, req.body)),
+    assignResponderTeam: respond(req => service.assignResponderTeam(req.uid, req.params.code, req.params.uid, req.body)),
+    deleteResponder: respond(req => service.deleteResponder(req.uid, req.params.code, req.params.uid, req.body)),
     assignStation: respond(req => service.assignStation(req.uid, req.params.code, req.body)),
+    setAdminStation: respond(req => service.setAdminStation(req.uid, req.body)),
+    deactivateStation: respond(req => service.deactivateStation(req.uid, req.params.code, req.params.stationId, req.body)),
     status: respond(req => service.status(req.uid, req.params.code, req.body)),
     updateAgencyHotline: respond(req => service.updateAgencyHotline(req.uid, req.params.code, req.body)),
     saveResource: respond(req => service.saveResource(req.uid, req.params.code, req.params.collection, req.body)),

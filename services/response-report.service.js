@@ -1,6 +1,20 @@
 import { CITY } from '../config/data-paths.js';
 import { fail, key, agencyInvolvedInIncident } from './rules/agency.rules.js';
 
+// Structured answers for road-crash style reporting. Empty means not recorded; older reports have none.
+const VEHICLE_TYPES = ['MOTORCYCLE', 'CAR', 'TRICYCLE', 'TRUCK', 'BUS', 'OTHER'];
+const CRASH_TYPES = ['SELF_ACCIDENT', 'COLLISION'];
+const VICTIM_ROLES = ['DRIVER', 'PASSENGER', 'PEDESTRIAN', 'OTHER'];
+const LICENCE_STATUSES = ['LICENSED', 'UNLICENSED', 'NOT_APPLICABLE'];
+const SEVERITIES = ['CRITICAL', 'MODERATE', 'MINOR'];
+function enumValue(value, allowed, label) {
+  if (value === undefined || value === null || value === '') return '';
+  if (typeof value !== 'string' || !allowed.includes(value)) fail(`Invalid ${label}.`);
+  return value;
+}
+// Philippine time is UTC+8; summaries group by Philippine month and hour.
+const PH_OFFSET_MS = 8 * 60 * 60 * 1000;
+
 function createResponseReports({ repo, id, now }) {
   const cityOf = state => state.server?.['City of Tabuk'] || {};
   const operator = (state, uid) => {
@@ -13,6 +27,7 @@ function createResponseReports({ repo, id, now }) {
     return user;
   };
   const assignmentsOf = state => ({ ...state.dispatch_assignments, ...cityOf(state).command_center?.dispatch_assignments });
+  const reportsOf = state => cityOf(state).command_center?.response_reports || {};
   const incidentsOf = state => ({ ...state.incidents, ...cityOf(state).command_center?.incidents });
   const agencyIncident = (state, user, incidentId, incident) => agencyInvolvedInIncident(state, user.agencyId, incidentId, incident, assignmentsOf(state));
   const text = (value, label, required = true) => {
@@ -24,6 +39,8 @@ function createResponseReports({ repo, id, now }) {
       const result = { schemaVersion: 2 };
       for (const field of ['NAME_OF_CALLER', 'CONCERN', 'SCENE_LOCATION', 'AMBULANCE', 'TEAM']) result[field] = text(input[field], field);
       result.TAG = text(input.TAG ?? '', 'TAG', false);
+      result.VEHICLE_TYPE = enumValue(input.VEHICLE_TYPE, VEHICLE_TYPES, 'vehicle type');
+      result.CRASH_TYPE = enumValue(input.CRASH_TYPE, CRASH_TYPES, 'crash type');
       if (typeof input.TIME_CALL !== 'string' || !/^([01]\d|2[0-3]):[0-5]\d$/.test(input.TIME_CALL)) fail('Invalid Call Time.');
       if (typeof input.DATE !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(input.DATE) || !Number.isFinite(Date.parse(input.DATE)) || new Date(input.DATE).toISOString().slice(0, 10) !== input.DATE) fail('Invalid Date.');
       result.TIME_CALL = input.TIME_CALL; result.DATE = input.DATE;
@@ -38,6 +55,9 @@ function createResponseReports({ repo, id, now }) {
         for (const field of ['PATIENT_RELIGION', 'PATIENT_CIVIL_STATUS_spinner']) entry[field] = text(patient[field] ?? '', field, false);
         if (patient.PATIENT_AGE !== null && (!Number.isInteger(patient.PATIENT_AGE) || patient.PATIENT_AGE < 0 || patient.PATIENT_AGE > 130)) fail('Invalid patient age.');
         entry.PATIENT_AGE = patient.PATIENT_AGE;
+        entry.VICTIM_ROLE = enumValue(patient.VICTIM_ROLE, VICTIM_ROLES, 'victim role');
+        entry.LICENSED = enumValue(patient.LICENSED, LICENCE_STATUSES, 'licence status');
+        entry.SEVERITY = enumValue(patient.SEVERITY, SEVERITIES, 'injury severity');
         return entry;
       });
       return result;
@@ -45,6 +65,8 @@ function createResponseReports({ repo, id, now }) {
     const result = {};
     for (const field of ['vehicleUsed', 'sceneAssessment', 'actionsTaken', 'assistanceProvided', 'incidentOutcome', 'respondingPersonnel']) result[field] = text(input[field], field);
     for (const field of ['hospitalDestination', 'additionalRemarks']) result[field] = text(input[field] ?? '', field, false);
+    result.vehicleType = enumValue(input.vehicleType, VEHICLE_TYPES, 'vehicle type');
+    result.crashType = enumValue(input.crashType, CRASH_TYPES, 'crash type');
     for (const field of ['callTime', 'dispatchTime', 'arrivalTime', 'completionTime']) {
       if (typeof input[field] !== 'number' || !Number.isFinite(input[field]) || input[field] <= 0) fail(`Invalid ${field}.`);
       result[field] = input[field];
@@ -59,6 +81,9 @@ function createResponseReports({ repo, id, now }) {
       entry.triageTag = text(patient.triageTag ?? '', 'triage tag', false);
       if (patient.age !== null && (!Number.isInteger(patient.age) || patient.age < 0 || patient.age > 130)) fail('Invalid patient age.');
       entry.age = patient.age;
+      entry.victimRole = enumValue(patient.victimRole, VICTIM_ROLES, 'victim role');
+      entry.licensed = enumValue(patient.licensed, LICENCE_STATUSES, 'licence status');
+      entry.severity = enumValue(patient.severity, SEVERITIES, 'injury severity');
       return entry;
     });
     if (!Array.isArray(input.supportingPhotos) || input.supportingPhotos.length > 10) fail('At most ten supporting photos are allowed.');
@@ -97,6 +122,72 @@ function createResponseReports({ repo, id, now }) {
       const agency = city.agency?.[user.agencyId];
       const station = agency?.stations?.[user.stationId] || city.stations?.[user.stationId] || state.stations?.[user.stationId];
       return { reports, assignments: options, incidents, agencyName: agency?.profile?.name || user.agencyId || '', stationName: station?.name || user.stationId || '' };
+    },
+    // Summary for meetings: one month and one incident type, from the reports this user can already see.
+    // Agency administrators see their agency's reports; Command Center and System Administrators see all.
+    async responseSummary(uid, input = {}) {
+      const state = await repo.read('/') || {};
+      const user = operator(state, uid);
+      if (!['AGENCY_ADMIN', 'COMMAND_ADMIN', 'SYSTEM_ADMIN'].includes(user.role)) fail('Administrator access is required for summaries.', 403);
+      const month = typeof input.month === 'string' && /^\d{4}-(0[1-9]|1[0-2])$/.test(input.month) ? input.month : fail('Choose a month (YYYY-MM).');
+      const emergencyType = typeof input.emergencyType === 'string' && input.emergencyType ? input.emergencyType : 'ROAD_ACCIDENT';
+      const incidents = incidentsOf(state);
+      const scoped = user.role === 'AGENCY_ADMIN';
+      const typeOf = report => report.emergencyType || incidents[report.incidentId]?.type || '';
+      // Report time: DATE and TIME_CALL (structured reports), or incidentDateTime (agency-created reports).
+      const whenOf = report => {
+        if (typeof report.DATE === 'string' && typeof report.TIME_CALL === 'string') return Date.parse(`${report.DATE}T${report.TIME_CALL}:00+08:00`);
+        return Number.isFinite(report.incidentDateTime) ? report.incidentDateTime : null;
+      };
+      const phDate = time => new Date(time + PH_OFFSET_MS);
+      const reports = Object.entries(reportsOf(state))
+        .map(([reportId, report]) => ({ ...report, reportId }))
+        .filter(report => report && report.status !== 'RETURNED' && (!scoped || report.agencyId === user.agencyId))
+        .map(report => ({ ...report, when: whenOf(report) ?? report.submittedAt }))
+        .filter(report => Number.isFinite(report.when) && phDate(report.when).toISOString().slice(0, 7) === month && typeOf(report) === emergencyType);
+      // One incident counts once, even when several reports cover it.
+      const byIncident = new Map();
+      for (const report of reports) {
+        const key = report.incidentId || `report:${report.reportId}`;
+        if (!byIncident.has(key)) byIncident.set(key, report);
+      }
+      const incidentsInMonth = [...byIncident.values()];
+      const tally = (values, allowed) => {
+        const counts = Object.fromEntries([...allowed, 'NOT_RECORDED'].map(key => [key, 0]));
+        for (const value of values) { const key = value || 'NOT_RECORDED'; counts[key] = (counts[key] || 0) + 1; }
+        return counts;
+      };
+      const patients = reports.flatMap(report => report.patients || []);
+      const genderOf = patient => { const value = String(patient.PATIENT_GENDER_spinner || patient.gender || '').trim(); if (/^m/i.test(value)) return 'MALE'; if (/^f/i.test(value)) return 'FEMALE'; return 'UNKNOWN'; };
+      const genders = patients.map(genderOf);
+      const hours = Array(24).fill(0);
+      for (const report of incidentsInMonth) hours[phDate(report.when).getUTCHours()] += 1;
+      let peak = null;
+      // Fixed four-hour blocks (00:00–04:00, 04:00–08:00, …); the busiest block wins, the earliest on a tie.
+      for (let start = 0; start < 24; start += 4) {
+        const count = hours.slice(start, start + 4).reduce((sum, value) => sum + value, 0);
+        if (count > 0 && (!peak || count > peak.count)) peak = { start, count };
+      }
+      const pad = value => String(value).padStart(2, '0');
+      const barangayOf = report => {
+        const text = report.SCENE_LOCATION || report.incidentLocation || '';
+        const match = text.match(/Brgy\.?\s*([^·,(\n]+)/i);
+        return (match ? match[1].trim() : '') || incidents[report.incidentId]?.location?.barangay || '';
+      };
+      const barangays = {};
+      for (const report of incidentsInMonth) { const name = barangayOf(report) || 'NOT_RECORDED'; barangays[name] = (barangays[name] || 0) + 1; }
+      return {
+        month, emergencyType,
+        totalIncidents: incidentsInMonth.length,
+        byCrashType: tally(incidentsInMonth.map(report => report.CRASH_TYPE || report.crashType || ''), CRASH_TYPES),
+        byVehicleType: tally(incidentsInMonth.map(report => report.VEHICLE_TYPE || report.vehicleType || ''), VEHICLE_TYPES),
+        casualties: { total: patients.length, male: genders.filter(item => item === 'MALE').length, female: genders.filter(item => item === 'FEMALE').length, unknown: genders.filter(item => item === 'UNKNOWN').length },
+        bySeverity: tally(patients.map(patient => patient.SEVERITY || patient.severity || ''), SEVERITIES),
+        byVictimRole: tally(patients.map(patient => patient.VICTIM_ROLE || patient.victimRole || ''), VICTIM_ROLES),
+        byLicence: tally(patients.map(patient => patient.LICENSED || patient.licensed || ''), LICENCE_STATUSES),
+        peakWindow: peak ? { from: `${pad(peak.start)}:00`, to: `${pad(peak.start + 4)}:00`, count: peak.count } : null,
+        byBarangay: Object.entries(barangays).map(([name, count]) => ({ name, count })).sort((a, b) => b.count - a.count || a.name.localeCompare(b.name)),
+      };
     },
     async submitResponseReport(uid, input) {
       const details = clean(input); const assignmentId = input.assignmentId ? key(input.assignmentId, 'assignment') : null; const reportId = input.reportId ? key(input.reportId, 'report') : id(); const timestamp = now();

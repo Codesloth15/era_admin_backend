@@ -18,8 +18,12 @@ export function createAgencyRouter(service) {
   router.use('/advisories', createAdvisoryRouter(service));
   router.get('/', controller.list);
   router.get('/stations', controller.stationDirectory);
+  router.get('/command-stations', controller.commandStations);
+  router.post('/command-stations', controller.createCommandStation);
   router.get('/directory', controller.agencyDirectory);
+  router.get('/revision', controller.revision);
   router.post('/account-role', controller.consolidateAccountRole);
+  router.post('/account-station', controller.setAdminStation);
   router.use('/owner', createOwnerRouter(service));
   router.post('/:code/admins', controller.createAgencyAdmin);
   router.get('/dispatch-data', controller.agencyDispatchData);
@@ -29,7 +33,10 @@ export function createAgencyRouter(service) {
   router.post('/', controller.createAgency);
   router.post('/:code/responders', controller.createResponder);
   router.post('/:code/responders/:uid/profile', controller.updateResponderProfile);
+  router.post('/:code/responders/:uid/team', controller.assignResponderTeam);
+  router.post('/:code/responders/:uid/delete', controller.deleteResponder);
   router.post('/:code/station-assignment', controller.assignStation);
+  router.post('/:code/stations/:stationId/deactivate', controller.deactivateStation);
   router.post('/:code/invitations', invitations.invite);
   router.use('/invitations', createInvitationRouter(service));
   router.post('/:code/status', controller.status);

@@ -42,7 +42,7 @@ function serviceAccountCredential(file) {
   return credential;
 }
 
-// The one Firebase Admin app shared by the agency API, the user API and the warning listener.
+// The one Firebase Admin app used by the agency API.
 export function initializeFirebase(config) {
   if (!admin.apps.length) {
     const credential = config.firebase.serviceAccountPath

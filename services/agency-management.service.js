@@ -1,25 +1,49 @@
 import { CITY } from '../config/data-paths.js';
-import { fail, str, key, code, email, hotline, stationInput, responderInput, responderProfileInput } from './rules/agency.rules.js';
+import { fail, str, key, code, email, hotline, stationInput, responderInput, responderProfileInput, agencyTypes } from './rules/agency.rules.js';
 import { requireAgencyDispatch, applyAgencyCommand, retiredRoleTargets, stationMapRecords } from './rules/agency.rules.js';
+import { INCIDENT_TYPES, normalizeIncidentType } from './rules/incident.rules.js';
+
+// The emergencies an agency responds to. At least one is required, so incidents can be routed to it.
+const emergencyTypes = input => {
+  const raw = Array.isArray(input?.emergencyTypes) ? input.emergencyTypes : [];
+  const list = [...new Set(raw.map(value => normalizeIncidentType(str(value, 'emergency type'))))];
+  if (!list.length) fail('Choose at least one emergency the agency responds to.');
+  if (list.some(type => !INCIDENT_TYPES.includes(type))) fail('Invalid emergency type.');
+  return list;
+};
 
 const CLOSED_ASSIGNMENT_STATUSES = ['COMPLETED', 'CANCELLED', 'REJECTED', 'DECLINED', 'EXPIRED'];
 const hasActiveAssignment = (state, teamId) => Object.values(state.dispatch_assignments || {})
   .some(item => item.incidentId && item.teamId === teamId && item.status && !CLOSED_ASSIGNMENT_STATUSES.includes(item.status));
+// Removed stations stay in the data for past reports but cannot be assigned again.
+const activeStation = (agency, stationId) => Boolean(agency?.stations?.[stationId]) && agency.stations[stationId].active !== false;
+const activeStations = stations => Object.fromEntries(Object.entries(stations || {}).filter(([, station]) => station?.active !== false));
+// Every administrator can create and choose Command Center stations. An agency administrator's writes stay in their agency.
+const commandAccess = operator => {
+  if (!['AGENCY_ADMIN', 'COMMAND_ADMIN', 'SYSTEM_ADMIN'].includes(operator?.role)) fail('Administrator permission required.', 403);
+  return operator.role === 'AGENCY_ADMIN' ? operator.agencyId : null;
+};
 
 function createAgencyManagement(context) {
   const { repo, auth, id, now, permit, actor, mutate, pending } = context;
   return {
     async stationDirectory(uid) {
       const operator = await actor(uid);
-      const [legacy, shared, agencies] = await Promise.all([repo.read('stations'), repo.read(`${CITY}/stations`), repo.read(`${CITY}/agency`)]);
-      return { data: stationMapRecords(legacy || {}, shared || {}, agencies || {}, operator.role === 'AGENCY_ADMIN' ? operator.agencyId : null) };
+      const [legacy, shared, agencies, commandStations] = await Promise.all([repo.read('stations'), repo.read(`${CITY}/stations`), repo.read(`${CITY}/agency`), repo.read(`${CITY}/command_stations`)]);
+      // Command Center stations have no agency: command administrators see all of them, and an agency administrator
+      // sees only the one they deploy from, attached to their agency.
+      const scope = operator.role === 'AGENCY_ADMIN' ? operator.agencyId : null;
+      const own = scope && operator.stationSource === 'COMMAND_CENTER' ? commandStations?.[operator.stationId] : null;
+      const commandRecords = !scope ? activeStations(commandStations)
+        : own && own.active !== false ? { [operator.stationId]: { ...own, agencyId: scope } } : {};
+      return { data: stationMapRecords(legacy || {}, { ...(shared || {}), ...commandRecords }, agencies || {}, scope) };
     },
     // Public details of every agency for directories and incident cards: no members, emails or invitations.
     async agencyDirectory(uid) {
       await actor(uid);
       const agencies = await repo.read(`${CITY}/agency`) || {};
       return { data: Object.fromEntries(Object.entries(agencies).filter(([, agency]) => agency?.profile).map(([agencyId, { profile }]) => [agencyId, {
-        id: agencyId, name: profile.name || agencyId, type: profile.type || '', active: profile.active === true, hotline: profile.hotline || '',
+        id: agencyId, name: profile.name || agencyId, type: profile.type || '', types: profile.types || (profile.type ? [profile.type] : []), emergencyTypes: profile.emergencyTypes || [], active: profile.active === true, hotline: profile.hotline || '',
       }])) };
     },
     // The agency's own administrator or a System Administrator. An empty hotline removes it.
@@ -83,7 +107,7 @@ function createAgencyManagement(context) {
       const validate = state => {
         const agency = state.agency?.[agencyId];
         if (!agency?.profile?.active) fail('An active agency is required.');
-        if (details.stationId && !agency.stations?.[details.stationId]) fail('Station does not belong to this agency.');
+        if (details.stationId && !activeStation(agency, details.stationId)) fail('Station does not belong to this agency.');
         if (Object.values(state.users || {}).some(user => user.email?.toLowerCase() === details.email)
           || Object.values(state.agency_invitations || {}).some(item => item.email === details.email && (pending(item) || item.status === 'ACTIVE'))) fail('An account or invitation already exists for this email.', 409);
         return agency;
@@ -117,6 +141,111 @@ function createAgencyManagement(context) {
       }
       return { uid: targetUid, agencyId, message: 'Agency administrator account created. Share the initial credentials securely. No email was sent.' };
     },
+    // System Administrators set which emergencies an existing agency responds to.
+    async setAgencyEmergencies(uid, agencyId, input) {
+      agencyId = code(agencyId);
+      const emergencies = emergencyTypes(input);
+      await mutate(uid, agencyId, true, 'AGENCY_EMERGENCIES_SAVED', null, state => {
+        const agency = state.agency?.[agencyId];
+        if (!agency?.profile) fail('Agency not found.', 404);
+        agency.profile.emergencyTypes = emergencies;
+        agency.profile.updatedAt = now();
+      });
+      return { message: 'Emergencies saved.' };
+    },
+    // Every administrator creates their own Command Center stations and places them on the map.
+    async createCommandStation(uid, input) {
+      const operator = await actor(uid);
+      const agencyId = commandAccess(operator);
+      const value = stationInput(input || {});
+      const stationId = id();
+      const timestamp = now();
+      await mutate(uid, agencyId, false, 'COMMAND_STATION_CREATED', null, state => {
+        state.command_stations ||= {};
+        state.command_stations[stationId] = { ...value, active: true, createdBy: uid, createdAt: timestamp };
+      }, true);
+      return { id: stationId, message: 'Station created. You can now choose it as your station.' };
+    },
+    async commandStations(uid) {
+      const operator = await actor(uid);
+      commandAccess(operator);
+      const stations = await repo.read(`${CITY}/command_stations`) || {};
+      return { data: Object.fromEntries(Object.entries(stations).filter(([, station]) => station?.active !== false).map(([stationId, station]) => [stationId, { ...station, id: stationId }])) };
+    },
+    // An agency administrator chooses an active station of their agency or one they created in the Command Center, or none.
+    async setAdminStation(uid, input) {
+      const operator = await actor(uid);
+      const role = operator?.role;
+      if (!['AGENCY_ADMIN', 'COMMAND_ADMIN', 'SYSTEM_ADMIN'].includes(role)) fail('Only administrators can choose their station.', 403);
+      const agencyId = role === 'AGENCY_ADMIN' ? operator.agencyId : null;
+      const stationId = input?.stationId ? key(input.stationId, 'station ID') : null;
+      await mutate(uid, agencyId, false, 'ADMIN_STATION_SAVED', uid, state => {
+        const user = state.users?.[uid];
+        if (!user || user.role !== role || (role === 'AGENCY_ADMIN' && user.agencyId !== agencyId)) fail('Administrator account required.', 403);
+        const commandStation = stationId && state.command_stations?.[stationId];
+        if (commandStation) {
+          if (commandStation.active === false) fail('Choose an active station you created.');
+          user.stationId = stationId;
+          user.stationSource = 'COMMAND_CENTER';
+          if (role === 'AGENCY_ADMIN' && state.agency?.[agencyId]?.members?.[uid]) state.agency[agencyId].members[uid].stationId = null;
+          return;
+        }
+        if (role === 'AGENCY_ADMIN') {
+          const agency = state.agency?.[agencyId];
+          if (!agency?.profile?.active) fail('An active agency is required.');
+          if (stationId && !activeStation(agency, stationId)) fail('Station does not belong to this agency.');
+          user.stationId = stationId;
+          user.stationSource = null;
+          if (agency.members?.[uid]) agency.members[uid].stationId = stationId;
+          return;
+        }
+        // The Command Center and System Administrators deploy only from stations they created.
+        if (stationId) fail('Choose an active station you created.');
+        user.stationId = null;
+        user.stationSource = null;
+      }, role === 'COMMAND_ADMIN');
+      return { message: stationId ? 'Station saved.' : 'Station removed.' };
+    },
+    // Only System Administrators create Command Center admins. The record is written to the city users
+    // path, which the Command Center reads first when it checks a sign-in.
+    async createCommandAdmin(uid, input) {
+      permit(await actor(uid), null, true);
+      const details = { displayName: str(input?.displayName, 'full name'), email: email(input?.email) };
+      const password = typeof input?.password === 'string' ? input.password : '';
+      if (password.length < 6 || password.length > 128) fail('Password must be 6 to 128 characters.');
+      const validate = state => {
+        if (Object.values(state.users || {}).some(user => user?.email?.toLowerCase() === details.email)) fail('An account already exists for this email.', 409);
+      };
+      validate({ users: await repo.read(`${CITY}/users`) });
+      let account;
+      try { account = await auth.createUser({ email: details.email, displayName: details.displayName, password, emailVerified: false }); }
+      catch (error) {
+        if (error.code === 'auth/email-already-exists') fail('This email already has a Firebase account. Use the invitation flow to link it.', 409);
+        if (['auth/invalid-password', 'auth/password-does-not-meet-requirements'].includes(error.code) || /PASSWORD_DOES_NOT_MEET_REQUIREMENTS/.test(error.message || '')) fail('Password does not meet the Firebase password requirements.');
+        if (error.code === 'auth/invalid-email') fail('Invalid email.');
+        throw error;
+      }
+      const targetUid = key(account.uid, 'Firebase Auth UID');
+      const user = { ...details, role: 'COMMAND_ADMIN', active: true, authProvisioned: true, createdBy: uid, createdAt: now(), approvedBy: uid, approvedAt: now() };
+      try {
+        await mutate(uid, null, true, 'COMMAND_ADMIN_CREATED', targetUid, state => {
+          validate(state);
+          state.users ||= {};
+          if (state.users[targetUid]) fail('Existing account cannot be overwritten.', 409);
+          state.users[targetUid] = user;
+        });
+      } catch (error) {
+        let saved;
+        try { saved = await repo.read(`${CITY}/users/${targetUid}`); }
+        catch { fail('Unable to confirm account creation. Check the Firebase account before retrying.', 503); }
+        if (saved?.createdBy !== uid || saved?.role !== 'COMMAND_ADMIN' || saved?.email !== details.email) {
+          try { await auth.deleteUser(targetUid); }
+          catch { fail('Account data could not be saved or the new login removed. Resolve the Firebase account before retrying.', 503); }
+          throw error;
+        }
+      }
+      return { uid: targetUid, message: 'Command Center admin account created. Share the initial credentials securely. No email was sent.' };
+    },
     async agencyDispatchData(uid, collection) {
       const state = await repo.read('/');
       const user = requireAgencyDispatch(state || {}, uid);
@@ -131,7 +260,10 @@ function createAgencyManagement(context) {
       // Shared pages need names and assignments, not private profile metadata.
       const users = Object.fromEntries(Object.entries(staff).map(([id, member]) => [id, Object.fromEntries(['displayName', 'email', 'role', 'agencyId', 'stationId', 'teamId', 'active'].filter(field => member[field] !== undefined).map(field => [field, member[field]]))]));
       const assignments = filter(state.dispatch_assignments, own);
-      const stations = stationMapRecords(state.stations || {}, state.server['City of Tabuk'].stations || {}, state.server['City of Tabuk'].agency, user.agencyId);
+      // An agency administrator who deploys from a Command Center station gets that one station, attached to their agency.
+      const ownCommandStation = user.stationSource === 'COMMAND_CENTER' ? state.server['City of Tabuk'].command_stations?.[user.stationId] : null;
+      const commandShared = ownCommandStation && ownCommandStation.active !== false ? { [user.stationId]: { ...ownCommandStation, agencyId: user.agencyId } } : {};
+      const stations = stationMapRecords(state.stations || {}, { ...(state.server['City of Tabuk'].stations || {}), ...commandShared }, state.server['City of Tabuk'].agency, user.agencyId);
       const collections = {
         incidents, teams, agencies: { [user.agencyId]: { ...state.agencies?.[user.agencyId], ...agency.profile } },
         stations, 'server/City of Tabuk/stations': stations,
@@ -157,10 +289,17 @@ function createAgencyManagement(context) {
       agencyId = code(agencyId);
       permit(await actor(uid), agencyId);
       const details = { ...responderInput(input), ...responderProfileInput(input) };
+      const teamId = input.teamId ? key(input.teamId, 'team') : null;
       const validateAgency = state => {
         const agency = state.agency?.[agencyId];
         if (!agency?.profile?.active) fail('An active agency is required.');
-        if (details.stationId && !agency.stations?.[details.stationId]) fail('Station does not belong to this agency.');
+        if (details.stationId && !activeStation(agency, details.stationId)) fail('Station does not belong to this agency.');
+        if (teamId) {
+          const team = agency.teams?.[teamId];
+          if (!team) fail('Team does not belong to this agency.');
+          if (details.stationId && team.stationId && details.stationId !== team.stationId) fail('Responder team belongs to another station. Choose the team\'s station.');
+          details.stationId ||= team.stationId || null;
+        }
         if (Object.values(state.users || {}).some(user => user.email?.toLowerCase() === details.email)) {
           fail('This email already has an account.', 409);
         }
@@ -199,7 +338,7 @@ function createAgencyManagement(context) {
       }
       const targetUid = key(account.uid, 'Firebase Auth UID');
       const user = {
-        ...details, role: 'RESPONDER', agencyId, authProvisioned: true,
+        ...details, ...(teamId ? { teamId } : {}), role: 'RESPONDER', agencyId, authProvisioned: true,
         createdBy: uid, createdAt: now(), approvedBy: uid, approvedAt: now(),
       };
       try {
@@ -235,6 +374,11 @@ function createAgencyManagement(context) {
       }
       return { uid: targetUid, agencyId, message: 'Responder account created. Share the initial credentials securely. No email has been sent.' };
     },
+    // Cheap change marker for agency pages: they refetch their data only when this number moves.
+    async revision(uid) {
+      await actor(uid);
+      return { revision: Number(await repo.read('data_revision')) || 0 };
+    },
     async list(uid) {
       const operator = await actor(uid);
       const agencyIds = ['SYSTEM_ADMIN', 'COMMAND_ADMIN'].includes(operator.role)
@@ -246,7 +390,7 @@ function createAgencyManagement(context) {
       }]));
       const agencies = await Promise.all(agencyIds.map(async agencyId => {
         const agency = await repo.read(`${CITY}/agency/${agencyId}`);
-        return { ...agency?.profile, id: agencyId, stations: agency?.stations || {}, teams: agency?.teams || {}, members: withProfiles(agency?.members) };
+        return { ...agency?.profile, id: agencyId, stations: activeStations(agency?.stations), teams: agency?.teams || {}, members: withProfiles(agency?.members) };
       }));
       // Invitations are private and served only after checking agency membership.
       const invitations = Object.entries(await repo.read(`${CITY}/agency_invitations`) || {})
@@ -259,7 +403,9 @@ function createAgencyManagement(context) {
       if (input.active !== undefined && typeof input.active !== 'boolean') fail('Agency status must be a boolean.');
       if (agencyId === 'CDRRMO' && ((await repo.read('agencies/CDRRMC')) || (await repo.read('agency/CDRRMC')))) fail('Legacy CDRRMC exists. Migrate it before creating CDRRMO.', 409);
       const agencyHotline = hotline(input.hotline);
-      const agency = { name: str(input.name, 'agency name'), code: agencyId, type: str(input.type, 'agency type'),
+      const types = agencyTypes(input);
+      const emergencies = emergencyTypes(input);
+      const agency = { name: str(input.name, 'agency name'), code: agencyId, type: types[0], types, emergencyTypes: emergencies,
         description: str(input.description || '', 'description', false), contactEmail: email(input.contactEmail),
         contactNumber: str(input.contactNumber, 'contact number'), address: str(input.address, 'office address'),
         ...(agencyHotline ? { hotline: agencyHotline } : {}),
@@ -286,6 +432,50 @@ function createAgencyManagement(context) {
         agency.members[targetUid] = { ...agency.members[targetUid], ...personal };
       });
       return { message: 'Responder details updated.' };
+    },
+    async assignResponderTeam(uid, agencyId, targetUid, input) {
+      agencyId = code(agencyId); targetUid = key(targetUid, 'responder');
+      const teamId = input.teamId ? key(input.teamId, 'team') : null;
+      await mutate(uid, agencyId, false, teamId ? 'RESPONDER_TEAM_ASSIGNED' : 'RESPONDER_TEAM_REMOVED', targetUid, state => {
+        const agency = state.agency?.[agencyId];
+        const user = state.users?.[targetUid];
+        const member = agency?.members?.[targetUid];
+        if (!agency || !user || !member || user.agencyId !== agencyId || user.role !== 'RESPONDER') fail('Responder does not belong to this agency.', 403);
+        const team = teamId ? agency.teams?.[teamId] : null;
+        if (teamId && !team) fail('Team does not belong to this agency.', 403);
+        if (user.teamId && user.teamId !== teamId && hasActiveAssignment(state, user.teamId)) {
+          fail('This responder\'s current team is on an active assignment. Finish it before moving them.');
+        }
+        const fields = teamId
+          ? { teamId, ...(team.stationId ? { stationId: team.stationId } : {}) }
+          : { teamId: null };
+        Object.assign(user, fields, { updatedAt: now() });
+        Object.assign(member, fields);
+      });
+      return { message: teamId ? 'Responder added to the team.' : 'Responder removed from the team.' };
+    },
+    // Agency admins delete their own responders; System Administrators may delete any account.
+    // The database change and the account record are kept (without the email) so past incidents
+    // and audit entries still show the name. The Firebase login is removed after the commit.
+    async deleteResponder(uid, agencyId, targetUid, input) {
+      agencyId = code(agencyId); targetUid = key(targetUid, 'responder');
+      if (uid === targetUid) fail('You cannot delete your own account.');
+      await mutate(uid, agencyId, false, 'RESPONDER_DELETED', targetUid, (state, operator) => {
+        const agency = state.agency?.[agencyId];
+        const user = state.users?.[targetUid];
+        const member = agency?.members?.[targetUid];
+        if (!agency || !user || !member || user.agencyId !== agencyId) fail('Member does not belong to this agency.', 403);
+        if (operator.role !== 'SYSTEM_ADMIN' && user.role !== 'RESPONDER') fail('System administrator required for privileged accounts.', 403);
+        const expected = `${String(user.email || '').toLowerCase()}delete`;
+        if (!user.email || String(input?.confirmation ?? '').trim().toLowerCase() !== expected) fail('Type the account email followed by "delete" to confirm.');
+        if (user.teamId && hasActiveAssignment(state, user.teamId)) fail('This responder\'s team is on an active assignment. Finish it before deleting the account.');
+        delete agency.members[targetUid];
+        if (agency.responders) delete agency.responders[targetUid];
+        state.users[targetUid] = { displayName: user.displayName || '', role: user.role, agencyId, active: false, deletedAt: now(), deletedBy: uid };
+      });
+      try { await auth.deleteUser(targetUid); }
+      catch { fail('The account was disabled, but its login could not be removed. Ask a System Administrator to delete it in Firebase Authentication.', 503); }
+      return { message: 'Account deleted.' };
     },
     async status(uid, agencyId, input) {
       agencyId = code(agencyId); const targetUid = input.uid ? key(input.uid) : null;
@@ -347,7 +537,7 @@ function createAgencyManagement(context) {
           permit(city?.users?.[uid] ?? state?.users?.[uid], agencyId);
           const agency = city?.agency?.[agencyId];
           if (agency?.profile?.active !== true) fail('An active agency is required.');
-          if (value.stationId && !agency.stations?.[value.stationId]) fail('Invalid agency station.');
+          if (value.stationId && !activeStation(agency, value.stationId)) fail('Invalid agency station.');
           agency.teams ||= {};
           const existing = agency.teams[resourceId];
           const fromStationId = existing?.stationId || null;
@@ -397,13 +587,50 @@ function createAgencyManagement(context) {
         const user = state.users?.[targetUid];
         const member = agency.members?.[targetUid];
         if (user?.role !== 'RESPONDER' || user.agencyId !== agencyId || member?.role !== 'RESPONDER' || member.agencyId !== agencyId) fail('Responder does not belong to this agency.', 403);
-        if (stationId && !agency.stations?.[stationId]) fail('Station does not belong to this agency.');
+        if (stationId && !activeStation(agency, stationId)) fail('Station does not belong to this agency.');
         if (user.teamId && agency.teams?.[user.teamId]?.stationId && agency.teams[user.teamId].stationId !== stationId) fail('Responder team belongs to another station. Update the team assignment first.');
         user.stationId = stationId;
         member.stationId = stationId;
         if (agency.responders?.[targetUid]) agency.responders[targetUid].stationId = stationId;
       }, true);
       return { message: 'Responder station assignment saved.' };
+    },
+    // Only the agency's own administrator can remove a station. The station record is kept, but hidden.
+    // Its teams, responders, members and profile locations are unassigned in the same commit.
+    async deactivateStation(uid, agencyId, stationId, input) {
+      agencyId = code(agencyId); stationId = key(stationId, 'station ID');
+      const auditId = id(); const timestamp = now();
+      // Root scope: the active-assignment check and the cascade must commit together.
+      await repo.transact('/', state => {
+        const city = state?.server?.['City of Tabuk'];
+        const operator = city?.users?.[uid] ?? state?.users?.[uid];
+        permit(operator, agencyId);
+        if (operator.role !== 'AGENCY_ADMIN') fail('Only the agency administrator can remove a station.', 403);
+        const agency = city?.agency?.[agencyId];
+        if (agency?.profile?.active !== true) fail('An active agency is required.');
+        if (!activeStation(agency, stationId)) fail('Station does not belong to this agency.', 403);
+        const station = agency.stations[stationId];
+        const typed = String(input?.confirmation ?? '').trim().toLowerCase();
+        if (!station.name || typed !== String(station.name).trim().toLowerCase()) fail('Type the station name to confirm.');
+        if (Object.keys(activeStations(agency.stations)).length < 2) fail('An agency must keep at least one station.');
+        const teamIds = Object.keys(agency.teams || {}).filter(teamId => agency.teams[teamId]?.stationId === stationId);
+        if (teamIds.some(teamId => hasActiveAssignment(state, teamId))) fail('A team at this station is on an active assignment. Finish it before removing the station.');
+        station.active = false; station.deactivatedAt = timestamp; station.deactivatedBy = uid;
+        for (const teamId of teamIds) {
+          agency.teams[teamId] = { ...agency.teams[teamId], stationId: null, updatedAt: timestamp };
+          if (state.teams?.[teamId]?.agencyId === agencyId) state.teams[teamId].stationId = null;
+        }
+        const placed = [
+          ...Object.values(city.users || {}).filter(user => user?.agencyId === agencyId),
+          ...Object.values(agency.members || {}),
+          ...Object.values(agency.responders || {}),
+        ];
+        for (const record of placed) if (record?.stationId === stationId) record.stationId = null;
+        city.command_center ||= {}; city.command_center.audit_logs ||= {};
+        city.command_center.audit_logs[auditId] = { actorUid: uid, agencyId, resourceId: stationId, action: 'STATION_DEACTIVATED', timestamp };
+        return state;
+      });
+      return { message: 'Station removed.' };
     },
   };
 }

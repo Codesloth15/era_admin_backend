@@ -1,7 +1,10 @@
 import { fail } from './agency.rules.js';
 
-// Same type codes as the citizen app. MEDICAL is shown as "Rescue" and OTHER as "PNP".
-const INCIDENT_TYPES = ['FIRE', 'ROAD_ACCIDENT', 'MEDICAL', 'OTHER'];
+// Incident types: Fire, Road accident, Rescue and Police. The old MEDICAL and OTHER codes (saved by the citizen app
+// and earlier staff reports) mean RESCUE and POLICE.
+const INCIDENT_TYPES = ['FIRE', 'ROAD_ACCIDENT', 'RESCUE', 'POLICE'];
+const LEGACY_TYPES = { MEDICAL: 'RESCUE', OTHER: 'POLICE' };
+const normalizeIncidentType = type => LEGACY_TYPES[type] || type;
 // Rough Philippine bounds, so a misplaced click far outside the country is rejected.
 const inPhilippines = (latitude, longitude) => latitude >= 4 && latitude <= 22 && longitude >= 116 && longitude <= 127;
 // Mobile or landline: digits with optional +, spaces or dashes.
@@ -15,13 +18,50 @@ const optionalText = (value, label, max) => {
   return value.trim();
 };
 
-// Agencies each type needs, matching citizen reports. CDRRMO is always included.
-function recommendedAgenciesFor(type) {
-  const agencies = { CDRRMO: true };
-  if (type === 'FIRE') Object.assign(agencies, { BFP: true, MEDICAL: true });
-  if (type === 'ROAD_ACCIDENT') Object.assign(agencies, { PNP: true, MEDICAL: true });
-  if (type === 'MEDICAL') agencies.MEDICAL = true;
-  return agencies;
+// Routing is automatic: every active agency whose emergencyTypes include the incident type, and that has an
+// active station with an available team inside the radius, is recommended. The nearest one leads; the others
+// are supporting. Recommendations guide people; they never block anyone from seeing, acknowledging or
+// responding to an incident. With no location or no recommended agency, the Command Center owns it.
+// The radius is read from settings (system_config.dispatch.routing.radiusKm), 30 km by default.
+const DEFAULT_RADIUS_KM = 30;
+const toRadians = value => value * Math.PI / 180;
+function distanceKm(a, b) {
+  const dLat = toRadians(b.latitude - a.latitude); const dLon = toRadians(b.longitude - a.longitude);
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(toRadians(a.latitude)) * Math.cos(toRadians(b.latitude)) * Math.sin(dLon / 2) ** 2;
+  return 6371 * 2 * Math.asin(Math.sqrt(h));
+}
+// agencies: [{ id, active, emergencyTypes: [], stations: [{ id, latitude, longitude, active, hasAvailableTeam }] }]
+// routing: { radiusKm }
+function routeIncident(type, location, agencies, routing = {}) {
+  const wanted = normalizeIncidentType(type);
+  const radiusKm = Number.isFinite(routing?.radiusKm) && routing.radiusKm > 0 ? routing.radiusKm : DEFAULT_RADIUS_KM;
+  const hasLocation = Number.isFinite(location?.latitude) && Number.isFinite(location?.longitude);
+  const commandCenter = { leadAgencyId: null, owner: 'COMMAND_CENTER', pendingLeadAgencyIds: [], recommendedAgencies: {}, recommendedStations: {} };
+  if (!hasLocation) return { ...commandCenter, routingMethod: 'NO_LOCATION' };
+  const origin = { latitude: location.latitude, longitude: location.longitude };
+  // Each covering agency is recommended at its nearest qualifying station.
+  const recommended = agencies
+    .filter(agency => agency.active !== false && (agency.emergencyTypes || []).some(item => normalizeIncidentType(item) === wanted))
+    .map(agency => {
+      const nearest = agency.stations
+        .filter(station => station.active !== false && station.hasAvailableTeam === true && Number.isFinite(station.latitude) && Number.isFinite(station.longitude))
+        .map(station => ({ station, distance: distanceKm(origin, station) }))
+        .filter(item => item.distance <= radiusKm)
+        .sort((a, b) => a.distance - b.distance || String(a.station.id).localeCompare(String(b.station.id)))[0];
+      return nearest ? { agencyId: agency.id, stationId: nearest.station.id, distance: nearest.distance } : null;
+    })
+    .filter(Boolean)
+    .sort((a, b) => a.distance - b.distance || a.agencyId.localeCompare(b.agencyId));
+  if (!recommended.length) return { ...commandCenter, routingMethod: 'NO_LEAD_IN_RANGE' };
+  const leadAgencyId = recommended[0].agencyId;
+  return {
+    leadAgencyId,
+    owner: leadAgencyId,
+    pendingLeadAgencyIds: [],
+    recommendedAgencies: Object.fromEntries(recommended.map(item => [item.agencyId, true])),
+    recommendedStations: Object.fromEntries(recommended.map(item => [item.agencyId, item.stationId])),
+    routingMethod: 'NEAREST_STATION',
+  };
 }
 
 // An emergency created by staff by clicking the map (phone call or walk-in report).
@@ -50,4 +90,4 @@ function staffIncidentInput(input) {
   };
 }
 
-export { INCIDENT_TYPES, recommendedAgenciesFor, staffIncidentInput };
+export { INCIDENT_TYPES, DEFAULT_RADIUS_KM, normalizeIncidentType, routeIncident, staffIncidentInput };

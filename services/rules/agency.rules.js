@@ -149,7 +149,7 @@ function agencyInvolvedInIncident(state, agencyId, incidentId, incident, assignm
 function applyAgencyCommand(state, uid, input, ids, timestamp) {
   const user = requireAgencyDispatch(state, uid);
   const incidentId = key(input.incidentId, 'incident ID');
-  if (input.action === 'dispatch' && !agencyIncident(state, user, incidentId)) fail('Incident is outside your agency.', 403);
+  // Any agency may dispatch its own teams to an incident once it has acknowledged it; recommendations only guide.
   const incident = state.incidents?.[incidentId];
   if (!incident) fail('Incident no longer exists.');
   if (['RESOLVED', 'CANCELLED', 'CLOSED'].includes(incident.status)) fail('Incident is already closed.');
@@ -186,7 +186,8 @@ function applyAgencyCommand(state, uid, input, ids, timestamp) {
       if (['RECEIVED', 'VERIFIED'].includes(incident.status)) incident.status = 'DISPATCHED';
     } else if (input.action === 'close') {
       if (input.status === 'RESOLVED') {
-        if (!incident.agencyAcknowledgements?.[user.agencyId] && incident.acknowledgedByAgencyId !== user.agencyId) fail('Your agency must acknowledge this incident before resolving it.', 403);
+        const dispatchedOwnTeam = Object.values(state.dispatch_assignments || {}).some(item => item.incidentId === incidentId && item.agencyId === user.agencyId && Boolean(item.isSimulation) === simulation);
+        if (!dispatchedOwnTeam) fail('Your agency must dispatch one of its own teams to this incident before resolving it.', 403);
       } else if (incident.leadAgencyId !== user.agencyId) fail('Only the lead agency can cancel this incident.', 403);
       if (!['RESOLVED', 'CANCELLED'].includes(input.status)) fail('Invalid closing status.');
       for (const assignment of Object.values(state.dispatch_assignments || {})) {
@@ -218,4 +219,14 @@ function applyAgencyCommand(state, uid, input, ids, timestamp) {
   state.audit_logs ||= {}; state.audit_logs[ids.auditId] = { action: type, actorId: uid, resourceId: incidentId, timestamp, isSimulation: simulation, ...attribution, ...detail };
   return state;
 }
+// An agency can have several types. The first one is also kept as its main `type`.
+const AGENCY_TYPES = ['PUBLIC_SAFETY', 'FIRE', 'RESCUE', 'POLICE', 'MEDICAL', 'DISASTER', 'OTHER'];
+function agencyTypes(input) {
+  const raw = Array.isArray(input?.types) ? input.types : [input?.type];
+  const types = [...new Set(raw.map(value => str(value, 'agency type')))];
+  if (!types.length) fail('Choose at least one agency type.');
+  if (types.some(type => !AGENCY_TYPES.includes(type))) fail('Invalid agency type.');
+  return types;
+}
+export { AGENCY_TYPES, agencyTypes };
 export { roles, retiredRoleTargets, fail, str, key, code, email, hotline, stationInput, responderInput, responderProfileInput, stationMapRecords, requireAgencyDispatch, agencyIncident, agencyInvolvedInIncident, applyAgencyCommand };
