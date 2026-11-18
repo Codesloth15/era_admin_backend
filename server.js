@@ -17,7 +17,7 @@ const startServer = () => {
     auth: dependencies.auth,
     corsOrigins: config.corsOrigins,
   });
-  if (!config.corsOrigins.length) console.warn('CORS_ALLOWED_ORIGINS is not set: the API accepts requests from every origin.');
+  if (!config.corsOrigins.length) console.warn('CORS_ALLOWED_ORIGINS is not set: browsers on other sites will be refused.');
 
   app.listen(config.port, () => console.log(`Server running on port ${config.port}`));
 };

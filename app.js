@@ -11,7 +11,8 @@ export function createApp({ service, auth, corsOrigins = [] }) {
   const app = express();
 
   app.disable('x-powered-by');
-  app.use(cors(corsOrigins.length ? { origin: corsOrigins } : undefined));
+  // Only the listed origins may call the API from a browser. With none listed, browsers are refused.
+  app.use(cors({ origin: corsOrigins.length ? corsOrigins : false }));
   // Advisory cover images (up to 3 MB, sent as base64) are the only large request bodies.
   app.use('/api/agencies/advisories/:id/image', express.json({ limit: '4.5mb' }));
   app.use(express.json({ limit: '20kb' }));

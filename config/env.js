@@ -19,7 +19,7 @@ export function readConfig(environment = process.env) {
   const serviceAccountPath = pick(environment.FIREBASE_SERVICE_ACCOUNT_PATH);
   return {
     port: pick(environment.PORT) || 5000,
-    // Browser origins allowed to call the API, comma-separated. Empty means every origin, so set it in production.
+    // Browser origins allowed to call the API, comma-separated. Empty means browsers on other sites are refused.
     corsOrigins: (environment.CORS_ALLOWED_ORIGINS || '').split(',').map(origin => origin.trim()).filter(Boolean),
     firebase: {
       projectId: pick(environment.FIREBASE_PROJECT_ID),
