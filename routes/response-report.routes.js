@@ -9,5 +9,7 @@ export function createResponseReportRouter(service) {
   router.get('/summary', controller.responseSummary);
   router.post('/', controller.submitResponseReport);
   router.post('/:id/review', controller.reviewResponseReport);
+  // Responders on the assigned team: POST /api/agencies/response-reports/assignments/:id/acknowledge
+  router.post('/assignments/:id/acknowledge', controller.acknowledgeAssignment);
   return router;
 }

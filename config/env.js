@@ -6,9 +6,11 @@ import dotenv from 'dotenv';
 
 const BACKEND_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
-// Loads era_admin_backend/.env whichever folder the server is started from.
-// Values already set in the host environment win over the file.
+// Loads the file for this mode first (.env.production on NODE_ENV=production, otherwise .env.development),
+// then the shared .env. Values already set in the host environment win over both files.
 export function loadEnvFile() {
+  const mode = process.env.NODE_ENV === 'production' ? 'production' : 'development';
+  dotenv.config({ path: path.join(BACKEND_ROOT, `.env.${mode}`) });
   dotenv.config({ path: path.join(BACKEND_ROOT, '.env') });
 }
 
@@ -19,7 +21,7 @@ export function readConfig(environment = process.env) {
   const serviceAccountPath = pick(environment.FIREBASE_SERVICE_ACCOUNT_PATH);
   return {
     port: pick(environment.PORT) || 5000,
-    // Browser origins allowed to call the API, comma-separated. Empty means every origin, so set it in production.
+    // Browser origins allowed to call the API, comma-separated. Empty means browsers on other sites are refused.
     corsOrigins: (environment.CORS_ALLOWED_ORIGINS || '').split(',').map(origin => origin.trim()).filter(Boolean),
     firebase: {
       projectId: pick(environment.FIREBASE_PROJECT_ID),
