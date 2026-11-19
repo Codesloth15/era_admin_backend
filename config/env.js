@@ -6,9 +6,11 @@ import dotenv from 'dotenv';
 
 const BACKEND_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
-// Loads era_admin_backend/.env whichever folder the server is started from.
-// Values already set in the host environment win over the file.
+// Loads the file for this mode first (.env.production on NODE_ENV=production, otherwise .env.development),
+// then the shared .env. Values already set in the host environment win over both files.
 export function loadEnvFile() {
+  const mode = process.env.NODE_ENV === 'production' ? 'production' : 'development';
+  dotenv.config({ path: path.join(BACKEND_ROOT, `.env.${mode}`) });
   dotenv.config({ path: path.join(BACKEND_ROOT, '.env') });
 }
 
