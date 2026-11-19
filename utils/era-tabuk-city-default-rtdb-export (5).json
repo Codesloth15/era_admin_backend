@@ -1,0 +1,3923 @@
+{
+  "agency_incidents": {
+    "TABUK_TEST_FIRE": {
+      "-P6cv9YFforw5R_nH9BD": true,
+      "-P6cw_yDkosMaXmYvxzs": true,
+      "-P6d68BGw9mCNXWY0PrQ": true,
+      "-P6db-ZfhZYZHN6Tl01V": true,
+      "-P6gmz2v6GOQhBg_fbDf": true,
+      "-P6gvLSqzEMh7ya_gmV4": true,
+      "-P6hVTdw_uLImlZwmUWR": true,
+      "-P6hYKQvWABjuc5aMVPO": true
+    }
+  },
+  "audit_logs": {
+    "-P6c0hIikdY_eRZe1cRK": {
+      "action": "INCIDENT_CANCELLED",
+      "actorId": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "agencyId": "CDRRMC",
+      "agencyName": "CDRRMC",
+      "isSimulation": false,
+      "resourceId": "-P6bxnlaimTxD5smrcfO",
+      "timestamp": 1794894124404
+    },
+    "-P6c0iuRcg49pEy_Mc3x": {
+      "action": "INCIDENT_CANCELLED",
+      "actorId": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "agencyId": "CDRRMC",
+      "agencyName": "CDRRMC",
+      "isSimulation": false,
+      "resourceId": "-P6bm6Q_19W1TEenNcbN",
+      "timestamp": 1794894130932
+    },
+    "-P6c0jtE_T6r0eXtuxlw": {
+      "action": "INCIDENT_CANCELLED",
+      "actorId": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "agencyId": "CDRRMC",
+      "agencyName": "CDRRMC",
+      "isSimulation": false,
+      "resourceId": "-P6bgTUmIhnCH-IFmICO",
+      "timestamp": 1794894134940
+    },
+    "-P6cZPaoOY-2f1oSDDlT": {
+      "action": "INCIDENT_CANCELLED",
+      "actorId": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "agencyId": "CDRRMC",
+      "agencyName": "CDRRMC",
+      "isSimulation": false,
+      "resourceId": "-P6cZ3aZKy_xv5cBtZLg",
+      "timestamp": 1794903222791
+    },
+    "-P6ccIki4dISLQbGHvGy": {
+      "action": "INCIDENT_ACKNOWLEDGED",
+      "actorId": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "agencyId": "CDRRMC",
+      "agencyName": "CDRRMC",
+      "isSimulation": false,
+      "resourceId": "-P6cbzFmqW6meTRoEU8j",
+      "timestamp": 1794904243315
+    },
+    "-P6cs5mznIu0vGC1xE1D": {
+      "action": "INCIDENT_ACKNOWLEDGED",
+      "actorId": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "agencyId": "CDRRMC",
+      "agencyName": "CDRRMC",
+      "isSimulation": false,
+      "resourceId": "-P6cry0BhNGAJGsGmAJ7",
+      "timestamp": 1794908384566
+    },
+    "-P6gAKXdlBV1c_ZVtyPJ": {
+      "action": "INCIDENT_ACKNOWLEDGED",
+      "actorId": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "agencyId": "CDRRMC",
+      "agencyName": "CDRRMC",
+      "isSimulation": false,
+      "resourceId": "-P6foZH1tGH2KVk7hH0H",
+      "timestamp": 1794963757455
+    },
+    "-P6gALhV8aP4Nnir4yA6": {
+      "action": "INCIDENT_ACKNOWLEDGED",
+      "actorId": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "agencyId": "CDRRMC",
+      "agencyName": "CDRRMC",
+      "isSimulation": false,
+      "resourceId": "-P6db-ZfhZYZHN6Tl01V",
+      "timestamp": 1794963762150
+    },
+    "-P6gAM1qk2xIU0mUUFil": {
+      "action": "INCIDENT_ACKNOWLEDGED",
+      "actorId": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "agencyId": "CDRRMC",
+      "agencyName": "CDRRMC",
+      "isSimulation": false,
+      "resourceId": "-P6dadERfVEWMg-Zjsi5",
+      "timestamp": 1794963763516
+    },
+    "-P6gJVFXB9JV7V_dZ7kL": {
+      "action": "INCIDENT_CANCELLED",
+      "actorId": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "agencyId": "CDRRMC",
+      "agencyName": "CDRRMC",
+      "isSimulation": false,
+      "resourceId": "-P6foZH1tGH2KVk7hH0H",
+      "timestamp": 1794966160555
+    },
+    "-P6gJXWFQqIrtLbLgE3d": {
+      "action": "INCIDENT_CANCELLED",
+      "actorId": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "agencyId": "CDRRMC",
+      "agencyName": "CDRRMC",
+      "isSimulation": false,
+      "resourceId": "-P6d6TNTJVVF6q7pXWIc",
+      "timestamp": 1794966169815
+    },
+    "-P6gJZE6ANDlTPSrZFwB": {
+      "action": "INCIDENT_CANCELLED",
+      "actorId": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "agencyId": "CDRRMC",
+      "agencyName": "CDRRMC",
+      "isSimulation": false,
+      "resourceId": "-P6d5EXaexDWxPtJVMaN",
+      "timestamp": 1794966176844
+    },
+    "-P6gKhAH802QtGOwfmBW": {
+      "action": "INCIDENT_CANCELLED",
+      "actorId": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "agencyId": "CDRRMC",
+      "agencyName": "CDRRMC",
+      "isSimulation": false,
+      "resourceId": "-P6gKK5P1XMlhzBmOsjJ",
+      "timestamp": 1794966475613
+    },
+    "-P6gOzJWnlt8eNE8lvC0": {
+      "action": "INCIDENT_CANCELLED",
+      "actorId": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "agencyId": "CDRRMC",
+      "agencyName": "CDRRMC",
+      "isSimulation": false,
+      "resourceId": "-P6gKifY-88vMH0-Lsm1",
+      "timestamp": 1794967598512
+    },
+    "-P6gbYerkpR4l625_ltY": {
+      "action": "INCIDENT_CANCELLED",
+      "actorId": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "agencyId": "CDRRMC",
+      "agencyName": "CDRRMC",
+      "isSimulation": false,
+      "resourceId": "-P6dadERfVEWMg-Zjsi5",
+      "timestamp": 1794971155399
+    },
+    "-P6gpJbYgSZszTgfdC8q": {
+      "action": "INCIDENT_CANCELLED",
+      "actorId": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "agencyId": "CDRRMC",
+      "agencyName": "CDRRMC",
+      "isSimulation": false,
+      "resourceId": "-P6gmz2v6GOQhBg_fbDf",
+      "timestamp": 1794974763685
+    },
+    "-P6gpULvJw-IRL9FDIZL": {
+      "action": "INCIDENT_CANCELLED",
+      "actorId": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "agencyId": "CDRRMC",
+      "agencyName": "CDRRMC",
+      "isSimulation": false,
+      "resourceId": "-P6fwWYIpxEegTwBPL6s",
+      "timestamp": 1794974807634
+    },
+    "-P6gpY5HxfzWcHhxw5Bt": {
+      "action": "INCIDENT_CANCELLED",
+      "actorId": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "agencyId": "CDRRMC",
+      "agencyName": "CDRRMC",
+      "isSimulation": false,
+      "resourceId": "-P6fwYk5X9OnMKfmayuA",
+      "timestamp": 1794974822858
+    },
+    "-P6gpnFLUXk9lOOzYbiu": {
+      "action": "INCIDENT_ACKNOWLEDGED",
+      "actorId": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "agencyId": "CDRRMC",
+      "agencyName": "CDRRMC",
+      "isSimulation": false,
+      "resourceId": "-P6gpe-Ejq4GmgpOVbjh",
+      "timestamp": 1794974889024
+    },
+    "-P6gppZYmLL5CaFHIOLa": {
+      "action": "INCIDENT_RESOLVED",
+      "actorId": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "agencyId": "CDRRMC",
+      "agencyName": "CDRRMC",
+      "isSimulation": false,
+      "resourceId": "-P6gpe-Ejq4GmgpOVbjh",
+      "timestamp": 1794974898520
+    },
+    "0553571f-f571-4e5c-8202-e45c8b20f300": {
+      "action": "INCIDENT_RESOLVED",
+      "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "isSimulation": false,
+      "resourceId": "-P6cw_yDkosMaXmYvxzs",
+      "timestamp": 1794963861940
+    },
+    "076e0d5f-692a-45f2-bac4-eb97cda688da": {
+      "action": "INCIDENT_ACKNOWLEDGED",
+      "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "isSimulation": false,
+      "resourceId": "-P6fwWYIpxEegTwBPL6s",
+      "timestamp": 1794963753044
+    },
+    "239e17ba-8beb-477d-bfe5-3610269cda21": {
+      "action": "INCIDENT_ACKNOWLEDGED",
+      "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "isSimulation": false,
+      "resourceId": "-P6db-ZfhZYZHN6Tl01V",
+      "timestamp": 1794974046431
+    },
+    "302800ae-9215-4740-8cfc-b2655ad284a8": {
+      "action": "INCIDENT_RESOLVED",
+      "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "isSimulation": false,
+      "resourceId": "-P6d68BGw9mCNXWY0PrQ",
+      "timestamp": 1794913031801
+    },
+    "45d69684-0df9-4ca6-a9b9-c40d1c9a9c9e": {
+      "action": "INCIDENT_ACKNOWLEDGED",
+      "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "isSimulation": false,
+      "resourceId": "-P6d6TNTJVVF6q7pXWIc",
+      "timestamp": 1794912471439
+    },
+    "4b2e7257-8e4d-45d2-b206-cec9389e26d0": {
+      "action": "INCIDENT_ACKNOWLEDGED",
+      "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "isSimulation": false,
+      "resourceId": "-P6bxnlaimTxD5smrcfO",
+      "timestamp": 1794893769276
+    },
+    "4b84ef6e-7e19-46f7-a02d-9ab6b09f3501": {
+      "action": "INCIDENT_ACKNOWLEDGED",
+      "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "isSimulation": false,
+      "resourceId": "-P6cbzFmqW6meTRoEU8j",
+      "timestamp": 1794909150328
+    },
+    "4d7325f6-7922-4311-a4e2-6f7d6aa9f7b9": {
+      "action": "INCIDENT_ACKNOWLEDGED",
+      "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "isSimulation": false,
+      "resourceId": "-P6d5EXaexDWxPtJVMaN",
+      "timestamp": 1794912125171
+    },
+    "564ff195-9c20-4962-ac75-319d67ab8663": {
+      "action": "TEAM_DISPATCHED",
+      "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "assignmentId": "30eb3df4-5507-40cc-8af2-66f7f0691e32",
+      "isSimulation": false,
+      "resourceId": "-P6cv9YFforw5R_nH9BD",
+      "teamId": "044cdc4f-0632-4cf9-9fe0-d521872569ab",
+      "timestamp": 1794913123644
+    },
+    "5aded7c7-d76e-4cba-bef1-5a88c5c22244": {
+      "action": "INCIDENT_RESOLVED",
+      "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "isSimulation": false,
+      "resourceId": "-P6db-ZfhZYZHN6Tl01V",
+      "timestamp": 1794974076073
+    },
+    "5d7737c4-5327-4cee-ab78-ab5b3472ab39": {
+      "action": "TEAM_DISPATCHED",
+      "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "assignmentId": "76c4d415-9de5-4ca4-832d-ea8f402edb6f",
+      "isSimulation": false,
+      "resourceId": "-P6hYKQvWABjuc5aMVPO",
+      "teamId": "044cdc4f-0632-4cf9-9fe0-d521872569ab",
+      "timestamp": 1795006802879
+    },
+    "61929331-0b90-4c55-8c24-fcb441d38220": {
+      "action": "INCIDENT_ACKNOWLEDGED",
+      "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "isSimulation": false,
+      "resourceId": "-P6d68BGw9mCNXWY0PrQ",
+      "timestamp": 1794912474821
+    },
+    "68b93936-1d6e-4d78-b664-a3381d902dfa": {
+      "action": "INCIDENT_ACKNOWLEDGED",
+      "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "isSimulation": false,
+      "resourceId": "-P6bm6Q_19W1TEenNcbN",
+      "timestamp": 1794893772023
+    },
+    "68c846c7-4dd1-45fe-9cac-9450ecf3bab6": {
+      "action": "TEAM_DISPATCHED",
+      "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "assignmentId": "b043c691-213d-4be5-97e8-f4da56de68c2",
+      "isSimulation": false,
+      "resourceId": "-P6cw_yDkosMaXmYvxzs",
+      "teamId": "044cdc4f-0632-4cf9-9fe0-d521872569ab",
+      "timestamp": 1794913395125
+    },
+    "691a4754-848f-4ba0-a41c-7856f459f87d": {
+      "action": "INCIDENT_ACKNOWLEDGED",
+      "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "isSimulation": false,
+      "resourceId": "-P6cry0BhNGAJGsGmAJ7",
+      "timestamp": 1794909149076
+    },
+    "7d8fa108-30da-495f-8acd-69dc98297453": {
+      "action": "INCIDENT_ACKNOWLEDGED",
+      "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "isSimulation": false,
+      "resourceId": "-P6bgTUmIhnCH-IFmICO",
+      "timestamp": 1794889484585
+    },
+    "80ca0a25-87e0-42cb-b139-cc1f6a449c54": {
+      "action": "TEAM_DISPATCHED",
+      "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "assignmentId": "de48bea9-eda6-4c59-97a0-b4c98d2bfd77",
+      "isSimulation": false,
+      "resourceId": "-P6hVTdw_uLImlZwmUWR",
+      "teamId": "044cdc4f-0632-4cf9-9fe0-d521872569ab",
+      "timestamp": 1795006829614
+    },
+    "828c5ecb-df3f-4163-bd86-b0fff0064c8d": {
+      "action": "INCIDENT_RESOLVED",
+      "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "isSimulation": false,
+      "resourceId": "-P6gvLSqzEMh7ya_gmV4",
+      "timestamp": 1794984715107
+    },
+    "87ecfbf5-2c2d-4227-953a-474bb3d916ae": {
+      "action": "INCIDENT_ACKNOWLEDGED",
+      "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "isSimulation": false,
+      "resourceId": "-P6cv9YFforw5R_nH9BD",
+      "timestamp": 1794909279425
+    },
+    "8c7e8b01-0e65-40b0-90ac-d896cdb36af9": {
+      "action": "TEAM_DISPATCHED",
+      "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "assignmentId": "c3dddf2d-926b-4f93-9d07-72404f2c4bbf",
+      "isSimulation": false,
+      "resourceId": "-P6d68BGw9mCNXWY0PrQ",
+      "teamId": "044cdc4f-0632-4cf9-9fe0-d521872569ab",
+      "timestamp": 1794912792355
+    },
+    "8d1dd1ec-19ce-432c-8a76-b988a9caae82": {
+      "action": "INCIDENT_ACKNOWLEDGED",
+      "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "isSimulation": false,
+      "resourceId": "-P6gmz2v6GOQhBg_fbDf",
+      "timestamp": 1794974300550
+    },
+    "8daa2673-8207-4ec3-bbbb-ccea0b81a890": {
+      "action": "TEAM_DISPATCHED",
+      "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "assignmentId": "d6bfd37d-18ce-4aa2-93b1-8fbd4aa98f00",
+      "isSimulation": false,
+      "resourceId": "-P6gmz2v6GOQhBg_fbDf",
+      "teamId": "044cdc4f-0632-4cf9-9fe0-d521872569ab",
+      "timestamp": 1794974305788
+    },
+    "96f453ba-144b-4add-bbce-29f0f5a1d17a": {
+      "action": "INCIDENT_ACKNOWLEDGED",
+      "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "isSimulation": false,
+      "resourceId": "-P6hVTdw_uLImlZwmUWR",
+      "timestamp": 1795006825175
+    },
+    "99488be7-78b2-4369-ad1d-84f3e43e1cdd": {
+      "action": "TEAM_DISPATCHED",
+      "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "assignmentId": "c476ffa5-2c96-4aa5-b508-f901d96b4bac",
+      "isSimulation": false,
+      "resourceId": "-P6gvLSqzEMh7ya_gmV4",
+      "teamId": "044cdc4f-0632-4cf9-9fe0-d521872569ab",
+      "timestamp": 1794977380755
+    },
+    "9cd81851-191a-495f-a352-0ec7056c42ee": {
+      "action": "INCIDENT_RESOLVED",
+      "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "isSimulation": false,
+      "resourceId": "-P6hYKQvWABjuc5aMVPO",
+      "timestamp": 1795006812295
+    },
+    "a8f06a83-0cb9-4791-a4ba-c266f20c15b4": {
+      "action": "INCIDENT_ACKNOWLEDGED",
+      "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "isSimulation": false,
+      "resourceId": "-P6cuAjn1aDjTqHO80U-",
+      "timestamp": 1794909147194
+    },
+    "ab9d9326-a1ad-48e8-a8ed-1c9e1d1b932e": {
+      "action": "INCIDENT_RESOLVED",
+      "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "isSimulation": false,
+      "resourceId": "-P6hVTdw_uLImlZwmUWR",
+      "timestamp": 1795006834199
+    },
+    "acec89d9-1f56-4ad9-a0bd-441f5474f8fa": {
+      "action": "INCIDENT_RESOLVED",
+      "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "isSimulation": false,
+      "resourceId": "-P6cv9YFforw5R_nH9BD",
+      "timestamp": 1794913237476
+    },
+    "b597db3c-cfee-4f40-8b1b-389441693a0a": {
+      "action": "INCIDENT_ACKNOWLEDGED",
+      "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "isSimulation": false,
+      "resourceId": "-P6hYKQvWABjuc5aMVPO",
+      "timestamp": 1795006796686
+    },
+    "c9deddc3-9daf-4212-9006-f401fef18e50": {
+      "action": "INCIDENT_ACKNOWLEDGED",
+      "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "isSimulation": false,
+      "resourceId": "-P6fwYk5X9OnMKfmayuA",
+      "timestamp": 1794963735568
+    },
+    "d580ac83-f439-429d-b497-39ff53546093": {
+      "action": "INCIDENT_ACKNOWLEDGED",
+      "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "isSimulation": false,
+      "resourceId": "-P6cw_yDkosMaXmYvxzs",
+      "timestamp": 1794909680100
+    },
+    "da25eec9-68b2-448b-986d-7cf40ed7ff0a": {
+      "action": "INCIDENT_ACKNOWLEDGED",
+      "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "isSimulation": false,
+      "resourceId": "-P6gvLSqzEMh7ya_gmV4",
+      "timestamp": 1794977375067
+    },
+    "fb4300b9-3ea9-4f93-9b0b-533977e91281": {
+      "action": "INCIDENT_ACKNOWLEDGED",
+      "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "isSimulation": false,
+      "resourceId": "-P6foZH1tGH2KVk7hH0H",
+      "timestamp": 1794964021891
+    },
+    "fbb44b15-9003-4790-85c1-765966f78ce1": {
+      "action": "TEAM_DISPATCHED",
+      "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "assignmentId": "fa792e4f-cef5-483f-8223-cfe11bb9733d",
+      "isSimulation": false,
+      "resourceId": "-P6db-ZfhZYZHN6Tl01V",
+      "teamId": "044cdc4f-0632-4cf9-9fe0-d521872569ab",
+      "timestamp": 1794974050813
+    }
+  },
+  "data_revision": 89,
+  "dispatch_assignments": {
+    "30eb3df4-5507-40cc-8af2-66f7f0691e32": {
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "assignedAt": 1794913123644,
+      "assignedBy": "65UmmTitcsblCH15muI21A8iQ842",
+      "completedAt": 1794913237476,
+      "incidentId": "-P6cv9YFforw5R_nH9BD",
+      "isSimulation": false,
+      "status": "COMPLETED",
+      "teamId": "044cdc4f-0632-4cf9-9fe0-d521872569ab"
+    },
+    "76c4d415-9de5-4ca4-832d-ea8f402edb6f": {
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "assignedAt": 1795006802879,
+      "assignedBy": "65UmmTitcsblCH15muI21A8iQ842",
+      "completedAt": 1795006812295,
+      "incidentId": "-P6hYKQvWABjuc5aMVPO",
+      "isSimulation": false,
+      "status": "COMPLETED",
+      "teamId": "044cdc4f-0632-4cf9-9fe0-d521872569ab"
+    },
+    "b043c691-213d-4be5-97e8-f4da56de68c2": {
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "assignedAt": 1794913395125,
+      "assignedBy": "65UmmTitcsblCH15muI21A8iQ842",
+      "completedAt": 1794963861940,
+      "incidentId": "-P6cw_yDkosMaXmYvxzs",
+      "isSimulation": false,
+      "status": "COMPLETED",
+      "teamId": "044cdc4f-0632-4cf9-9fe0-d521872569ab"
+    },
+    "c3dddf2d-926b-4f93-9d07-72404f2c4bbf": {
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "assignedAt": 1794912792355,
+      "assignedBy": "65UmmTitcsblCH15muI21A8iQ842",
+      "completedAt": 1794913031801,
+      "incidentId": "-P6d68BGw9mCNXWY0PrQ",
+      "isSimulation": false,
+      "status": "COMPLETED",
+      "teamId": "044cdc4f-0632-4cf9-9fe0-d521872569ab"
+    },
+    "c476ffa5-2c96-4aa5-b508-f901d96b4bac": {
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "assignedAt": 1794977380755,
+      "assignedBy": "65UmmTitcsblCH15muI21A8iQ842",
+      "completedAt": 1794984715107,
+      "incidentId": "-P6gvLSqzEMh7ya_gmV4",
+      "isSimulation": false,
+      "status": "COMPLETED",
+      "teamId": "044cdc4f-0632-4cf9-9fe0-d521872569ab"
+    },
+    "d6bfd37d-18ce-4aa2-93b1-8fbd4aa98f00": {
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "assignedAt": 1794974305788,
+      "assignedBy": "65UmmTitcsblCH15muI21A8iQ842",
+      "completedAt": 1794974763685,
+      "incidentId": "-P6gmz2v6GOQhBg_fbDf",
+      "isSimulation": false,
+      "status": "CANCELLED",
+      "teamId": "044cdc4f-0632-4cf9-9fe0-d521872569ab"
+    },
+    "de48bea9-eda6-4c59-97a0-b4c98d2bfd77": {
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "assignedAt": 1795006829614,
+      "assignedBy": "65UmmTitcsblCH15muI21A8iQ842",
+      "completedAt": 1795006834199,
+      "incidentId": "-P6hVTdw_uLImlZwmUWR",
+      "isSimulation": false,
+      "status": "COMPLETED",
+      "teamId": "044cdc4f-0632-4cf9-9fe0-d521872569ab"
+    },
+    "fa792e4f-cef5-483f-8223-cfe11bb9733d": {
+      "agencyId": "TABUK_TEST_FIRE",
+      "agencyName": "Tabuk Test Fire Unit",
+      "assignedAt": 1794974050813,
+      "assignedBy": "65UmmTitcsblCH15muI21A8iQ842",
+      "completedAt": 1794974076073,
+      "incidentId": "-P6db-ZfhZYZHN6Tl01V",
+      "isSimulation": false,
+      "status": "COMPLETED",
+      "teamId": "044cdc4f-0632-4cf9-9fe0-d521872569ab"
+    }
+  },
+  "incident_assignments": {
+    "-P6cv9YFforw5R_nH9BD": {
+      "30eb3df4-5507-40cc-8af2-66f7f0691e32": true
+    },
+    "-P6cw_yDkosMaXmYvxzs": {
+      "b043c691-213d-4be5-97e8-f4da56de68c2": true
+    },
+    "-P6d68BGw9mCNXWY0PrQ": {
+      "c3dddf2d-926b-4f93-9d07-72404f2c4bbf": true
+    },
+    "-P6db-ZfhZYZHN6Tl01V": {
+      "fa792e4f-cef5-483f-8223-cfe11bb9733d": true
+    },
+    "-P6gmz2v6GOQhBg_fbDf": {
+      "d6bfd37d-18ce-4aa2-93b1-8fbd4aa98f00": true
+    },
+    "-P6gvLSqzEMh7ya_gmV4": {
+      "c476ffa5-2c96-4aa5-b508-f901d96b4bac": true
+    },
+    "-P6hVTdw_uLImlZwmUWR": {
+      "de48bea9-eda6-4c59-97a0-b4c98d2bfd77": true
+    },
+    "-P6hYKQvWABjuc5aMVPO": {
+      "76c4d415-9de5-4ca4-832d-ea8f402edb6f": true
+    }
+  },
+  "incident_events": {
+    "-P6bgTUmIhnCH-IFmICO": {
+      "-P6c0jtE_T6r0eXtuxlv": {
+        "actorId": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+        "agencyId": "CDRRMC",
+        "agencyName": "CDRRMC",
+        "isSimulation": false,
+        "timestamp": 1794894134940,
+        "type": "INCIDENT_CANCELLED"
+      },
+      "58496900-81c7-4672-807f-8ad3ac7a95df": {
+        "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+        "agencyId": "TABUK_TEST_FIRE",
+        "agencyName": "Tabuk Test Fire Unit",
+        "isSimulation": false,
+        "timestamp": 1794889484585,
+        "type": "INCIDENT_ACKNOWLEDGED"
+      }
+    },
+    "-P6bm6Q_19W1TEenNcbN": {
+      "-P6c0iuRcg49pEy_Mc3w": {
+        "actorId": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+        "agencyId": "CDRRMC",
+        "agencyName": "CDRRMC",
+        "isSimulation": false,
+        "timestamp": 1794894130932,
+        "type": "INCIDENT_CANCELLED"
+      },
+      "1851644e-167e-4abd-8cc7-285ef3c4797b": {
+        "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+        "agencyId": "TABUK_TEST_FIRE",
+        "agencyName": "Tabuk Test Fire Unit",
+        "isSimulation": false,
+        "timestamp": 1794893772023,
+        "type": "INCIDENT_ACKNOWLEDGED"
+      }
+    },
+    "-P6bxnlaimTxD5smrcfO": {
+      "-P6c0hIikdY_eRZe1cRJ": {
+        "actorId": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+        "agencyId": "CDRRMC",
+        "agencyName": "CDRRMC",
+        "isSimulation": false,
+        "timestamp": 1794894124404,
+        "type": "INCIDENT_CANCELLED"
+      },
+      "95052d9e-be0f-4284-a99d-3b62de3f6030": {
+        "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+        "agencyId": "TABUK_TEST_FIRE",
+        "agencyName": "Tabuk Test Fire Unit",
+        "isSimulation": false,
+        "timestamp": 1794893769276,
+        "type": "INCIDENT_ACKNOWLEDGED"
+      }
+    },
+    "-P6cZ3aZKy_xv5cBtZLg": {
+      "-P6cZPaoOY-2f1oSDDlS": {
+        "actorId": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+        "agencyId": "CDRRMC",
+        "agencyName": "CDRRMC",
+        "isSimulation": false,
+        "timestamp": 1794903222791,
+        "type": "INCIDENT_CANCELLED"
+      }
+    },
+    "-P6cbzFmqW6meTRoEU8j": {
+      "-P6ccIki4dISLQbGHvGx": {
+        "actorId": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+        "agencyId": "CDRRMC",
+        "agencyName": "CDRRMC",
+        "isSimulation": false,
+        "timestamp": 1794904243315,
+        "type": "INCIDENT_ACKNOWLEDGED"
+      },
+      "7d4a4d6b-8094-482e-a6c0-41e8686b2aa8": {
+        "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+        "agencyId": "TABUK_TEST_FIRE",
+        "agencyName": "Tabuk Test Fire Unit",
+        "isSimulation": false,
+        "timestamp": 1794909150328,
+        "type": "INCIDENT_ACKNOWLEDGED"
+      }
+    },
+    "-P6cry0BhNGAJGsGmAJ7": {
+      "-P6cs5mznIu0vGC1xE1C": {
+        "actorId": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+        "agencyId": "CDRRMC",
+        "agencyName": "CDRRMC",
+        "isSimulation": false,
+        "timestamp": 1794908384566,
+        "type": "INCIDENT_ACKNOWLEDGED"
+      },
+      "b9ec3dce-bb20-4b3a-97f4-cf865a09ecb6": {
+        "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+        "agencyId": "TABUK_TEST_FIRE",
+        "agencyName": "Tabuk Test Fire Unit",
+        "isSimulation": false,
+        "timestamp": 1794909149076,
+        "type": "INCIDENT_ACKNOWLEDGED"
+      }
+    },
+    "-P6cuAjn1aDjTqHO80U-": {
+      "afd0309d-3f37-4225-aa92-6c91ef64aaa8": {
+        "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+        "agencyId": "TABUK_TEST_FIRE",
+        "agencyName": "Tabuk Test Fire Unit",
+        "isSimulation": false,
+        "timestamp": 1794909147194,
+        "type": "INCIDENT_ACKNOWLEDGED"
+      }
+    },
+    "-P6cv9YFforw5R_nH9BD": {
+      "8bc3804b-7520-48fa-96ba-cb9f7abcc98e": {
+        "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+        "agencyId": "TABUK_TEST_FIRE",
+        "agencyName": "Tabuk Test Fire Unit",
+        "assignmentId": "30eb3df4-5507-40cc-8af2-66f7f0691e32",
+        "isSimulation": false,
+        "teamId": "044cdc4f-0632-4cf9-9fe0-d521872569ab",
+        "timestamp": 1794913123644,
+        "type": "TEAM_DISPATCHED"
+      },
+      "cf48f8fd-ecab-460f-9881-414d489edbed": {
+        "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+        "agencyId": "TABUK_TEST_FIRE",
+        "agencyName": "Tabuk Test Fire Unit",
+        "isSimulation": false,
+        "timestamp": 1794913237476,
+        "type": "INCIDENT_RESOLVED"
+      },
+      "dd0bf954-4acb-4e81-ad43-9990a283f41f": {
+        "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+        "agencyId": "TABUK_TEST_FIRE",
+        "agencyName": "Tabuk Test Fire Unit",
+        "isSimulation": false,
+        "timestamp": 1794909279425,
+        "type": "INCIDENT_ACKNOWLEDGED"
+      }
+    },
+    "-P6cw_yDkosMaXmYvxzs": {
+      "38180e8e-778e-4f52-8ba4-cd169f0f7f7a": {
+        "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+        "agencyId": "TABUK_TEST_FIRE",
+        "agencyName": "Tabuk Test Fire Unit",
+        "assignmentId": "b043c691-213d-4be5-97e8-f4da56de68c2",
+        "isSimulation": false,
+        "teamId": "044cdc4f-0632-4cf9-9fe0-d521872569ab",
+        "timestamp": 1794913395125,
+        "type": "TEAM_DISPATCHED"
+      },
+      "5893e36c-b5d8-4225-a719-2413d2460a03": {
+        "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+        "agencyId": "TABUK_TEST_FIRE",
+        "agencyName": "Tabuk Test Fire Unit",
+        "isSimulation": false,
+        "timestamp": 1794963861940,
+        "type": "INCIDENT_RESOLVED"
+      },
+      "861859ce-e9ce-4803-92aa-1f8388efd6ae": {
+        "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+        "agencyId": "TABUK_TEST_FIRE",
+        "agencyName": "Tabuk Test Fire Unit",
+        "isSimulation": false,
+        "timestamp": 1794909680100,
+        "type": "INCIDENT_ACKNOWLEDGED"
+      }
+    },
+    "-P6d5EXaexDWxPtJVMaN": {
+      "-P6gJZE6ANDlTPSrZFwA": {
+        "actorId": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+        "agencyId": "CDRRMC",
+        "agencyName": "CDRRMC",
+        "isSimulation": false,
+        "timestamp": 1794966176844,
+        "type": "INCIDENT_CANCELLED"
+      },
+      "21cdfd75-7d57-4404-9f86-f056d5e24aff": {
+        "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+        "agencyId": "TABUK_TEST_FIRE",
+        "agencyName": "Tabuk Test Fire Unit",
+        "isSimulation": false,
+        "timestamp": 1794912125171,
+        "type": "INCIDENT_ACKNOWLEDGED"
+      }
+    },
+    "-P6d68BGw9mCNXWY0PrQ": {
+      "4cf31d1f-d7b7-423b-a8ee-a7a720530eda": {
+        "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+        "agencyId": "TABUK_TEST_FIRE",
+        "agencyName": "Tabuk Test Fire Unit",
+        "assignmentId": "c3dddf2d-926b-4f93-9d07-72404f2c4bbf",
+        "isSimulation": false,
+        "teamId": "044cdc4f-0632-4cf9-9fe0-d521872569ab",
+        "timestamp": 1794912792355,
+        "type": "TEAM_DISPATCHED"
+      },
+      "7048dfb8-e037-4a4b-985a-025d61ae56f8": {
+        "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+        "agencyId": "TABUK_TEST_FIRE",
+        "agencyName": "Tabuk Test Fire Unit",
+        "isSimulation": false,
+        "timestamp": 1794913031801,
+        "type": "INCIDENT_RESOLVED"
+      },
+      "db4ef142-fa0b-48c0-be38-37aebfa9bbec": {
+        "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+        "agencyId": "TABUK_TEST_FIRE",
+        "agencyName": "Tabuk Test Fire Unit",
+        "isSimulation": false,
+        "timestamp": 1794912474821,
+        "type": "INCIDENT_ACKNOWLEDGED"
+      }
+    },
+    "-P6d6TNTJVVF6q7pXWIc": {
+      "-P6gJXWFQqIrtLbLgE3c": {
+        "actorId": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+        "agencyId": "CDRRMC",
+        "agencyName": "CDRRMC",
+        "isSimulation": false,
+        "timestamp": 1794966169815,
+        "type": "INCIDENT_CANCELLED"
+      },
+      "8a5c5ceb-95ad-408c-bf1b-befc1ffa711f": {
+        "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+        "agencyId": "TABUK_TEST_FIRE",
+        "agencyName": "Tabuk Test Fire Unit",
+        "isSimulation": false,
+        "timestamp": 1794912471439,
+        "type": "INCIDENT_ACKNOWLEDGED"
+      }
+    },
+    "-P6dadERfVEWMg-Zjsi5": {
+      "-P6gAM1qk2xIU0mUUFik": {
+        "actorId": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+        "agencyId": "CDRRMC",
+        "agencyName": "CDRRMC",
+        "isSimulation": false,
+        "timestamp": 1794963763516,
+        "type": "INCIDENT_ACKNOWLEDGED"
+      },
+      "-P6gbYerkpR4l625_ltX": {
+        "actorId": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+        "agencyId": "CDRRMC",
+        "agencyName": "CDRRMC",
+        "isSimulation": false,
+        "timestamp": 1794971155399,
+        "type": "INCIDENT_CANCELLED"
+      }
+    },
+    "-P6db-ZfhZYZHN6Tl01V": {
+      "-P6gALhV8aP4Nnir4yA5": {
+        "actorId": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+        "agencyId": "CDRRMC",
+        "agencyName": "CDRRMC",
+        "isSimulation": false,
+        "timestamp": 1794963762150,
+        "type": "INCIDENT_ACKNOWLEDGED"
+      },
+      "6fdb5dd2-c7fc-47c6-a2c5-f42a5f952ab7": {
+        "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+        "agencyId": "TABUK_TEST_FIRE",
+        "agencyName": "Tabuk Test Fire Unit",
+        "isSimulation": false,
+        "timestamp": 1794974046431,
+        "type": "INCIDENT_ACKNOWLEDGED"
+      },
+      "88e6c38e-5c5d-4ebc-bde8-c96155f8ad48": {
+        "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+        "agencyId": "TABUK_TEST_FIRE",
+        "agencyName": "Tabuk Test Fire Unit",
+        "isSimulation": false,
+        "timestamp": 1794974076073,
+        "type": "INCIDENT_RESOLVED"
+      },
+      "d54e32f2-bca7-46c4-9dc5-14ea9e38520c": {
+        "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+        "agencyId": "TABUK_TEST_FIRE",
+        "agencyName": "Tabuk Test Fire Unit",
+        "assignmentId": "fa792e4f-cef5-483f-8223-cfe11bb9733d",
+        "isSimulation": false,
+        "teamId": "044cdc4f-0632-4cf9-9fe0-d521872569ab",
+        "timestamp": 1794974050813,
+        "type": "TEAM_DISPATCHED"
+      }
+    },
+    "-P6foZH1tGH2KVk7hH0H": {
+      "-P6gAKXdlBV1c_ZVtyPI": {
+        "actorId": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+        "agencyId": "CDRRMC",
+        "agencyName": "CDRRMC",
+        "isSimulation": false,
+        "timestamp": 1794963757455,
+        "type": "INCIDENT_ACKNOWLEDGED"
+      },
+      "-P6gJVFXB9JV7V_dZ7kK": {
+        "actorId": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+        "agencyId": "CDRRMC",
+        "agencyName": "CDRRMC",
+        "isSimulation": false,
+        "timestamp": 1794966160555,
+        "type": "INCIDENT_CANCELLED"
+      },
+      "26a36f32-fe25-477b-b476-4ef36a340ae6": {
+        "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+        "agencyId": "TABUK_TEST_FIRE",
+        "agencyName": "Tabuk Test Fire Unit",
+        "isSimulation": false,
+        "timestamp": 1794964021891,
+        "type": "INCIDENT_ACKNOWLEDGED"
+      }
+    },
+    "-P6fwWYIpxEegTwBPL6s": {
+      "-P6gpULvJw-IRL9FDIZK": {
+        "actorId": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+        "agencyId": "CDRRMC",
+        "agencyName": "CDRRMC",
+        "isSimulation": false,
+        "timestamp": 1794974807634,
+        "type": "INCIDENT_CANCELLED"
+      },
+      "fb355a15-64ef-4598-a309-a8dba442dc84": {
+        "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+        "agencyId": "TABUK_TEST_FIRE",
+        "agencyName": "Tabuk Test Fire Unit",
+        "isSimulation": false,
+        "timestamp": 1794963753044,
+        "type": "INCIDENT_ACKNOWLEDGED"
+      }
+    },
+    "-P6fwYk5X9OnMKfmayuA": {
+      "-P6gpY5HxfzWcHhxw5Bs": {
+        "actorId": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+        "agencyId": "CDRRMC",
+        "agencyName": "CDRRMC",
+        "isSimulation": false,
+        "timestamp": 1794974822858,
+        "type": "INCIDENT_CANCELLED"
+      },
+      "0c8942c5-00a8-4b11-a12c-b2765be9fe82": {
+        "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+        "agencyId": "TABUK_TEST_FIRE",
+        "agencyName": "Tabuk Test Fire Unit",
+        "isSimulation": false,
+        "timestamp": 1794963735568,
+        "type": "INCIDENT_ACKNOWLEDGED"
+      }
+    },
+    "-P6gKK5P1XMlhzBmOsjJ": {
+      "-P6gKhAH802QtGOwfmBV": {
+        "actorId": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+        "agencyId": "CDRRMC",
+        "agencyName": "CDRRMC",
+        "isSimulation": false,
+        "timestamp": 1794966475613,
+        "type": "INCIDENT_CANCELLED"
+      }
+    },
+    "-P6gKifY-88vMH0-Lsm1": {
+      "-P6gOzJWnlt8eNE8lvC-": {
+        "actorId": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+        "agencyId": "CDRRMC",
+        "agencyName": "CDRRMC",
+        "isSimulation": false,
+        "timestamp": 1794967598512,
+        "type": "INCIDENT_CANCELLED"
+      }
+    },
+    "-P6gmz2v6GOQhBg_fbDf": {
+      "-P6gpJbYgSZszTgfdC8p": {
+        "actorId": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+        "agencyId": "CDRRMC",
+        "agencyName": "CDRRMC",
+        "isSimulation": false,
+        "timestamp": 1794974763685,
+        "type": "INCIDENT_CANCELLED"
+      },
+      "45643e27-3daf-499b-a55b-747daf700419": {
+        "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+        "agencyId": "TABUK_TEST_FIRE",
+        "agencyName": "Tabuk Test Fire Unit",
+        "isSimulation": false,
+        "timestamp": 1794974300550,
+        "type": "INCIDENT_ACKNOWLEDGED"
+      },
+      "d164f471-ebe3-49f4-a211-8a64886a5b78": {
+        "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+        "agencyId": "TABUK_TEST_FIRE",
+        "agencyName": "Tabuk Test Fire Unit",
+        "assignmentId": "d6bfd37d-18ce-4aa2-93b1-8fbd4aa98f00",
+        "isSimulation": false,
+        "teamId": "044cdc4f-0632-4cf9-9fe0-d521872569ab",
+        "timestamp": 1794974305788,
+        "type": "TEAM_DISPATCHED"
+      }
+    },
+    "-P6gpe-Ejq4GmgpOVbjh": {
+      "-P6gpnFLUXk9lOOzYbit": {
+        "actorId": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+        "agencyId": "CDRRMC",
+        "agencyName": "CDRRMC",
+        "isSimulation": false,
+        "timestamp": 1794974889024,
+        "type": "INCIDENT_ACKNOWLEDGED"
+      },
+      "-P6gppZYmLL5CaFHIOL_": {
+        "actorId": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+        "agencyId": "CDRRMC",
+        "agencyName": "CDRRMC",
+        "isSimulation": false,
+        "timestamp": 1794974898520,
+        "type": "INCIDENT_RESOLVED"
+      }
+    },
+    "-P6gvLSqzEMh7ya_gmV4": {
+      "5718cda6-9284-429b-800a-78ef605efbe5": {
+        "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+        "agencyId": "TABUK_TEST_FIRE",
+        "agencyName": "Tabuk Test Fire Unit",
+        "isSimulation": false,
+        "timestamp": 1794977375067,
+        "type": "INCIDENT_ACKNOWLEDGED"
+      },
+      "5863a7ea-d7fd-4b55-9ebe-b886b39a27ef": {
+        "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+        "agencyId": "TABUK_TEST_FIRE",
+        "agencyName": "Tabuk Test Fire Unit",
+        "assignmentId": "c476ffa5-2c96-4aa5-b508-f901d96b4bac",
+        "isSimulation": false,
+        "teamId": "044cdc4f-0632-4cf9-9fe0-d521872569ab",
+        "timestamp": 1794977380755,
+        "type": "TEAM_DISPATCHED"
+      },
+      "d1ec693d-bc7f-49c2-9206-7d65cce1dc7f": {
+        "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+        "agencyId": "TABUK_TEST_FIRE",
+        "agencyName": "Tabuk Test Fire Unit",
+        "isSimulation": false,
+        "timestamp": 1794984715107,
+        "type": "INCIDENT_RESOLVED"
+      }
+    },
+    "-P6hVTdw_uLImlZwmUWR": {
+      "3e3105cb-a730-4927-bc23-1dfbf41b3102": {
+        "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+        "agencyId": "TABUK_TEST_FIRE",
+        "agencyName": "Tabuk Test Fire Unit",
+        "isSimulation": false,
+        "timestamp": 1795006825175,
+        "type": "INCIDENT_ACKNOWLEDGED"
+      },
+      "a607c3c2-9bad-4887-8fc1-627ac6ebc19e": {
+        "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+        "agencyId": "TABUK_TEST_FIRE",
+        "agencyName": "Tabuk Test Fire Unit",
+        "assignmentId": "de48bea9-eda6-4c59-97a0-b4c98d2bfd77",
+        "isSimulation": false,
+        "teamId": "044cdc4f-0632-4cf9-9fe0-d521872569ab",
+        "timestamp": 1795006829614,
+        "type": "TEAM_DISPATCHED"
+      },
+      "c4b7e9b8-1521-4433-88df-d00c30bd57ed": {
+        "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+        "agencyId": "TABUK_TEST_FIRE",
+        "agencyName": "Tabuk Test Fire Unit",
+        "isSimulation": false,
+        "timestamp": 1795006834199,
+        "type": "INCIDENT_RESOLVED"
+      }
+    },
+    "-P6hYKQvWABjuc5aMVPO": {
+      "099be271-a5de-4936-bd02-66ddb0e744cf": {
+        "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+        "agencyId": "TABUK_TEST_FIRE",
+        "agencyName": "Tabuk Test Fire Unit",
+        "isSimulation": false,
+        "timestamp": 1795006796686,
+        "type": "INCIDENT_ACKNOWLEDGED"
+      },
+      "0d3aff3d-5a1c-44b3-90f3-ba04c0330fb3": {
+        "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+        "agencyId": "TABUK_TEST_FIRE",
+        "agencyName": "Tabuk Test Fire Unit",
+        "isSimulation": false,
+        "timestamp": 1795006812295,
+        "type": "INCIDENT_RESOLVED"
+      },
+      "4ef9b81f-9513-4efa-897a-02e83727c40d": {
+        "actorId": "65UmmTitcsblCH15muI21A8iQ842",
+        "agencyId": "TABUK_TEST_FIRE",
+        "agencyName": "Tabuk Test Fire Unit",
+        "assignmentId": "76c4d415-9de5-4ca4-832d-ea8f402edb6f",
+        "isSimulation": false,
+        "teamId": "044cdc4f-0632-4cf9-9fe0-d521872569ab",
+        "timestamp": 1795006802879,
+        "type": "TEAM_DISPATCHED"
+      }
+    }
+  },
+  "incidents": {
+    "-P6cv9YFforw5R_nH9BD": {
+      "acknowledgedAt": 1794909279425,
+      "acknowledgedBy": "65UmmTitcsblCH15muI21A8iQ842",
+      "acknowledgedByAgencyId": "TABUK_TEST_FIRE",
+      "acknowledgedByAgencyName": "Tabuk Test Fire Unit",
+      "agencyAcknowledgements": {
+        "TABUK_TEST_FIRE": {
+          "acknowledgedAt": 1794909279425,
+          "acknowledgedBy": "65UmmTitcsblCH15muI21A8iQ842",
+          "agencyId": "TABUK_TEST_FIRE",
+          "agencyName": "Tabuk Test Fire Unit"
+        }
+      },
+      "clientReportedAt": 1794909187109,
+      "clientRequestId": "-P6cv9YFforw5R_nH9BD",
+      "closedAt": 1794913237476,
+      "closedBy": "65UmmTitcsblCH15muI21A8iQ842",
+      "closedByAgencyId": "TABUK_TEST_FIRE",
+      "closedByAgencyName": "Tabuk Test Fire Unit",
+      "createdAt": 1794909186782,
+      "description": "",
+      "isSimulation": false,
+      "location": {
+        "accuracyMeters": 20,
+        "address": "Device GPS location",
+        "capturedAt": 1794909183646,
+        "isSimulated": false,
+        "latitude": 17.4428549,
+        "longitude": 121.4534938,
+        "source": "DEVICE_GPS",
+        "updatedAt": 1794909183646
+      },
+      "needsOperatorVerification": false,
+      "owner": "COMMAND_CENTER",
+      "priority": "HIGH",
+      "reporterId": "zkXzrbpziidyRVSJylOoGBZKRr42",
+      "reporterName": "Charlou Ybarley",
+      "reporterPhone": "+639776226185",
+      "routingMethod": "NO_LEAD_IN_RANGE",
+      "status": "RESOLVED",
+      "type": "MEDICAL",
+      "updatedAt": 1794913237476,
+      "verifiedAt": 1794909383745,
+      "verifiedBy": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "version": 5
+    },
+    "-P6cw_yDkosMaXmYvxzs": {
+      "acknowledgedAt": 1794909680100,
+      "acknowledgedBy": "65UmmTitcsblCH15muI21A8iQ842",
+      "acknowledgedByAgencyId": "TABUK_TEST_FIRE",
+      "acknowledgedByAgencyName": "Tabuk Test Fire Unit",
+      "agencyAcknowledgements": {
+        "TABUK_TEST_FIRE": {
+          "acknowledgedAt": 1794909680100,
+          "acknowledgedBy": "65UmmTitcsblCH15muI21A8iQ842",
+          "agencyId": "TABUK_TEST_FIRE",
+          "agencyName": "Tabuk Test Fire Unit"
+        }
+      },
+      "clientReportedAt": 1794909561596,
+      "clientRequestId": "-P6cw_yDkosMaXmYvxzs",
+      "closedAt": 1794963861940,
+      "closedBy": "65UmmTitcsblCH15muI21A8iQ842",
+      "closedByAgencyId": "TABUK_TEST_FIRE",
+      "closedByAgencyName": "Tabuk Test Fire Unit",
+      "createdAt": 1794909561261,
+      "description": "",
+      "isSimulation": false,
+      "location": {
+        "accuracyMeters": 20,
+        "address": "CFV3+5CG, National Road, City of Tabuk, Kalinga, Philippines",
+        "capturedAt": 1794909552185,
+        "isSimulated": false,
+        "latitude": 17.442818,
+        "longitude": 121.4535486,
+        "source": "DEVICE_GPS",
+        "updatedAt": 1794909552185
+      },
+      "needsOperatorVerification": false,
+      "owner": "COMMAND_CENTER",
+      "priority": "HIGH",
+      "reporterId": "zkXzrbpziidyRVSJylOoGBZKRr42",
+      "reporterName": "Charlou Ybarley",
+      "reporterPhone": "+639776226185",
+      "routingMethod": "NO_LEAD_IN_RANGE",
+      "status": "RESOLVED",
+      "type": "FIRE",
+      "updatedAt": 1794963861940,
+      "verifiedAt": 1794909633907,
+      "verifiedBy": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "version": 5
+    },
+    "-P6d5EXaexDWxPtJVMaN": {
+      "acknowledgedAt": 1794912125171,
+      "acknowledgedBy": "65UmmTitcsblCH15muI21A8iQ842",
+      "acknowledgedByAgencyId": "TABUK_TEST_FIRE",
+      "acknowledgedByAgencyName": "Tabuk Test Fire Unit",
+      "agencyAcknowledgements": {
+        "TABUK_TEST_FIRE": {
+          "acknowledgedAt": 1794912125171,
+          "acknowledgedBy": "65UmmTitcsblCH15muI21A8iQ842",
+          "agencyId": "TABUK_TEST_FIRE",
+          "agencyName": "Tabuk Test Fire Unit"
+        }
+      },
+      "clientReportedAt": 1794912091038,
+      "clientRequestId": "-P6d5EXaexDWxPtJVMaN",
+      "closedAt": 1794966176844,
+      "closedBy": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "closedByAgencyId": "CDRRMC",
+      "closedByAgencyName": "CDRRMC",
+      "createdAt": 1794912090750,
+      "description": "",
+      "isSimulation": false,
+      "leadAgencyId": "TABUK_TEST_FIRE",
+      "location": {
+        "accuracyMeters": 30.582000732421875,
+        "address": "CFV3+5CG, National Road, City of Tabuk, Kalinga, Philippines",
+        "capturedAt": 1794912088051,
+        "isSimulated": false,
+        "latitude": 17.4428152,
+        "longitude": 121.4535456,
+        "source": "DEVICE_GPS",
+        "updatedAt": 1794912088051
+      },
+      "needsOperatorVerification": false,
+      "owner": "TABUK_TEST_FIRE",
+      "priority": "HIGH",
+      "recommendedAgencies": {
+        "TABUK_TEST_FIRE": true
+      },
+      "recommendedStations": {
+        "TABUK_TEST_FIRE": "d1afee29-4d9c-456b-95db-c520a7fb657d"
+      },
+      "reporterId": "zkXzrbpziidyRVSJylOoGBZKRr42",
+      "reporterName": "Charlou Ybarley",
+      "reporterPhone": "+639776226185",
+      "routingMethod": "NEAREST_STATION",
+      "status": "CANCELLED",
+      "type": "FIRE",
+      "updatedAt": 1794966176844,
+      "verifiedAt": 1794964186654,
+      "verifiedBy": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "version": 4
+    },
+    "-P6d68BGw9mCNXWY0PrQ": {
+      "acknowledgedAt": 1794912474821,
+      "acknowledgedBy": "65UmmTitcsblCH15muI21A8iQ842",
+      "acknowledgedByAgencyId": "TABUK_TEST_FIRE",
+      "acknowledgedByAgencyName": "Tabuk Test Fire Unit",
+      "agencyAcknowledgements": {
+        "TABUK_TEST_FIRE": {
+          "acknowledgedAt": 1794912474821,
+          "acknowledgedBy": "65UmmTitcsblCH15muI21A8iQ842",
+          "agencyId": "TABUK_TEST_FIRE",
+          "agencyName": "Tabuk Test Fire Unit"
+        }
+      },
+      "clientReportedAt": 1794912327177,
+      "clientRequestId": "-P6d68BGw9mCNXWY0PrQ",
+      "closedAt": 1794913031801,
+      "closedBy": "65UmmTitcsblCH15muI21A8iQ842",
+      "closedByAgencyId": "TABUK_TEST_FIRE",
+      "closedByAgencyName": "Tabuk Test Fire Unit",
+      "createdAt": 1794912326885,
+      "description": "May sunog",
+      "isSimulation": false,
+      "location": {
+        "accuracyMeters": 68.72200012207031,
+        "address": "CFV3+5CG, National Road, City of Tabuk, Kalinga, Philippines",
+        "capturedAt": 1794912321759,
+        "isSimulated": false,
+        "latitude": 17.4427411,
+        "longitude": 121.453683,
+        "source": "DEVICE_GPS",
+        "updatedAt": 1794912321759
+      },
+      "needsOperatorVerification": true,
+      "priority": "HIGH",
+      "reporterId": "zkXzrbpziidyRVSJylOoGBZKRr42",
+      "reporterName": "Charlou Ybarley",
+      "reporterPhone": "+639776226185",
+      "status": "RESOLVED",
+      "type": "FIRE",
+      "updatedAt": 1794913031801,
+      "version": 4
+    },
+    "-P6d6TNTJVVF6q7pXWIc": {
+      "acknowledgedAt": 1794912471439,
+      "acknowledgedBy": "65UmmTitcsblCH15muI21A8iQ842",
+      "acknowledgedByAgencyId": "TABUK_TEST_FIRE",
+      "acknowledgedByAgencyName": "Tabuk Test Fire Unit",
+      "agencyAcknowledgements": {
+        "TABUK_TEST_FIRE": {
+          "acknowledgedAt": 1794912471439,
+          "acknowledgedBy": "65UmmTitcsblCH15muI21A8iQ842",
+          "agencyId": "TABUK_TEST_FIRE",
+          "agencyName": "Tabuk Test Fire Unit"
+        }
+      },
+      "clientReportedAt": 1794912413974,
+      "clientRequestId": "-P6d6TNTJVVF6q7pXWIc",
+      "closedAt": 1794966169815,
+      "closedBy": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "closedByAgencyId": "CDRRMC",
+      "closedByAgencyName": "CDRRMC",
+      "createdAt": 1794912413645,
+      "description": "",
+      "isSimulation": false,
+      "location": {
+        "accuracyMeters": 21.461000442504883,
+        "address": "Device GPS location",
+        "capturedAt": 1794912411830,
+        "isSimulated": false,
+        "latitude": 17.4428177,
+        "longitude": 121.4535539,
+        "source": "DEVICE_GPS",
+        "updatedAt": 1794912411830
+      },
+      "needsOperatorVerification": true,
+      "priority": "HIGH",
+      "reporterId": "zkXzrbpziidyRVSJylOoGBZKRr42",
+      "reporterName": "Charlou Ybarley",
+      "reporterPhone": "+639776226185",
+      "status": "CANCELLED",
+      "type": "ROAD_ACCIDENT",
+      "updatedAt": 1794966169815,
+      "version": 3
+    },
+    "-P6dadERfVEWMg-Zjsi5": {
+      "acknowledgedAt": 1794963763516,
+      "acknowledgedBy": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "acknowledgedByAgencyId": "CDRRMC",
+      "acknowledgedByAgencyName": "CDRRMC",
+      "clientReportedAt": 1794920584013,
+      "clientRequestId": "-P6dadERfVEWMg-Zjsi5",
+      "closedAt": 1794971155399,
+      "closedBy": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "closedByAgencyId": "CDRRMC",
+      "closedByAgencyName": "CDRRMC",
+      "createdAt": 1794920584769,
+      "description": "Fire ngarud",
+      "isSimulation": false,
+      "leadAgencyId": "TABUK_TEST_FIRE",
+      "location": {
+        "accuracyMeters": 15.92199993133545,
+        "address": "Device GPS location",
+        "capturedAt": 1794920581739,
+        "isSimulated": false,
+        "latitude": 17.4671639,
+        "longitude": 121.4719339,
+        "source": "DEVICE_GPS",
+        "updatedAt": 1794920581739
+      },
+      "needsOperatorVerification": false,
+      "owner": "TABUK_TEST_FIRE",
+      "priority": "HIGH",
+      "recommendedAgencies": {
+        "TABUK_TEST_FIRE": true
+      },
+      "recommendedStations": {
+        "TABUK_TEST_FIRE": "d1afee29-4d9c-456b-95db-c520a7fb657d"
+      },
+      "reporterId": "I0xkosp798b23TQsJKovF4vjfGa2",
+      "reporterName": "Gildy France K. Villanueva",
+      "reporterPhone": "+639948327619",
+      "routingMethod": "NEAREST_STATION",
+      "status": "CANCELLED",
+      "type": "FIRE",
+      "updatedAt": 1794971155399,
+      "verifiedAt": 1794965491541,
+      "verifiedBy": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "version": 4
+    },
+    "-P6db-ZfhZYZHN6Tl01V": {
+      "acknowledgedAt": 1794963762150,
+      "acknowledgedBy": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "acknowledgedByAgencyId": "CDRRMC",
+      "acknowledgedByAgencyName": "CDRRMC",
+      "agencyAcknowledgements": {
+        "TABUK_TEST_FIRE": {
+          "acknowledgedAt": 1794974046431,
+          "acknowledgedBy": "65UmmTitcsblCH15muI21A8iQ842",
+          "agencyId": "TABUK_TEST_FIRE",
+          "agencyName": "Tabuk Test Fire Unit"
+        }
+      },
+      "clientReportedAt": 1794920679521,
+      "clientRequestId": "-P6db-ZfhZYZHN6Tl01V",
+      "closedAt": 1794974076073,
+      "closedBy": "65UmmTitcsblCH15muI21A8iQ842",
+      "closedByAgencyId": "TABUK_TEST_FIRE",
+      "closedByAgencyName": "Tabuk Test Fire Unit",
+      "createdAt": 1794920680118,
+      "description": "Chat nak tu lattan nu agsapa pre",
+      "isSimulation": false,
+      "leadAgencyId": "TABUK_TEST_FIRE",
+      "location": {
+        "accuracyMeters": 43.77799987792969,
+        "address": "FF8F+C3R, Dagupan, City of Tabuk, Kalinga, Philippines",
+        "capturedAt": 1794920658740,
+        "isSimulated": false,
+        "latitude": 17.4670095,
+        "longitude": 121.4718568,
+        "source": "DEVICE_GPS",
+        "updatedAt": 1794920658740
+      },
+      "needsOperatorVerification": false,
+      "owner": "TABUK_TEST_FIRE",
+      "priority": "HIGH",
+      "recommendedAgencies": {
+        "TABUK_TEST_FIRE": true
+      },
+      "recommendedStations": {
+        "TABUK_TEST_FIRE": "d1afee29-4d9c-456b-95db-c520a7fb657d"
+      },
+      "reporterId": "I0xkosp798b23TQsJKovF4vjfGa2",
+      "reporterName": "Gildy France K. Villanueva",
+      "reporterPhone": "+639948327619",
+      "routingMethod": "NEAREST_STATION",
+      "status": "RESOLVED",
+      "type": "FIRE",
+      "updatedAt": 1794974076073,
+      "verifiedAt": 1794964708974,
+      "verifiedBy": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "version": 6
+    },
+    "-P6foZH1tGH2KVk7hH0H": {
+      "acknowledgedAt": 1794963757455,
+      "acknowledgedBy": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "acknowledgedByAgencyId": "CDRRMC",
+      "acknowledgedByAgencyName": "CDRRMC",
+      "agencyAcknowledgements": {
+        "TABUK_TEST_FIRE": {
+          "acknowledgedAt": 1794964021891,
+          "acknowledgedBy": "65UmmTitcsblCH15muI21A8iQ842",
+          "agencyId": "TABUK_TEST_FIRE",
+          "agencyName": "Tabuk Test Fire Unit"
+        }
+      },
+      "clientReportedAt": 1794957789017,
+      "clientRequestId": "-P6foZH1tGH2KVk7hH0H",
+      "closedAt": 1794966160555,
+      "closedBy": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "closedByAgencyId": "CDRRMC",
+      "closedByAgencyName": "CDRRMC",
+      "createdAt": 1794957788891,
+      "description": "",
+      "isSimulation": false,
+      "leadAgencyId": "TABUK_TEST_FIRE",
+      "location": {
+        "accuracyMeters": 10.32800006866455,
+        "address": "CC8R+4MM, City of Tabuk, Kalinga, Philippines",
+        "capturedAt": 1794957779355,
+        "isSimulated": false,
+        "latitude": 17.4155421,
+        "longitude": 121.4416172,
+        "source": "DEVICE_GPS",
+        "updatedAt": 1794957779355
+      },
+      "needsOperatorVerification": false,
+      "owner": "TABUK_TEST_FIRE",
+      "priority": "HIGH",
+      "recommendedAgencies": {
+        "TABUK_TEST_FIRE": true
+      },
+      "recommendedStations": {
+        "TABUK_TEST_FIRE": "d1afee29-4d9c-456b-95db-c520a7fb657d"
+      },
+      "reporterId": "zkXzrbpziidyRVSJylOoGBZKRr42",
+      "reporterName": "Charlou Ybarley",
+      "reporterPhone": "+639776226185",
+      "routingMethod": "NEAREST_STATION",
+      "status": "CANCELLED",
+      "type": "FIRE",
+      "updatedAt": 1794966160555,
+      "verifiedAt": 1794965644882,
+      "verifiedBy": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "version": 5
+    },
+    "-P6fwWYIpxEegTwBPL6s": {
+      "acknowledgedAt": 1794963753044,
+      "acknowledgedBy": "65UmmTitcsblCH15muI21A8iQ842",
+      "acknowledgedByAgencyId": "TABUK_TEST_FIRE",
+      "acknowledgedByAgencyName": "Tabuk Test Fire Unit",
+      "agencyAcknowledgements": {
+        "TABUK_TEST_FIRE": {
+          "acknowledgedAt": 1794963753044,
+          "acknowledgedBy": "65UmmTitcsblCH15muI21A8iQ842",
+          "agencyId": "TABUK_TEST_FIRE",
+          "agencyName": "Tabuk Test Fire Unit"
+        }
+      },
+      "clientReportedAt": 1794959875045,
+      "clientRequestId": "-P6fwWYIpxEegTwBPL6s",
+      "closedAt": 1794974807634,
+      "closedBy": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "closedByAgencyId": "CDRRMC",
+      "closedByAgencyName": "CDRRMC",
+      "createdAt": 1794959874965,
+      "description": "",
+      "isSimulation": false,
+      "location": {
+        "accuracyMeters": 2.5,
+        "address": "FC7H+QQ6, Mountain Province Boundary - Calanan - Pinukpuk - Abbut Rd, City of Tabuk, Kalinga, Philippines",
+        "capturedAt": 1794959871586,
+        "isSimulated": false,
+        "latitude": 17.4656483,
+        "longitude": 121.4299,
+        "source": "DEVICE_GPS",
+        "updatedAt": 1794959871586
+      },
+      "needsOperatorVerification": true,
+      "priority": "HIGH",
+      "reporterId": "zkXzrbpziidyRVSJylOoGBZKRr42",
+      "reporterName": "Charlou Ybarley",
+      "reporterPhone": "+639776226185",
+      "status": "CANCELLED",
+      "type": "FIRE",
+      "updatedAt": 1794974807634,
+      "version": 3
+    },
+    "-P6fwYk5X9OnMKfmayuA": {
+      "acknowledgedAt": 1794963735568,
+      "acknowledgedBy": "65UmmTitcsblCH15muI21A8iQ842",
+      "acknowledgedByAgencyId": "TABUK_TEST_FIRE",
+      "acknowledgedByAgencyName": "Tabuk Test Fire Unit",
+      "agencyAcknowledgements": {
+        "TABUK_TEST_FIRE": {
+          "acknowledgedAt": 1794963735568,
+          "acknowledgedBy": "65UmmTitcsblCH15muI21A8iQ842",
+          "agencyId": "TABUK_TEST_FIRE",
+          "agencyName": "Tabuk Test Fire Unit"
+        }
+      },
+      "clientReportedAt": 1794959884056,
+      "clientRequestId": "-P6fwYk5X9OnMKfmayuA",
+      "closedAt": 1794974822858,
+      "closedBy": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "closedByAgencyId": "CDRRMC",
+      "closedByAgencyName": "CDRRMC",
+      "createdAt": 1794959883461,
+      "description": "",
+      "isSimulation": false,
+      "leadAgencyId": "TABUK_TEST_FIRE",
+      "location": {
+        "accuracyMeters": 2.700000047683716,
+        "address": "Device GPS location",
+        "capturedAt": 1794959882951,
+        "isSimulated": false,
+        "latitude": 17.4656483,
+        "longitude": 121.4299,
+        "source": "DEVICE_GPS",
+        "updatedAt": 1794959882951
+      },
+      "needsOperatorVerification": false,
+      "owner": "TABUK_TEST_FIRE",
+      "priority": "HIGH",
+      "recommendedAgencies": {
+        "TABUK_TEST_FIRE": true
+      },
+      "recommendedStations": {
+        "TABUK_TEST_FIRE": "d1afee29-4d9c-456b-95db-c520a7fb657d"
+      },
+      "reporterId": "zkXzrbpziidyRVSJylOoGBZKRr42",
+      "reporterName": "Charlou Ybarley",
+      "reporterPhone": "+639776226185",
+      "routingMethod": "NEAREST_STATION",
+      "status": "CANCELLED",
+      "type": "ROAD_ACCIDENT",
+      "updatedAt": 1794974822858,
+      "verifiedAt": 1794964751501,
+      "verifiedBy": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "version": 4
+    },
+    "-P6gKK5P1XMlhzBmOsjJ": {
+      "clientReportedAt": 1794966377849,
+      "clientRequestId": "-P6gKK5P1XMlhzBmOsjJ",
+      "closedAt": 1794966475613,
+      "closedBy": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "closedByAgencyId": "CDRRMC",
+      "closedByAgencyName": "CDRRMC",
+      "createdAt": 1794966377377,
+      "description": "",
+      "isSimulation": false,
+      "leadAgencyId": "TABUK_TEST_FIRE",
+      "location": {
+        "accuracyMeters": 64.0999984741211,
+        "address": "CFV3+5CG, National Road, City of Tabuk, Kalinga, Philippines",
+        "capturedAt": 1794966371806,
+        "isSimulated": false,
+        "latitude": 17.4425595,
+        "longitude": 121.4538876,
+        "source": "DEVICE_GPS",
+        "updatedAt": 1794966371806
+      },
+      "needsOperatorVerification": false,
+      "owner": "TABUK_TEST_FIRE",
+      "priority": "HIGH",
+      "recommendedAgencies": {
+        "TABUK_TEST_FIRE": true
+      },
+      "recommendedStations": {
+        "TABUK_TEST_FIRE": "d1afee29-4d9c-456b-95db-c520a7fb657d"
+      },
+      "reporterId": "zkXzrbpziidyRVSJylOoGBZKRr42",
+      "reporterName": "Charlou Ybarley",
+      "reporterPhone": "+639776226185",
+      "routingMethod": "NEAREST_STATION",
+      "status": "CANCELLED",
+      "type": "FIRE",
+      "updatedAt": 1794966475613,
+      "verifiedAt": 1794966386915,
+      "verifiedBy": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "version": 3
+    },
+    "-P6gKifY-88vMH0-Lsm1": {
+      "clientReportedAt": 1794966482627,
+      "clientRequestId": "-P6gKifY-88vMH0-Lsm1",
+      "closedAt": 1794967598512,
+      "closedBy": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "closedByAgencyId": "CDRRMC",
+      "closedByAgencyName": "CDRRMC",
+      "createdAt": 1794966485158,
+      "description": "",
+      "isSimulation": false,
+      "leadAgencyId": "TABUK_TEST_FIRE",
+      "location": {
+        "accuracyMeters": 20.83300018310547,
+        "address": "Device GPS location",
+        "capturedAt": 1794966480964,
+        "isSimulated": false,
+        "latitude": 17.4428263,
+        "longitude": 121.4535347,
+        "source": "DEVICE_GPS",
+        "updatedAt": 1794966480964
+      },
+      "needsOperatorVerification": false,
+      "owner": "TABUK_TEST_FIRE",
+      "priority": "HIGH",
+      "recommendedAgencies": {
+        "TABUK_TEST_FIRE": true
+      },
+      "recommendedStations": {
+        "TABUK_TEST_FIRE": "d1afee29-4d9c-456b-95db-c520a7fb657d"
+      },
+      "reporterId": "zkXzrbpziidyRVSJylOoGBZKRr42",
+      "reporterName": "Charlou Ybarley",
+      "reporterPhone": "+639776226185",
+      "routingMethod": "NEAREST_STATION",
+      "status": "CANCELLED",
+      "type": "ROAD_ACCIDENT",
+      "updatedAt": 1794967598512,
+      "verifiedAt": 1794966492890,
+      "verifiedBy": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "version": 3
+    },
+    "-P6gmz2v6GOQhBg_fbDf": {
+      "acknowledgedAt": 1794974300550,
+      "acknowledgedBy": "65UmmTitcsblCH15muI21A8iQ842",
+      "acknowledgedByAgencyId": "TABUK_TEST_FIRE",
+      "acknowledgedByAgencyName": "Tabuk Test Fire Unit",
+      "agencyAcknowledgements": {
+        "TABUK_TEST_FIRE": {
+          "acknowledgedAt": 1794974300550,
+          "acknowledgedBy": "65UmmTitcsblCH15muI21A8iQ842",
+          "agencyId": "TABUK_TEST_FIRE",
+          "agencyName": "Tabuk Test Fire Unit"
+        }
+      },
+      "clientReportedAt": 1794974151758,
+      "clientRequestId": "-P6gmz2v6GOQhBg_fbDf",
+      "closedAt": 1794974763685,
+      "closedBy": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "closedByAgencyId": "CDRRMC",
+      "closedByAgencyName": "CDRRMC",
+      "createdAt": 1794974151405,
+      "description": "Ada sunog",
+      "isSimulation": false,
+      "location": {
+        "accuracyMeters": 27.240999221801758,
+        "address": "CFV3+5CG, National Road, City of Tabuk, Kalinga, Philippines",
+        "capturedAt": 1794974144456,
+        "isSimulated": false,
+        "latitude": 17.4428372,
+        "longitude": 121.4534926,
+        "source": "DEVICE_GPS",
+        "updatedAt": 1794974144456
+      },
+      "needsOperatorVerification": true,
+      "priority": "HIGH",
+      "reporterId": "zkXzrbpziidyRVSJylOoGBZKRr42",
+      "reporterName": "Charlou Ybarley",
+      "reporterPhone": "+639776226185",
+      "status": "CANCELLED",
+      "type": "FIRE",
+      "updatedAt": 1794974763685,
+      "version": 4
+    },
+    "-P6gpe-Ejq4GmgpOVbjh": {
+      "acknowledgedAt": 1794974889024,
+      "acknowledgedBy": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "acknowledgedByAgencyId": "CDRRMC",
+      "acknowledgedByAgencyName": "CDRRMC",
+      "clientReportedAt": 1794974851941,
+      "clientRequestId": "-P6gpe-Ejq4GmgpOVbjh",
+      "closedAt": 1794974898520,
+      "closedBy": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "closedByAgencyId": "CDRRMC",
+      "closedByAgencyName": "CDRRMC",
+      "createdAt": 1794974851630,
+      "description": "Ada ti nag apa",
+      "isSimulation": false,
+      "location": {
+        "accuracyMeters": 20,
+        "address": "CFV3+5CG, National Road, City of Tabuk, Kalinga, Philippines",
+        "capturedAt": 1794974815386,
+        "isSimulated": false,
+        "latitude": 17.4428578,
+        "longitude": 121.4534883,
+        "source": "DEVICE_GPS",
+        "updatedAt": 1794974815386
+      },
+      "needsOperatorVerification": true,
+      "priority": "HIGH",
+      "reporterId": "zkXzrbpziidyRVSJylOoGBZKRr42",
+      "reporterName": "Charlou Ybarley",
+      "reporterPhone": "+639776226185",
+      "status": "RESOLVED",
+      "type": "POLICE",
+      "updatedAt": 1794974898520,
+      "version": 3
+    },
+    "-P6gvLSqzEMh7ya_gmV4": {
+      "acknowledgedAt": 1794977375067,
+      "acknowledgedBy": "65UmmTitcsblCH15muI21A8iQ842",
+      "acknowledgedByAgencyId": "TABUK_TEST_FIRE",
+      "acknowledgedByAgencyName": "Tabuk Test Fire Unit",
+      "agencyAcknowledgements": {
+        "TABUK_TEST_FIRE": {
+          "acknowledgedAt": 1794977375067,
+          "acknowledgedBy": "65UmmTitcsblCH15muI21A8iQ842",
+          "agencyId": "TABUK_TEST_FIRE",
+          "agencyName": "Tabuk Test Fire Unit"
+        }
+      },
+      "clientReportedAt": 1794976344802,
+      "clientRequestId": "-P6gvLSqzEMh7ya_gmV4",
+      "closedAt": 1794984715107,
+      "closedBy": "65UmmTitcsblCH15muI21A8iQ842",
+      "closedByAgencyId": "TABUK_TEST_FIRE",
+      "closedByAgencyName": "Tabuk Test Fire Unit",
+      "createdAt": 1794976344412,
+      "description": "",
+      "isSimulation": false,
+      "location": {
+        "accuracyMeters": 56.099998474121094,
+        "address": "CFV3+5CG, National Road, City of Tabuk, Kalinga, Philippines",
+        "capturedAt": 1794976342006,
+        "isSimulated": false,
+        "latitude": 17.4425743,
+        "longitude": 121.4538482,
+        "source": "DEVICE_GPS",
+        "updatedAt": 1794976342006
+      },
+      "needsOperatorVerification": true,
+      "priority": "HIGH",
+      "reporterId": "zkXzrbpziidyRVSJylOoGBZKRr42",
+      "reporterName": "Charlou Ybarley",
+      "reporterPhone": "+639776226185",
+      "status": "RESOLVED",
+      "type": "FIRE",
+      "updatedAt": 1794984715107,
+      "version": 4
+    },
+    "-P6hVTdw_uLImlZwmUWR": {
+      "acknowledgedAt": 1795006825175,
+      "acknowledgedBy": "65UmmTitcsblCH15muI21A8iQ842",
+      "acknowledgedByAgencyId": "TABUK_TEST_FIRE",
+      "acknowledgedByAgencyName": "Tabuk Test Fire Unit",
+      "agencyAcknowledgements": {
+        "TABUK_TEST_FIRE": {
+          "acknowledgedAt": 1795006825175,
+          "acknowledgedBy": "65UmmTitcsblCH15muI21A8iQ842",
+          "agencyId": "TABUK_TEST_FIRE",
+          "agencyName": "Tabuk Test Fire Unit"
+        }
+      },
+      "clientReportedAt": 1794986077894,
+      "clientRequestId": "-P6hVTdw_uLImlZwmUWR",
+      "closedAt": 1795006834199,
+      "closedBy": "65UmmTitcsblCH15muI21A8iQ842",
+      "closedByAgencyId": "TABUK_TEST_FIRE",
+      "closedByAgencyName": "Tabuk Test Fire Unit",
+      "createdAt": 1794986077488,
+      "description": "",
+      "isSimulation": false,
+      "location": {
+        "accuracyMeters": 20,
+        "address": "Device GPS location",
+        "capturedAt": 1794986076158,
+        "isSimulated": false,
+        "latitude": 17.4428592,
+        "longitude": 121.4534863,
+        "source": "DEVICE_GPS",
+        "updatedAt": 1794986076158
+      },
+      "needsOperatorVerification": true,
+      "priority": "HIGH",
+      "reporterId": "zkXzrbpziidyRVSJylOoGBZKRr42",
+      "reporterName": "Charlou Ybarley",
+      "reporterPhone": "+639776226185",
+      "status": "RESOLVED",
+      "type": "RESCUE",
+      "updatedAt": 1795006834199,
+      "version": 4
+    },
+    "-P6hYKQvWABjuc5aMVPO": {
+      "acknowledgedAt": 1795006796686,
+      "acknowledgedBy": "65UmmTitcsblCH15muI21A8iQ842",
+      "acknowledgedByAgencyId": "TABUK_TEST_FIRE",
+      "acknowledgedByAgencyName": "Tabuk Test Fire Unit",
+      "agencyAcknowledgements": {
+        "TABUK_TEST_FIRE": {
+          "acknowledgedAt": 1795006796686,
+          "acknowledgedBy": "65UmmTitcsblCH15muI21A8iQ842",
+          "agencyId": "TABUK_TEST_FIRE",
+          "agencyName": "Tabuk Test Fire Unit"
+        }
+      },
+      "clientReportedAt": 1794986825222,
+      "clientRequestId": "-P6hYKQvWABjuc5aMVPO",
+      "closedAt": 1795006812295,
+      "closedBy": "65UmmTitcsblCH15muI21A8iQ842",
+      "closedByAgencyId": "TABUK_TEST_FIRE",
+      "closedByAgencyName": "Tabuk Test Fire Unit",
+      "createdAt": 1794986825841,
+      "description": "Accident",
+      "isSimulation": false,
+      "location": {
+        "accuracyMeters": 4.465000152587891,
+        "address": "CFW3+9PX, Provincial Rd, City of Tabuk, Kalinga, Philippines",
+        "capturedAt": 1794986802694,
+        "isSimulated": false,
+        "latitude": 17.445858,
+        "longitude": 121.4548133,
+        "source": "DEVICE_GPS",
+        "updatedAt": 1794986802694
+      },
+      "needsOperatorVerification": true,
+      "priority": "HIGH",
+      "reporterId": "I0xkosp798b23TQsJKovF4vjfGa2",
+      "reporterName": "Gildy France K. Villanueva",
+      "reporterPhone": "+639948327619",
+      "status": "RESOLVED",
+      "type": "RESCUE",
+      "updatedAt": 1795006812295,
+      "version": 4
+    },
+    "-P6ho1xOC-apTAPfGHSR": {
+      "clientReportedAt": 1794991207211,
+      "clientRequestId": "-P6ho1xOC-apTAPfGHSR",
+      "createdAt": 1794991206728,
+      "description": "",
+      "isSimulation": false,
+      "location": {
+        "accuracyMeters": 4.699999809265137,
+        "address": "CCHW+G2H, City of Tabuk, Kalinga, Philippines",
+        "capturedAt": 1794991201262,
+        "isSimulated": false,
+        "latitude": 17.4291217,
+        "longitude": 121.4454117,
+        "source": "DEVICE_GPS",
+        "updatedAt": 1794991201262
+      },
+      "needsOperatorVerification": true,
+      "priority": "HIGH",
+      "reporterId": "zkXzrbpziidyRVSJylOoGBZKRr42",
+      "reporterName": "Charlou Ybarley",
+      "reporterPhone": "+639776226185",
+      "status": "RECEIVED",
+      "type": "ROAD_ACCIDENT",
+      "updatedAt": 1794991206728,
+      "version": 1
+    },
+    "-P6hoBUrd8wq6c6FsGeb": {
+      "clientReportedAt": 1794991245032,
+      "clientRequestId": "-P6hoBUrd8wq6c6FsGeb",
+      "createdAt": 1794991245853,
+      "description": "Fire",
+      "isSimulation": false,
+      "location": {
+        "accuracyMeters": 3.7899999618530273,
+        "address": "CC9V+2J4, City of Tabuk, Kalinga, Philippines",
+        "capturedAt": 1794991216687,
+        "isSimulated": false,
+        "latitude": 17.4176113,
+        "longitude": 121.4439296,
+        "source": "DEVICE_GPS",
+        "updatedAt": 1794991216687
+      },
+      "needsOperatorVerification": true,
+      "priority": "HIGH",
+      "reporterId": "I0xkosp798b23TQsJKovF4vjfGa2",
+      "reporterName": "Gildy France K. Villanueva",
+      "reporterPhone": "+639948327619",
+      "status": "RECEIVED",
+      "type": "FIRE",
+      "updatedAt": 1794991245853,
+      "version": 1
+    },
+    "-P6hsiYxNF-h2TvykBqA": {
+      "clientReportedAt": 1794992433123,
+      "clientRequestId": "-P6hsiYxNF-h2TvykBqA",
+      "createdAt": 1794992433852,
+      "description": "NA HEART BROKEN NAKITA NIA MAHAL NIA MAY KASAMANG IBA (ARAY KOPO)",
+      "isSimulation": false,
+      "location": {
+        "accuracyMeters": 3.7899999618530273,
+        "address": "FFC9+GF2, City of Tabuk, Kalinga, Philippines",
+        "capturedAt": 1794992427685,
+        "isSimulated": false,
+        "latitude": 17.4716425,
+        "longitude": 121.4690933,
+        "source": "DEVICE_GPS",
+        "updatedAt": 1794992427685
+      },
+      "needsOperatorVerification": true,
+      "priority": "HIGH",
+      "reporterId": "I0xkosp798b23TQsJKovF4vjfGa2",
+      "reporterName": "Gildy France K. Villanueva",
+      "reporterPhone": "+639948327619",
+      "status": "RECEIVED",
+      "type": "RESCUE",
+      "updatedAt": 1794992433852,
+      "version": 1
+    },
+    "-P6hwozixoB_20vHa3gN": {
+      "clientReportedAt": 1794993508065,
+      "clientRequestId": "-P6hwozixoB_20vHa3gN",
+      "createdAt": 1794993508957,
+      "description": "Drawing",
+      "isSimulation": false,
+      "leadAgencyId": "TABUK_TEST_FIRE",
+      "location": {
+        "accuracyMeters": 3.7899999618530273,
+        "address": "FFGG+9G5, Provincial Rd, City of Tabuk, Kalinga, Philippines",
+        "capturedAt": 1794993500683,
+        "isSimulated": false,
+        "latitude": 17.4735584,
+        "longitude": 121.4759156,
+        "source": "DEVICE_GPS",
+        "updatedAt": 1794993500683
+      },
+      "needsOperatorVerification": false,
+      "owner": "TABUK_TEST_FIRE",
+      "priority": "HIGH",
+      "recommendedAgencies": {
+        "TABUK_TEST_FIRE": true
+      },
+      "recommendedStations": {
+        "TABUK_TEST_FIRE": "d1afee29-4d9c-456b-95db-c520a7fb657d"
+      },
+      "reporterId": "I0xkosp798b23TQsJKovF4vjfGa2",
+      "reporterName": "Gildy France K. Villanueva",
+      "reporterPhone": "+639948327619",
+      "routingMethod": "NEAREST_STATION",
+      "status": "RECEIVED",
+      "type": "RESCUE",
+      "updatedAt": 1794995800878,
+      "verifiedAt": 1794995800878,
+      "verifiedBy": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+      "version": 2
+    },
+    "-P6lOUPzTywVxIw7ib8L": {
+      "clientReportedAt": 1795051352931,
+      "clientRequestId": "-P6lOUPzTywVxIw7ib8L",
+      "createdAt": 1795051354340,
+      "description": "Dalawang aso nag banggaan isa patay",
+      "isSimulation": false,
+      "location": {
+        "accuracyMeters": 7.140999794006348,
+        "address": "Calanan - Pinukpuk Rd, Pinukpuk, Kalinga, Philippines",
+        "capturedAt": 1795051347893,
+        "isSimulated": false,
+        "latitude": 17.5906847,
+        "longitude": 121.4316236,
+        "source": "DEVICE_GPS",
+        "updatedAt": 1795051347893
+      },
+      "needsOperatorVerification": true,
+      "priority": "HIGH",
+      "reporterId": "I0xkosp798b23TQsJKovF4vjfGa2",
+      "reporterName": "Gildy France K. Villanueva",
+      "reporterPhone": "+639948327619",
+      "status": "RECEIVED",
+      "type": "ROAD_ACCIDENT",
+      "updatedAt": 1795051354340,
+      "version": 1
+    }
+  },
+  "notification_jobs": {
+    "0f24c991-dae0-476a-a3c3-80f4f722b0b2": {
+      "assignmentId": "de48bea9-eda6-4c59-97a0-b4c98d2bfd77",
+      "attempts": 0,
+      "cancelledAt": 1795006834199,
+      "createdAt": 1795006829614,
+      "incidentId": "-P6hVTdw_uLImlZwmUWR",
+      "isSimulation": false,
+      "status": "CANCELLED",
+      "targetId": "044cdc4f-0632-4cf9-9fe0-d521872569ab",
+      "targetType": "TEAM"
+    },
+    "3388943b-63ec-498c-b6bc-81f49e6c2430": {
+      "assignmentId": "fa792e4f-cef5-483f-8223-cfe11bb9733d",
+      "attempts": 0,
+      "cancelledAt": 1794974076073,
+      "createdAt": 1794974050813,
+      "incidentId": "-P6db-ZfhZYZHN6Tl01V",
+      "isSimulation": false,
+      "status": "CANCELLED",
+      "targetId": "044cdc4f-0632-4cf9-9fe0-d521872569ab",
+      "targetType": "TEAM"
+    },
+    "3ffc75dc-4a81-4b44-8c22-0518edab0b52": {
+      "assignmentId": "30eb3df4-5507-40cc-8af2-66f7f0691e32",
+      "attempts": 0,
+      "cancelledAt": 1794913237476,
+      "createdAt": 1794913123644,
+      "incidentId": "-P6cv9YFforw5R_nH9BD",
+      "isSimulation": false,
+      "status": "CANCELLED",
+      "targetId": "044cdc4f-0632-4cf9-9fe0-d521872569ab",
+      "targetType": "TEAM"
+    },
+    "44423390-5b72-4c44-bae8-ff286e22a9c8": {
+      "assignmentId": "d6bfd37d-18ce-4aa2-93b1-8fbd4aa98f00",
+      "attempts": 0,
+      "cancelledAt": 1794974763685,
+      "createdAt": 1794974305788,
+      "incidentId": "-P6gmz2v6GOQhBg_fbDf",
+      "isSimulation": false,
+      "status": "CANCELLED",
+      "targetId": "044cdc4f-0632-4cf9-9fe0-d521872569ab",
+      "targetType": "TEAM"
+    },
+    "74738b80-da4b-4e6b-9343-5e92dd36effb": {
+      "assignmentId": "c3dddf2d-926b-4f93-9d07-72404f2c4bbf",
+      "attempts": 0,
+      "cancelledAt": 1794913031801,
+      "createdAt": 1794912792355,
+      "incidentId": "-P6d68BGw9mCNXWY0PrQ",
+      "isSimulation": false,
+      "status": "CANCELLED",
+      "targetId": "044cdc4f-0632-4cf9-9fe0-d521872569ab",
+      "targetType": "TEAM"
+    },
+    "9a7db53c-6cd9-4567-b7b3-e813f293f5f7": {
+      "assignmentId": "b043c691-213d-4be5-97e8-f4da56de68c2",
+      "attempts": 0,
+      "cancelledAt": 1794963861940,
+      "createdAt": 1794913395125,
+      "incidentId": "-P6cw_yDkosMaXmYvxzs",
+      "isSimulation": false,
+      "status": "CANCELLED",
+      "targetId": "044cdc4f-0632-4cf9-9fe0-d521872569ab",
+      "targetType": "TEAM"
+    },
+    "c1e79b6c-5bb6-408c-8e7a-38a88e2964bf": {
+      "assignmentId": "76c4d415-9de5-4ca4-832d-ea8f402edb6f",
+      "attempts": 0,
+      "cancelledAt": 1795006812295,
+      "createdAt": 1795006802879,
+      "incidentId": "-P6hYKQvWABjuc5aMVPO",
+      "isSimulation": false,
+      "status": "CANCELLED",
+      "targetId": "044cdc4f-0632-4cf9-9fe0-d521872569ab",
+      "targetType": "TEAM"
+    },
+    "ffb688de-c76f-4ed4-a392-417accd9b683": {
+      "assignmentId": "c476ffa5-2c96-4aa5-b508-f901d96b4bac",
+      "attempts": 0,
+      "cancelledAt": 1794984715107,
+      "createdAt": 1794977380755,
+      "incidentId": "-P6gvLSqzEMh7ya_gmV4",
+      "isSimulation": false,
+      "status": "CANCELLED",
+      "targetId": "044cdc4f-0632-4cf9-9fe0-d521872569ab",
+      "targetType": "TEAM"
+    }
+  },
+  "server": {
+    "City of Tabuk": {
+      "advisories": {
+        "9666e7f7-2241-4f47-9215-725233784a5d": {
+          "actions": [
+            "Avoid steep slopes, road cuts and river banks",
+            "Use main roads and follow traffic advice",
+            "Report cracks, falling rocks or flowing water to the CDRRMO hotline right away",
+            "Move to higher, safer ground if you hear rumbling or see the ground moving"
+          ],
+          "agencyId": "COMMAND_CENTER",
+          "agencyName": "Command Center",
+          "area": "CITYWIDE",
+          "category": "WARNING",
+          "createdAt": 1794969405966,
+          "createdBy": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+          "expiresAt": 1795361820000,
+          "fullMessage": "Heavy rain may loosen soil and rocks on hillsides and road cuts across Tabuk City. Avoid steep slopes, river banks and road cuts, and use the main roads where possible. Report cracks in the ground, falling rocks, or water flowing down slopes to the CDRRMO hotline right away.\n\nWhat citizens should do (add each as a separate action.",
+          "issuedAt": 1794969406808,
+          "publishedAt": 1794969406808,
+          "publishedBy": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+          "severity": "HIGH",
+          "shortDescription": "Landslides are possible on hillsides and road cuts after heavy rain. Stay alert and avoid slopes.",
+          "status": "PUBLISHED",
+          "title": "Landslide warning",
+          "updatedAt": 1794969406808,
+          "updatedBy": "UKBvnP4CseYvoeMQjWdJJh4IOFB3"
+        }
+      },
+      "agency": {
+        "TABUK_TEST_FIRE": {
+          "members": {
+            "65UmmTitcsblCH15muI21A8iQ842": {
+              "active": true,
+              "agencyId": "TABUK_TEST_FIRE",
+              "approvedAt": 1794887755916,
+              "approvedBy": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+              "authProvisioned": true,
+              "createdAt": 1794887755916,
+              "createdBy": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+              "displayName": "admin12345",
+              "email": "admin@gmail.com",
+              "role": "AGENCY_ADMIN",
+              "stationId": "d1afee29-4d9c-456b-95db-c520a7fb657d"
+            },
+            "Sc7mRgVE8kajLJ4Tkqib5XXRClx2": {
+              "active": true,
+              "agencyId": "TABUK_TEST_FIRE",
+              "approvedAt": 1794889380349,
+              "approvedBy": "65UmmTitcsblCH15muI21A8iQ842",
+              "authProvisioned": true,
+              "birthdate": "2001-03-15",
+              "createdAt": 1794889380349,
+              "createdBy": "65UmmTitcsblCH15muI21A8iQ842",
+              "displayName": "Gildy France Villanuava",
+              "email": "gildy1@gmail.com",
+              "emergencyContactName": "Generose",
+              "emergencyContactPhone": "09277433290",
+              "phoneNumber": "09277433290",
+              "residentialAddress": "Appas Tabuk City",
+              "role": "RESPONDER",
+              "sex": "MALE",
+              "stationId": "d1afee29-4d9c-456b-95db-c520a7fb657d",
+              "teamId": "044cdc4f-0632-4cf9-9fe0-d521872569ab"
+            }
+          },
+          "profile": {
+            "active": true,
+            "address": "Dagupan Centro Tabuk City Kalinga",
+            "code": "TABUK_TEST_FIRE",
+            "contactEmail": "charlouybarley.dost@gmail.com",
+            "contactNumber": "09776226185",
+            "createdAt": 1794887694913,
+            "createdBy": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+            "description": "",
+            "emergencyTypes": [
+              "FIRE",
+              "RESCUE",
+              "ROAD_ACCIDENT"
+            ],
+            "hotline": "09776226185",
+            "name": "Tabuk Test Fire Unit",
+            "type": "PUBLIC_SAFETY",
+            "types": [
+              "PUBLIC_SAFETY",
+              "FIRE",
+              "RESCUE",
+              "MEDICAL",
+              "DISASTER",
+              "OTHER"
+            ],
+            "updatedAt": 1794911929332
+          },
+          "responders": {
+            "Sc7mRgVE8kajLJ4Tkqib5XXRClx2": {
+              "active": true,
+              "memberUid": "Sc7mRgVE8kajLJ4Tkqib5XXRClx2"
+            }
+          },
+          "stations": {
+            "1958d231-9009-45b7-b272-e208a92a181d": {
+              "active": false,
+              "deactivatedAt": 1794967685723,
+              "deactivatedBy": "65UmmTitcsblCH15muI21A8iQ842",
+              "hotline": "09776226185",
+              "latitude": 17.424602,
+              "location": "Malinawa",
+              "longitude": 121.443944,
+              "name": "BFP BULANAO",
+              "updatedAt": 1794966427930
+            },
+            "d1afee29-4d9c-456b-95db-c520a7fb657d": {
+              "hotline": "09776226185",
+              "latitude": 17.470712,
+              "location": "Dagupan, Magsaysay, Tabuk City, Kalinga",
+              "longitude": 121.465858,
+              "name": "BFP DAGUPAN MAIN",
+              "updatedAt": 1794888038970
+            }
+          },
+          "teams": {
+            "044cdc4f-0632-4cf9-9fe0-d521872569ab": {
+              "active": true,
+              "agencyId": "TABUK_TEST_FIRE",
+              "name": "TEAM BFP 1",
+              "stationId": "d1afee29-4d9c-456b-95db-c520a7fb657d",
+              "status": "AVAILABLE",
+              "updatedAt": 1794889917164
+            }
+          }
+        }
+      },
+      "command_center": {
+        "audit_logs": {
+          "-P56WbqEkkZKeug0Bov9": {
+            "action": "INCIDENT_CANCELLED",
+            "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "isSimulation": false,
+            "resourceId": "-P56WDJypwnxnrIvf_4z",
+            "timestamp": 1793275100256
+          },
+          "-P56XnFWj1xMr3F4PiDl": {
+            "action": "INCIDENT_RESOLVED",
+            "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "isSimulation": false,
+            "resourceId": "-P56XGfYbPx1WRH7-fxt",
+            "timestamp": 1793275409084
+          },
+          "-P56Yh7YiRFS2Pelhc9g": {
+            "action": "INCIDENT_RESOLVED",
+            "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "isSimulation": false,
+            "resourceId": "-P56YEIfat8BzEy2hrW1",
+            "timestamp": 1793275646154
+          },
+          "-P56_jBLIbeBC8ZuKHXV": {
+            "action": "INCIDENT_RESOLVED",
+            "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "isSimulation": false,
+            "resourceId": "-P56ZjKFC7vsqHipnMs7",
+            "timestamp": 1793276178904
+          },
+          "-P56cGNt8xJXtyAJGkGr": {
+            "action": "INCIDENT_RESOLVED",
+            "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "isSimulation": false,
+            "resourceId": "-P56be0ZXJnn-KR1aoos",
+            "timestamp": 1793276843305
+          },
+          "-P56cJ1Sei2c9oXE_1hq": {
+            "action": "INCIDENT_RESOLVED",
+            "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "isSimulation": false,
+            "resourceId": "-P56be1Zpya6TfgiSJLO",
+            "timestamp": 1793276854144
+          },
+          "-P56eywJUaZgPltQsY3F": {
+            "action": "INCIDENT_ACKNOWLEDGED",
+            "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "isSimulation": false,
+            "resourceId": "-P56eoCPFlibLOaXoOaV",
+            "timestamp": 1793277554118
+          },
+          "-P56f1WVCbi7oaWFk2Tb": {
+            "action": "INCIDENT_ACKNOWLEDGED",
+            "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "isSimulation": false,
+            "resourceId": "-P56eOG2hqQu8zd5oBxW",
+            "timestamp": 1793277568776
+          },
+          "-P56f3l2419nbdF5iihn": {
+            "action": "INCIDENT_RESOLVED",
+            "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "isSimulation": false,
+            "resourceId": "-P56eoCPFlibLOaXoOaV",
+            "timestamp": 1793277577962
+          },
+          "-P56f6A58tqO7K67EQc7": {
+            "action": "INCIDENT_RESOLVED",
+            "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "isSimulation": false,
+            "resourceId": "-P56eOG2hqQu8zd5oBxW",
+            "timestamp": 1793277587996
+          },
+          "-P56jjLsbs3QmeeseeJS": {
+            "action": "INCIDENT_ACKNOWLEDGED",
+            "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "isSimulation": false,
+            "resourceId": "-P56jOJGz-e7bs6WvHe6",
+            "timestamp": 1793278801009
+          },
+          "-P56jlzqv2N3PtAIDgev": {
+            "action": "INCIDENT_CANCELLED",
+            "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "isSimulation": false,
+            "resourceId": "-P56jOJGz-e7bs6WvHe6",
+            "timestamp": 1793278811822
+          },
+          "-P56oBN4y7DtzP4BnKxL": {
+            "action": "INCIDENT_ACKNOWLEDGED",
+            "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "isSimulation": false,
+            "resourceId": "-P56nkXLp_SrIMRihl6d",
+            "timestamp": 1793279968461
+          },
+          "-P56oCKxuCRd8lsWohXL": {
+            "action": "INCIDENT_RESOLVED",
+            "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "isSimulation": false,
+            "resourceId": "-P56nkXLp_SrIMRihl6d",
+            "timestamp": 1793279972417
+          },
+          "-P5BcnPya87pT4AUa9UW": {
+            "action": "INCIDENT_ACKNOWLEDGED",
+            "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "isSimulation": false,
+            "resourceId": "-P5A2gqMUwiaLeex9fbl",
+            "timestamp": 1793360870458
+          },
+          "-P5LwT-nmv2dl-YneSva": {
+            "action": "INCIDENT_CANCELLED",
+            "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "isSimulation": false,
+            "resourceId": "-P5LuVXH9TkJn1dLdSTq",
+            "timestamp": 1793533797915
+          },
+          "-P5Lx--3GygRml0MpYJs": {
+            "action": "INCIDENT_CANCELLED",
+            "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "isSimulation": false,
+            "resourceId": "-P5LwbZXHRSTitjuiB10",
+            "timestamp": 1793533937130
+          },
+          "-P5LxeXkUO9E9zF0Ji9T": {
+            "action": "INCIDENT_CANCELLED",
+            "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "isSimulation": false,
+            "resourceId": "-P5LxE048efBg7Cmg7u1",
+            "timestamp": 1793534111214
+          },
+          "-P5LyDAYI-H_Ml0gQpqD": {
+            "action": "INCIDENT_RESOLVED",
+            "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "isSimulation": false,
+            "resourceId": "-P5A2gqMUwiaLeex9fbl",
+            "timestamp": 1793534257354
+          },
+          "-P5LzQNqlmjHBtht7V4r": {
+            "action": "INCIDENT_CANCELLED",
+            "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "isSimulation": false,
+            "resourceId": "-P5Lz4d-rWOxOkRDYP5f",
+            "timestamp": 1793534573610
+          },
+          "-P5M7fcevwrPlxuXVzwK": {
+            "action": "INCIDENT_ACKNOWLEDGED",
+            "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "isSimulation": false,
+            "resourceId": "-P5M6zH2iBeF_vZoRrPO",
+            "timestamp": 1793536999455
+          },
+          "-P5MD05-HOS0Ufdni7cr": {
+            "action": "INCIDENT_CANCELLED",
+            "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "isSimulation": false,
+            "resourceId": "-P5M6zH2iBeF_vZoRrPO",
+            "timestamp": 1793538397910
+          },
+          "-P5MDTw2hN8MvK8vHg6O": {
+            "action": "INCIDENT_ACKNOWLEDGED",
+            "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "isSimulation": false,
+            "resourceId": "-P5MDHxfsY8KvIym4CGJ",
+            "timestamp": 1793538520159
+          },
+          "-P5MERYtC1cc07ONM3Ch": {
+            "action": "INCIDENT_CANCELLED",
+            "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "isSimulation": false,
+            "resourceId": "-P5MDjPMJx99R4K7uDT0",
+            "timestamp": 1793538772570
+          },
+          "-P5MGGQWd5-Q8RHok6Ox": {
+            "action": "INCIDENT_RESOLVED",
+            "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "isSimulation": false,
+            "resourceId": "-P5MFay0Q40SPFk0GJ-D",
+            "timestamp": 1793539251419
+          },
+          "-P5MP7WqhGVtKwNGK7kK": {
+            "action": "INCIDENT_CANCELLED",
+            "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "isSimulation": false,
+            "resourceId": "-P5MDHxfsY8KvIym4CGJ",
+            "timestamp": 1793541574101
+          },
+          "-P5MSF45QOiLQf76piW1": {
+            "action": "INCIDENT_CANCELLED",
+            "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "isSimulation": false,
+            "resourceId": "-P5MSCNfIfhtFW0MG318",
+            "timestamp": 1793542391430
+          },
+          "-P5MSHX0sMYBFwffCdt6": {
+            "action": "INCIDENT_RESOLVED",
+            "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "isSimulation": false,
+            "resourceId": "-P5MP3Mz6ruo5PR6DHDh",
+            "timestamp": 1793542401472
+          },
+          "-P5NuLcfmc6RLAR9fX5i": {
+            "action": "INCIDENT_RESOLVED",
+            "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "isSimulation": false,
+            "resourceId": "-P5Nsva0djlHfkvWdZhf",
+            "timestamp": 1793566796941
+          },
+          "-P5Nw3AzebgPRlOGnR7t": {
+            "action": "INCIDENT_CANCELLED",
+            "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "isSimulation": false,
+            "resourceId": "-P5Nvpqc8iB6l0KEOWkX",
+            "timestamp": 1793567245803
+          },
+          "-P5NygnpmDoM1TiZoxAD": {
+            "action": "INCIDENT_ACKNOWLEDGED",
+            "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "isSimulation": false,
+            "resourceId": "-P5NwZ_M-8MiEWMP9z8_",
+            "timestamp": 1793567936327
+          },
+          "-P5Nywvh04SHgXMFvfwL": {
+            "action": "INCIDENT_CANCELLED",
+            "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "isSimulation": false,
+            "resourceId": "-P5NwZ_M-8MiEWMP9z8_",
+            "timestamp": 1793568003092
+          },
+          "-P5P1UHySUF3zLRC2Cmy": {
+            "action": "INCIDENT_ACKNOWLEDGED",
+            "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "isSimulation": false,
+            "resourceId": "-P5P0k9XlMPfv5L4g3tz",
+            "timestamp": 1793585706758
+          },
+          "-P5P2EzIdpT4VoH2wBIQ": {
+            "action": "INCIDENT_ACKNOWLEDGED",
+            "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "isSimulation": false,
+            "resourceId": "-P5P1sdddyWx2fNWQz0A",
+            "timestamp": 1793585906210
+          },
+          "-P5P2GCeIpV5zUxcg-1J": {
+            "action": "INCIDENT_CANCELLED",
+            "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "isSimulation": false,
+            "resourceId": "-P5P1sdddyWx2fNWQz0A",
+            "timestamp": 1793585911219
+          },
+          "-P5P2aPo4jXG3xSuC9E-": {
+            "action": "ADMIN_INVITATION_CREATED",
+            "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "resourceId": "-P5P2aPo4jXG3xSuC9Dz",
+            "timestamp": 1793585997682
+          },
+          "0a9cc6b8-27b2-408e-a044-8500f9acaa8e": {
+            "action": "ADMIN_STATION_SAVED",
+            "actorUid": "65UmmTitcsblCH15muI21A8iQ842",
+            "agencyId": "TABUK_TEST_FIRE",
+            "targetUid": "65UmmTitcsblCH15muI21A8iQ842",
+            "timestamp": 1794889884101
+          },
+          "0b4a88e3-8140-415d-a1e7-30a1ce3649d9": {
+            "action": "ADMIN_STATION_SAVED",
+            "actorUid": "65UmmTitcsblCH15muI21A8iQ842",
+            "agencyId": "TABUK_TEST_FIRE",
+            "targetUid": "65UmmTitcsblCH15muI21A8iQ842",
+            "timestamp": 1794966239848
+          },
+          "0c9a34b4-c7b3-464f-af69-4dac121cdba6": {
+            "action": "AGENCY_HOTLINE_UPDATED",
+            "actorUid": "SxGx3DHmp0OXUT2Bfol82EZael03",
+            "agencyId": "BFP",
+            "timestamp": 1794665525150
+          },
+          "1176ff10-ece9-4957-b315-94e0ecfb6fef": {
+            "action": "INCIDENT_VERIFIED",
+            "actorUid": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+            "resourceId": "-P6dadERfVEWMg-Zjsi5",
+            "timestamp": 1794965491541
+          },
+          "11ff6905-4438-4b9f-b623-38fb099f76c2": {
+            "action": "ADVISORY_PUBLISHED",
+            "actorUid": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "agencyId": "CDRRMC",
+            "resourceId": "b74903ef-216e-41ec-9937-93779c4872bf",
+            "timestamp": 1794579750590
+          },
+          "1754815d-54a2-45b9-8e4b-2436f1db3f43": {
+            "action": "INCIDENT_CREATED_BY_STAFF",
+            "actorUid": "SxGx3DHmp0OXUT2Bfol82EZael03",
+            "agencyId": "BFP",
+            "resourceId": "9e38bad5-a810-454d-ace8-d14d54a1799a",
+            "timestamp": 1794300364619
+          },
+          "190cb385-2ee2-408a-b4ca-95d05a3304b4": {
+            "action": "TEAM_READINESS_UPDATED",
+            "actorUid": "SxGx3DHmp0OXUT2Bfol82EZael03",
+            "agencyId": "BFP",
+            "resourceId": "BFP_DAGUPAN_TEAM_01",
+            "timestamp": 1794404969630
+          },
+          "20746000-9559-43e1-9caa-655264c9dc0b": {
+            "action": "TEAM_READINESS_UPDATED",
+            "actorUid": "SxGx3DHmp0OXUT2Bfol82EZael03",
+            "agencyId": "BFP",
+            "resourceId": "BFP_DAGUPAN_TEAM_01",
+            "timestamp": 1794404937954
+          },
+          "2efbf670-afbf-4708-a064-e2297b528f08": {
+            "action": "INCIDENT_VERIFIED",
+            "actorUid": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+            "resourceId": "-P6cry0BhNGAJGsGmAJ7",
+            "timestamp": 1794908366382
+          },
+          "32319400-0f91-40e0-aac5-2607fa9fe0cc": {
+            "action": "INCIDENT_VERIFIED",
+            "actorUid": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+            "resourceId": "-P6gKK5P1XMlhzBmOsjJ",
+            "timestamp": 1794966386915
+          },
+          "3d6265f4-0b0c-48c4-94f7-65fa042d224d": {
+            "action": "RESPONDER_TEAM_ASSIGNED",
+            "actorUid": "65UmmTitcsblCH15muI21A8iQ842",
+            "agencyId": "TABUK_TEST_FIRE",
+            "targetUid": "Sc7mRgVE8kajLJ4Tkqib5XXRClx2",
+            "timestamp": 1794889414891
+          },
+          "432f4e9a-b7da-4f16-bac8-d2bdcc673720": {
+            "action": "RESPONDER_CREATED",
+            "actorUid": "65UmmTitcsblCH15muI21A8iQ842",
+            "agencyId": "TABUK_TEST_FIRE",
+            "targetUid": "Sc7mRgVE8kajLJ4Tkqib5XXRClx2",
+            "timestamp": 1794889380512
+          },
+          "481bfbf8-bdab-4f83-a63f-2a9a300e9072": {
+            "action": "TEAMS_SAVED",
+            "actorUid": "SxGx3DHmp0OXUT2Bfol82EZael03",
+            "agencyId": "BFP",
+            "timestamp": 1794495302573
+          },
+          "4ac1e19e-5adb-481a-a6c8-0f4b6b9b6b9a": {
+            "action": "STATIONS_SAVED",
+            "actorUid": "65UmmTitcsblCH15muI21A8iQ842",
+            "agencyId": "TABUK_TEST_FIRE",
+            "timestamp": 1794966427751
+          },
+          "5355b35f-00b4-40c1-9d5f-c89889c24ae3": {
+            "action": "STATIONS_SAVED",
+            "actorUid": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+            "agencyId": "TABUK_TEST_FIRE",
+            "timestamp": 1794888038764
+          },
+          "56cd232e-8820-43e9-9453-61726a2fc31b": {
+            "action": "AGENCY_EMERGENCIES_SAVED",
+            "actorUid": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+            "agencyId": "TABUK_TEST_FIRE",
+            "timestamp": 1794911929098
+          },
+          "5bb6200c-18a2-42e1-851b-1c7f0b3bb064": {
+            "action": "TEAMS_SAVED",
+            "actorUid": "65UmmTitcsblCH15muI21A8iQ842",
+            "agencyId": "TABUK_TEST_FIRE",
+            "timestamp": 1794889917164
+          },
+          "601e5afd-b963-4440-9228-4c6ffa17b247": {
+            "action": "ADMIN_STATION_SAVED",
+            "actorUid": "65UmmTitcsblCH15muI21A8iQ842",
+            "agencyId": "TABUK_TEST_FIRE",
+            "targetUid": "65UmmTitcsblCH15muI21A8iQ842",
+            "timestamp": 1794996514721
+          },
+          "60ae3e9a-0d87-477d-af0a-89738ebea634": {
+            "action": "STATIONS_SAVED",
+            "actorUid": "SxGx3DHmp0OXUT2Bfol82EZael03",
+            "agencyId": "BFP",
+            "timestamp": 1794209518132
+          },
+          "61e9eee6-1953-4221-8b5b-0599ed2855a8": {
+            "action": "INCIDENT_VERIFIED",
+            "actorUid": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+            "resourceId": "-P6d5EXaexDWxPtJVMaN",
+            "timestamp": 1794964186654
+          },
+          "65b84276-e36b-4f12-ba5c-4bcb7fdc1b99": {
+            "action": "TEAM_READINESS_UPDATED",
+            "actorUid": "SxGx3DHmp0OXUT2Bfol82EZael03",
+            "agencyId": "BFP",
+            "resourceId": "BFP_DAGUPAN_TEAM_01",
+            "timestamp": 1794266424955
+          },
+          "71b398be-beb6-414f-adcc-ead371209c11": {
+            "action": "ADVISORY_DRAFT_CREATED",
+            "actorUid": "SxGx3DHmp0OXUT2Bfol82EZael03",
+            "agencyId": "BFP",
+            "resourceId": "8cf6734e-3a29-4c94-92e0-e1af05abd975",
+            "timestamp": 1794804750999
+          },
+          "743d4eda-03ba-49a6-a6d4-f7e56502a163": {
+            "action": "INCIDENT_VERIFIED",
+            "actorUid": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+            "resourceId": "-P6gKifY-88vMH0-Lsm1",
+            "timestamp": 1794966492890
+          },
+          "746c6bb2-fee0-4f2e-bfd3-cdf11ac197bb": {
+            "action": "TEAM_READINESS_UPDATED",
+            "actorUid": "SxGx3DHmp0OXUT2Bfol82EZael03",
+            "agencyId": "BFP",
+            "resourceId": "BFP_DAGUPAN_TEAM_01",
+            "timestamp": 1794266644223
+          },
+          "770d08db-da8c-4473-844d-315d5d069326": {
+            "action": "AGENCY_STATUS_CHANGED",
+            "actorUid": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "agencyId": "BARANGAY",
+            "timestamp": 1793699031766
+          },
+          "7874026e-6eea-4085-a033-7b992eb17ebd": {
+            "action": "ADVISORY_DRAFT_CREATED",
+            "actorUid": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+            "agencyId": "CDRRMC",
+            "resourceId": "9666e7f7-2241-4f47-9215-725233784a5d",
+            "timestamp": 1794969405966
+          },
+          "7aee94c9-4728-44de-8a10-f6e4dcf827ab": {
+            "action": "TEAM_READINESS_UPDATED",
+            "actorUid": "SxGx3DHmp0OXUT2Bfol82EZael03",
+            "agencyId": "BFP",
+            "resourceId": "BFP_DAGUPAN_TEAM_01",
+            "timestamp": 1794404899114
+          },
+          "7b9768ed-ffd0-4ec4-845f-e7623e267524": {
+            "action": "AGENCY_CREATED",
+            "actorUid": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "agencyId": "CPP",
+            "timestamp": 1793712830658
+          },
+          "7baedff5-8a9b-408a-95fc-a43a926b8277": {
+            "action": "TEAM_READINESS_UPDATED",
+            "actorUid": "SxGx3DHmp0OXUT2Bfol82EZael03",
+            "agencyId": "BFP",
+            "resourceId": "BFP_DAGUPAN_TEAM_01",
+            "timestamp": 1794056717194
+          },
+          "7c603db7-f1f9-46c5-9819-2d6f61588cf9": {
+            "action": "INCIDENT_VERIFIED",
+            "actorUid": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+            "resourceId": "-P6cw_yDkosMaXmYvxzs",
+            "timestamp": 1794909633907
+          },
+          "801354ca-7016-4810-a682-e3eafc13a983": {
+            "action": "STATIONS_SAVED",
+            "actorUid": "SxGx3DHmp0OXUT2Bfol82EZael03",
+            "agencyId": "BFP",
+            "timestamp": 1793761312922
+          },
+          "8215af6f-2bda-4d22-b813-3dd3203e97bc": {
+            "action": "TEAM_READINESS_UPDATED",
+            "actorUid": "SxGx3DHmp0OXUT2Bfol82EZael03",
+            "agencyId": "BFP",
+            "resourceId": "BFP_DAGUPAN_TEAM_01",
+            "timestamp": 1794494764631
+          },
+          "82588361-779e-4da8-affb-af49b345b8b7": {
+            "action": "TEAM_READINESS_UPDATED",
+            "actorUid": "SxGx3DHmp0OXUT2Bfol82EZael03",
+            "agencyId": "BFP",
+            "resourceId": "BFP_DAGUPAN_TEAM_01",
+            "timestamp": 1794494591012
+          },
+          "8275d63c-e363-43e3-b487-6cdf1d7493a3": {
+            "action": "TEAM_READINESS_UPDATED",
+            "actorUid": "65UmmTitcsblCH15muI21A8iQ842",
+            "agencyId": "TABUK_TEST_FIRE",
+            "resourceId": "044cdc4f-0632-4cf9-9fe0-d521872569ab",
+            "timestamp": 1794889434777
+          },
+          "86b86472-902d-4ed8-9de8-12c7ac93767f": {
+            "action": "TEAMS_SAVED",
+            "actorUid": "SxGx3DHmp0OXUT2Bfol82EZael03",
+            "agencyId": "BFP",
+            "timestamp": 1794055386200
+          },
+          "871ea18c-3a0a-464e-8af8-9f61ffae172a": {
+            "action": "INCIDENT_VERIFIED",
+            "actorUid": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+            "resourceId": "-P6cv9YFforw5R_nH9BD",
+            "timestamp": 1794909383745
+          },
+          "8742cc9b-f43d-408a-a49e-936f21c67543": {
+            "action": "RESPONDER_TEAM_ASSIGNED",
+            "actorUid": "SxGx3DHmp0OXUT2Bfol82EZael03",
+            "agencyId": "BFP",
+            "targetUid": "8rctOPZZuuVyDLLE0UjE2VVPkLg1",
+            "timestamp": 1794844803482
+          },
+          "889ce41d-d828-4b2b-a438-bdeee25cf707": {
+            "action": "RESPONDER_CREATED",
+            "actorUid": "SxGx3DHmp0OXUT2Bfol82EZael03",
+            "agencyId": "BFP",
+            "targetUid": "AK71vY4uPtb8sjoZTmzfGndV3FR2",
+            "timestamp": 1794867722999
+          },
+          "88e4db06-84ce-44fe-aace-839a31bbfe18": {
+            "action": "STATIONS_SAVED",
+            "actorUid": "SxGx3DHmp0OXUT2Bfol82EZael03",
+            "agencyId": "BFP",
+            "timestamp": 1794406014460
+          },
+          "8b497c47-6dd9-4946-a442-2dc183a709d0": {
+            "action": "STATIONS_SAVED",
+            "actorUid": "65UmmTitcsblCH15muI21A8iQ842",
+            "agencyId": "TABUK_TEST_FIRE",
+            "timestamp": 1794965619364
+          },
+          "917c686d-e669-4f31-a9db-0f04e12887ff": {
+            "action": "ADVISORY_PUBLISHED",
+            "actorUid": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+            "agencyId": "CDRRMC",
+            "resourceId": "9666e7f7-2241-4f47-9215-725233784a5d",
+            "timestamp": 1794969406808
+          },
+          "9561f7cb-fb60-434f-b484-a8eebc140215": {
+            "action": "ADVISORY_PUBLISHED",
+            "actorUid": "SxGx3DHmp0OXUT2Bfol82EZael03",
+            "agencyId": "BFP",
+            "resourceId": "8cf6734e-3a29-4c94-92e0-e1af05abd975",
+            "timestamp": 1794804752668
+          },
+          "9f6006f5-f856-4908-b2d6-c2e9358a1adb": {
+            "action": "RESPONDER_CREATED",
+            "actorUid": "SxGx3DHmp0OXUT2Bfol82EZael03",
+            "agencyId": "BFP",
+            "targetUid": "8rctOPZZuuVyDLLE0UjE2VVPkLg1",
+            "timestamp": 1794844747819
+          },
+          "a1787d70-072c-400d-b0a5-daa540d3a276": {
+            "action": "INCIDENT_VERIFIED",
+            "actorUid": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+            "resourceId": "-P6fwYk5X9OnMKfmayuA",
+            "timestamp": 1794964751501
+          },
+          "a27398b0-84b0-4042-816c-16a4acea432a": {
+            "action": "INCIDENT_VERIFIED",
+            "actorUid": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+            "resourceId": "-P6foZH1tGH2KVk7hH0H",
+            "timestamp": 1794965644882
+          },
+          "a7c63334-7f6d-4627-a1b3-4b13f1ca5565": {
+            "action": "TEAMS_SAVED",
+            "actorUid": "SxGx3DHmp0OXUT2Bfol82EZael03",
+            "agencyId": "BFP",
+            "timestamp": 1794056038748
+          },
+          "a97d278b-3427-4dae-875d-bc59fd139c3c": {
+            "action": "INCIDENT_CREATED_BY_STAFF",
+            "actorUid": "SxGx3DHmp0OXUT2Bfol82EZael03",
+            "agencyId": "BFP",
+            "resourceId": "ba5c581c-9ec6-4342-93c0-d02e7ac87d19",
+            "timestamp": 1794291828256
+          },
+          "acc28b26-cf92-484a-8fcd-5b1603a39e52": {
+            "action": "TEAMS_SAVED",
+            "actorUid": "65UmmTitcsblCH15muI21A8iQ842",
+            "agencyId": "TABUK_TEST_FIRE",
+            "timestamp": 1794888706585
+          },
+          "af7221b7-948c-4e4e-841e-3638d4ffbdd4": {
+            "action": "TEAMS_SAVED",
+            "actorUid": "SxGx3DHmp0OXUT2Bfol82EZael03",
+            "agencyId": "BFP",
+            "timestamp": 1794056231258
+          },
+          "b2a670d1-a69d-45f8-a7df-390416e78b56": {
+            "action": "ADVISORY_UPDATED",
+            "actorUid": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "agencyId": "CDRRMC",
+            "resourceId": "b74903ef-216e-41ec-9937-93779c4872bf",
+            "timestamp": 1794787242183
+          },
+          "b9752ab8-4cd3-4d3d-bd32-daa801261efe": {
+            "action": "RESPONDER_DELETED",
+            "actorUid": "SxGx3DHmp0OXUT2Bfol82EZael03",
+            "agencyId": "BFP",
+            "targetUid": "8rctOPZZuuVyDLLE0UjE2VVPkLg1",
+            "timestamp": 1794845823380
+          },
+          "bbae942c-b87c-484a-bfaa-c5bd2fa83b53": {
+            "action": "AGENCY_HOTLINE_UPDATED",
+            "actorUid": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+            "agencyId": "TABUK_TEST_FIRE",
+            "timestamp": 1794888066119
+          },
+          "bfc086bd-3f2d-4a7a-9739-4c0eccefb51f": {
+            "action": "TEAM_READINESS_UPDATED",
+            "actorUid": "65UmmTitcsblCH15muI21A8iQ842",
+            "agencyId": "TABUK_TEST_FIRE",
+            "resourceId": "044cdc4f-0632-4cf9-9fe0-d521872569ab",
+            "timestamp": 1794889403559
+          },
+          "c13e7c31-4c27-4be6-95a1-4f89d8ee30ea": {
+            "action": "STATION_DEACTIVATED",
+            "actorUid": "65UmmTitcsblCH15muI21A8iQ842",
+            "agencyId": "TABUK_TEST_FIRE",
+            "resourceId": "1958d231-9009-45b7-b272-e208a92a181d",
+            "timestamp": 1794967685723
+          },
+          "c2f308f0-74b2-4909-8c62-8d1141d106f2": {
+            "action": "INCIDENT_VERIFIED",
+            "actorUid": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+            "resourceId": "-P6db-ZfhZYZHN6Tl01V",
+            "timestamp": 1794964708974
+          },
+          "c5762371-17af-4a56-b1f3-36e5e50ee20c": {
+            "action": "RESPONDER_PROFILE_UPDATED",
+            "actorUid": "SxGx3DHmp0OXUT2Bfol82EZael03",
+            "agencyId": "BFP",
+            "targetUid": "CrDQeervajQa37CNQY3EO2rS5b93",
+            "timestamp": 1794283889619
+          },
+          "c86d8132-7840-4636-827f-53dd98ed4e1b": {
+            "action": "COMMAND_STATION_CREATED",
+            "actorUid": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+            "timestamp": 1794904049209
+          },
+          "c9818b08-90fe-4b4c-ba84-312a789ca760": {
+            "action": "AGENCY_STATUS_CHANGED",
+            "actorUid": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "agencyId": "BARANGAY",
+            "timestamp": 1793695769435
+          },
+          "cbaa9e67-501f-4864-94e4-5eb567a6020e": {
+            "action": "ADVISORY_ARCHIVED",
+            "actorUid": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "agencyId": "CDRRMC",
+            "resourceId": "b74903ef-216e-41ec-9937-93779c4872bf",
+            "timestamp": 1794579385233
+          },
+          "d0caa042-ae49-44ac-8326-94c02fae8b11": {
+            "action": "AGENCY_CREATED",
+            "actorUid": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+            "agencyId": "TABUK_TEST_FIRE",
+            "timestamp": 1794887695294
+          },
+          "d1009a7a-4ce6-475f-b631-2ce4d05fa500": {
+            "action": "ADVISORY_UNARCHIVED",
+            "actorUid": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "agencyId": "CDRRMC",
+            "resourceId": "b74903ef-216e-41ec-9937-93779c4872bf",
+            "timestamp": 1794579738448
+          },
+          "d40b16be-44de-4a16-9233-8ddddbeb4660": {
+            "action": "AGENCY_ADMIN_CREATED",
+            "actorUid": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+            "agencyId": "TABUK_TEST_FIRE",
+            "targetUid": "65UmmTitcsblCH15muI21A8iQ842",
+            "timestamp": 1794887755997
+          },
+          "d52a9b1e-d60c-4cd5-bb15-67b2b67bdc69": {
+            "action": "ADVISORY_PUBLISHED",
+            "actorUid": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "agencyId": "CDRRMC",
+            "resourceId": "b74903ef-216e-41ec-9937-93779c4872bf",
+            "timestamp": 1794269232531
+          },
+          "d66164c8-bcb4-4750-92b1-17717643badb": {
+            "action": "INCIDENT_VERIFIED",
+            "actorUid": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+            "resourceId": "-P6hwozixoB_20vHa3gN",
+            "timestamp": 1794995800878
+          },
+          "e209aa6a-4af1-4dc8-9ba7-b75f23eca69f": {
+            "action": "ADMIN_STATION_SAVED",
+            "actorUid": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+            "targetUid": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+            "timestamp": 1794904052877
+          },
+          "f1383928-7d49-4718-93a8-0d4f75daed83": {
+            "action": "ADVISORY_DRAFT_CREATED",
+            "actorUid": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "agencyId": "CDRRMC",
+            "resourceId": "b74903ef-216e-41ec-9937-93779c4872bf",
+            "timestamp": 1794269231180
+          },
+          "f2dc8115-e3b7-4cc0-90a4-a9b213e3d707": {
+            "action": "INCIDENT_CREATED_BY_STAFF",
+            "actorUid": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "resourceId": "e09b1ae8-57ed-4087-bbc3-8b6402092293",
+            "timestamp": 1794819468752
+          },
+          "fa548c2d-5a9c-4441-979a-a5f1e6679c51": {
+            "action": "INCIDENT_CREATED_BY_STAFF",
+            "actorUid": "SxGx3DHmp0OXUT2Bfol82EZael03",
+            "agencyId": "BFP",
+            "resourceId": "fe5d5d2a-90d8-40c6-9521-5fd8eb00dda6",
+            "timestamp": 1794577502011
+          }
+        },
+        "incident_contacts": {
+          "-P5NwZ_M-8MiEWMP9z8_": {
+            "reporterName": "Charlou Ybarley",
+            "reporterPhone": "09776226185"
+          },
+          "-P5P0k9XlMPfv5L4g3tz": {
+            "reporterName": "Charlou Ybarley",
+            "reporterPhone": "09776226185"
+          },
+          "-P5P1sdddyWx2fNWQz0A": {
+            "reporterName": "Charlou Ybarley",
+            "reporterPhone": "09776226185"
+          }
+        },
+        "incident_events": {
+          "-P56WDJypwnxnrIvf_4z": {
+            "-P56WbqEkkZKeug0Bov8": {
+              "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+              "isSimulation": false,
+              "timestamp": 1793275100256,
+              "type": "INCIDENT_CANCELLED"
+            }
+          },
+          "-P56XGfYbPx1WRH7-fxt": {
+            "-P56XnFWj1xMr3F4PiDk": {
+              "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+              "isSimulation": false,
+              "timestamp": 1793275409084,
+              "type": "INCIDENT_RESOLVED"
+            }
+          },
+          "-P56YEIfat8BzEy2hrW1": {
+            "-P56Yh7YiRFS2Pelhc9f": {
+              "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+              "isSimulation": false,
+              "timestamp": 1793275646154,
+              "type": "INCIDENT_RESOLVED"
+            }
+          },
+          "-P56ZjKFC7vsqHipnMs7": {
+            "-P56_jBLIbeBC8ZuKHXU": {
+              "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+              "isSimulation": false,
+              "timestamp": 1793276178904,
+              "type": "INCIDENT_RESOLVED"
+            }
+          },
+          "-P56be0ZXJnn-KR1aoos": {
+            "-P56cGNt8xJXtyAJGkGq": {
+              "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+              "isSimulation": false,
+              "timestamp": 1793276843305,
+              "type": "INCIDENT_RESOLVED"
+            }
+          },
+          "-P56be1Zpya6TfgiSJLO": {
+            "-P56cJ1Sei2c9oXE_1hp": {
+              "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+              "isSimulation": false,
+              "timestamp": 1793276854144,
+              "type": "INCIDENT_RESOLVED"
+            }
+          },
+          "-P56eOG2hqQu8zd5oBxW": {
+            "-P56f1WVCbi7oaWFk2Ta": {
+              "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+              "isSimulation": false,
+              "timestamp": 1793277568776,
+              "type": "INCIDENT_ACKNOWLEDGED"
+            },
+            "-P56f6A58tqO7K67EQc6": {
+              "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+              "isSimulation": false,
+              "timestamp": 1793277587996,
+              "type": "INCIDENT_RESOLVED"
+            }
+          },
+          "-P56eoCPFlibLOaXoOaV": {
+            "-P56eywJUaZgPltQsY3E": {
+              "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+              "isSimulation": false,
+              "timestamp": 1793277554118,
+              "type": "INCIDENT_ACKNOWLEDGED"
+            },
+            "-P56f3l2419nbdF5iihm": {
+              "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+              "isSimulation": false,
+              "timestamp": 1793277577962,
+              "type": "INCIDENT_RESOLVED"
+            }
+          },
+          "-P56jOJGz-e7bs6WvHe6": {
+            "-P56jjLsbs3QmeeseeJR": {
+              "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+              "isSimulation": false,
+              "timestamp": 1793278801009,
+              "type": "INCIDENT_ACKNOWLEDGED"
+            },
+            "-P56jlzqv2N3PtAIDgeu": {
+              "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+              "isSimulation": false,
+              "timestamp": 1793278811822,
+              "type": "INCIDENT_CANCELLED"
+            }
+          },
+          "-P56nkXLp_SrIMRihl6d": {
+            "-P56oBN4y7DtzP4BnKxK": {
+              "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+              "isSimulation": false,
+              "timestamp": 1793279968461,
+              "type": "INCIDENT_ACKNOWLEDGED"
+            },
+            "-P56oCKxuCRd8lsWohXK": {
+              "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+              "isSimulation": false,
+              "timestamp": 1793279972417,
+              "type": "INCIDENT_RESOLVED"
+            }
+          },
+          "-P5A2gqMUwiaLeex9fbl": {
+            "-P5BcnPya87pT4AUa9UV": {
+              "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+              "isSimulation": false,
+              "timestamp": 1793360870458,
+              "type": "INCIDENT_ACKNOWLEDGED"
+            },
+            "-P5LyDAYI-H_Ml0gQpqC": {
+              "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+              "isSimulation": false,
+              "timestamp": 1793534257354,
+              "type": "INCIDENT_RESOLVED"
+            }
+          },
+          "-P5LuVXH9TkJn1dLdSTq": {
+            "-P5LwT-nmv2dl-YneSv_": {
+              "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+              "isSimulation": false,
+              "timestamp": 1793533797915,
+              "type": "INCIDENT_CANCELLED"
+            }
+          },
+          "-P5LwbZXHRSTitjuiB10": {
+            "-P5Lx--3GygRml0MpYJr": {
+              "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+              "isSimulation": false,
+              "timestamp": 1793533937130,
+              "type": "INCIDENT_CANCELLED"
+            }
+          },
+          "-P5LxE048efBg7Cmg7u1": {
+            "-P5LxeXkUO9E9zF0Ji9S": {
+              "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+              "isSimulation": false,
+              "timestamp": 1793534111214,
+              "type": "INCIDENT_CANCELLED"
+            }
+          },
+          "-P5Lz4d-rWOxOkRDYP5f": {
+            "-P5LzQNpLSWpFuqG3niT": {
+              "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+              "isSimulation": false,
+              "timestamp": 1793534573610,
+              "type": "INCIDENT_CANCELLED"
+            }
+          },
+          "-P5M6zH2iBeF_vZoRrPO": {
+            "-P5M7fcevwrPlxuXVzwJ": {
+              "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+              "isSimulation": false,
+              "timestamp": 1793536999455,
+              "type": "INCIDENT_ACKNOWLEDGED"
+            },
+            "-P5MD05-HOS0Ufdni7cq": {
+              "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+              "isSimulation": false,
+              "timestamp": 1793538397910,
+              "type": "INCIDENT_CANCELLED"
+            }
+          },
+          "-P5MDHxfsY8KvIym4CGJ": {
+            "-P5MDTw2hN8MvK8vHg6N": {
+              "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+              "isSimulation": false,
+              "timestamp": 1793538520159,
+              "type": "INCIDENT_ACKNOWLEDGED"
+            },
+            "-P5MP7WqhGVtKwNGK7kJ": {
+              "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+              "isSimulation": false,
+              "timestamp": 1793541574101,
+              "type": "INCIDENT_CANCELLED"
+            }
+          },
+          "-P5MDjPMJx99R4K7uDT0": {
+            "-P5MERYtC1cc07ONM3Cg": {
+              "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+              "isSimulation": false,
+              "timestamp": 1793538772570,
+              "type": "INCIDENT_CANCELLED"
+            }
+          },
+          "-P5MFay0Q40SPFk0GJ-D": {
+            "-P5MGGQWd5-Q8RHok6Ow": {
+              "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+              "isSimulation": false,
+              "timestamp": 1793539251419,
+              "type": "INCIDENT_RESOLVED"
+            }
+          },
+          "-P5MP3Mz6ruo5PR6DHDh": {
+            "-P5MSHX0sMYBFwffCdt5": {
+              "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+              "isSimulation": false,
+              "timestamp": 1793542401472,
+              "type": "INCIDENT_RESOLVED"
+            }
+          },
+          "-P5MSCNfIfhtFW0MG318": {
+            "-P5MSF45QOiLQf76piW0": {
+              "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+              "isSimulation": false,
+              "timestamp": 1793542391430,
+              "type": "INCIDENT_CANCELLED"
+            }
+          },
+          "-P5Nsva0djlHfkvWdZhf": {
+            "-P5NuLcekiJ2Z1OYgmBv": {
+              "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+              "isSimulation": false,
+              "timestamp": 1793566796941,
+              "type": "INCIDENT_RESOLVED"
+            }
+          },
+          "-P5Nvpqc8iB6l0KEOWkX": {
+            "-P5Nw3AyAOX-c44uXtP-": {
+              "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+              "isSimulation": false,
+              "timestamp": 1793567245803,
+              "type": "INCIDENT_CANCELLED"
+            }
+          },
+          "-P5NwZ_M-8MiEWMP9z8_": {
+            "-P5Nygnot1ysr-qVXV0k": {
+              "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+              "isSimulation": false,
+              "timestamp": 1793567936327,
+              "type": "INCIDENT_ACKNOWLEDGED"
+            },
+            "-P5Nywvh04SHgXMFvfwK": {
+              "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+              "isSimulation": false,
+              "timestamp": 1793568003092,
+              "type": "INCIDENT_CANCELLED"
+            }
+          },
+          "-P5P0k9XlMPfv5L4g3tz": {
+            "-P5P1UHySUF3zLRC2Cmx": {
+              "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+              "isSimulation": false,
+              "timestamp": 1793585706758,
+              "type": "INCIDENT_ACKNOWLEDGED"
+            }
+          },
+          "-P5P1sdddyWx2fNWQz0A": {
+            "-P5P2EzIdpT4VoH2wBIP": {
+              "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+              "isSimulation": false,
+              "timestamp": 1793585906210,
+              "type": "INCIDENT_ACKNOWLEDGED"
+            },
+            "-P5P2GCeIpV5zUxcg-1I": {
+              "actorId": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+              "isSimulation": false,
+              "timestamp": 1793585911219,
+              "type": "INCIDENT_CANCELLED"
+            }
+          }
+        },
+        "incident_feed": {
+          "-P5NwZ_M-8MiEWMP9z8_": {
+            "createdAt": 1793567378060,
+            "isSimulation": false,
+            "leadAgencyId": "CDRRMC",
+            "location": {
+              "isSimulated": false,
+              "latitude": 17.4427969,
+              "longitude": 121.4535805,
+              "source": "DEVICE_GPS"
+            },
+            "needsOperatorVerification": true,
+            "priority": "HIGH",
+            "status": "CANCELLED",
+            "type": "FIRE",
+            "updatedAt": 1793568003092
+          },
+          "-P5P0k9XlMPfv5L4g3tz": {
+            "createdAt": 1793585513510,
+            "isSimulation": false,
+            "leadAgencyId": "CDRRMC",
+            "location": {
+              "isSimulated": false,
+              "latitude": 17.4428284,
+              "longitude": 121.4535153,
+              "source": "DEVICE_GPS"
+            },
+            "needsOperatorVerification": true,
+            "priority": "HIGH",
+            "status": "RECEIVED",
+            "type": "FIRE",
+            "updatedAt": 1793585706758
+          },
+          "-P5P1sdddyWx2fNWQz0A": {
+            "createdAt": 1793585810397,
+            "isSimulation": false,
+            "leadAgencyId": "CDRRMC",
+            "location": {
+              "isSimulated": false,
+              "latitude": 17.4428316,
+              "longitude": 121.4535439,
+              "source": "DEVICE_GPS"
+            },
+            "needsOperatorVerification": true,
+            "priority": "HIGH",
+            "status": "CANCELLED",
+            "type": "ROAD_ACCIDENT",
+            "updatedAt": 1793585911219
+          }
+        },
+        "incidents": {
+          "-P5NwZ_M-8MiEWMP9z8_": {
+            "acknowledgedAt": 1793567936327,
+            "acknowledgedBy": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "clientReportedAt": 1793567378840,
+            "clientRequestId": "-P5NwZ_M-8MiEWMP9z8_",
+            "createdAt": 1793567378060,
+            "description": "Ada ti sunod ditoy",
+            "isSimulation": false,
+            "leadAgencyId": "CDRRMC",
+            "location": {
+              "accuracyMeters": 21.07699966430664,
+              "address": "CFV3+5CG, National Road, City of Tabuk, Kalinga, Philippines",
+              "capturedAt": 1793567374599,
+              "isSimulated": false,
+              "latitude": 17.4427969,
+              "longitude": 121.4535805,
+              "source": "DEVICE_GPS",
+              "updatedAt": 1793567374599
+            },
+            "needsOperatorVerification": true,
+            "priority": "HIGH",
+            "recommendedAgencies": {
+              "BFP": true,
+              "CDRRMC": true,
+              "MEDICAL": true
+            },
+            "reporterId": "5ad8ESdTKtQRJtjeXerTaW09Ebh1",
+            "status": "CANCELLED",
+            "type": "FIRE",
+            "updatedAt": 1793568003092,
+            "version": 3
+          },
+          "-P5P0k9XlMPfv5L4g3tz": {
+            "acknowledgedAt": 1793585706758,
+            "acknowledgedBy": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "clientReportedAt": 1793585514313,
+            "clientRequestId": "-P5P0k9XlMPfv5L4g3tz",
+            "createdAt": 1793585513510,
+            "description": "Ada sunog ditoy ayan mi",
+            "isSimulation": false,
+            "leadAgencyId": "CDRRMC",
+            "location": {
+              "accuracyMeters": 22.65399932861328,
+              "address": "CFV3+5CG, National Road, City of Tabuk, Kalinga, Philippines",
+              "capturedAt": 1793585508650,
+              "isSimulated": false,
+              "latitude": 17.4428284,
+              "longitude": 121.4535153,
+              "source": "DEVICE_GPS",
+              "updatedAt": 1793585508650
+            },
+            "needsOperatorVerification": true,
+            "priority": "HIGH",
+            "recommendedAgencies": {
+              "BFP": true,
+              "CDRRMC": true,
+              "MEDICAL": true
+            },
+            "reporterId": "5ad8ESdTKtQRJtjeXerTaW09Ebh1",
+            "status": "RECEIVED",
+            "type": "FIRE",
+            "updatedAt": 1793585706758,
+            "version": 2
+          },
+          "-P5P1sdddyWx2fNWQz0A": {
+            "acknowledgedAt": 1793585906210,
+            "acknowledgedBy": "KLZzUnCRcPczzyEuz5951wdWaDr1",
+            "clientReportedAt": 1793585811240,
+            "clientRequestId": "-P5P1sdddyWx2fNWQz0A",
+            "createdAt": 1793585810397,
+            "description": "Ada ri na disgrasya ditoy",
+            "isSimulation": false,
+            "leadAgencyId": "CDRRMC",
+            "location": {
+              "accuracyMeters": 20,
+              "address": "CFV3+5CG, National Road, City of Tabuk, Kalinga, Philippines",
+              "capturedAt": 1793585806257,
+              "isSimulated": false,
+              "latitude": 17.4428316,
+              "longitude": 121.4535439,
+              "source": "DEVICE_GPS",
+              "updatedAt": 1793585806257
+            },
+            "needsOperatorVerification": true,
+            "priority": "HIGH",
+            "recommendedAgencies": {
+              "CDRRMC": true,
+              "MEDICAL": true,
+              "PNP": true
+            },
+            "reporterId": "5ad8ESdTKtQRJtjeXerTaW09Ebh1",
+            "status": "CANCELLED",
+            "type": "ROAD_ACCIDENT",
+            "updatedAt": 1793585911219,
+            "version": 3
+          }
+        },
+        "responder": {
+          "active_user": {
+            "KLZzUnCRcPczzyEuz5951wdWaDr1": {
+              "fcmToken": "ep5Jzp69Sw-eLAL6P0B8Gc:APA91bFlSCRwq3IG5_70Drfcl26g0Xm8jyDJQaePshi69dxiilKOf4qLJk0XXJ2M4vX7Swp2voS3aD4F9Oz862R0EpJBMzfRnCku1TteZI8Se3SAmbEVY4U"
+            }
+          }
+        },
+        "response_reports": {
+          "-P64l8--dXs2d57NEDyA": {
+            "AMBULANCE": "Bdjdjdjajehfjf",
+            "CASUALTY": 2,
+            "CONCERN": "Gdjdjskabsjdjdjd",
+            "DATE": "2026-11-10",
+            "NAME_OF_CALLER": "Niko",
+            "SCENE_LOCATION": "Bsidjfjfosjwjfjfjf",
+            "TAG": "hdjdjfjf",
+            "TEAM": "Bsjskakskfnfjf",
+            "TIME_ARRIVAL": "22:01",
+            "TIME_CALL": "22:01",
+            "agencyId": "BFP",
+            "agencyName": "Fire and Rescue",
+            "patients": [
+              {
+                "Firstname": "HdjdjJajdjdjdjf",
+                "Lastname": "Hxjdjfjfnfnfnfnfnf",
+                "PATIENT_ADDRESS": "Hdjdjzkaksjdjdjd",
+                "PATIENT_AGE": 22,
+                "PATIENT_CIVIL_STATUS_spinner": "Separated",
+                "PATIENT_GENDER_spinner": "Male",
+                "PATIENT_INJURY": "Bxjdkahajskdjfbfbf",
+                "PATIENT_RELIGION": "Gsjsjdjsgrksjs",
+                "PATIENT_STATUS": "Bsjdjdjskakrjrjjf"
+              }
+            ],
+            "revision": 1,
+            "status": "PENDING_REVIEW",
+            "submittedAt": 1794319356339,
+            "submittedBy": "CrDQeervajQa37CNQY3EO2rS5b93",
+            "submittedByName": "BFP Dagupan Responder",
+            "teamId": "BFP_DAGUPAN_TEAM_01",
+            "teamName": "BFP Dagupan Response Team 01"
+          },
+          "-P69RYHZYz1Lb7WemcGw": {
+            "AMBULANCE": "Fuhf Gkh XL Cl",
+            "CASUALTY": 8,
+            "CONCERN": "Road accident",
+            "DATE": "2026-11-11",
+            "NAME_OF_CALLER": "Charlou Ybarley",
+            "SCENE_LOCATION": "Device GPS location",
+            "TAG": "fjjsgik",
+            "TEAM": "So Do I'll Le Hi A Ggj Lkhdf",
+            "TIME_ARRIVAL": "19:49",
+            "TIME_CALL": "17:35",
+            "agencyId": "BFP",
+            "agencyName": "Fire and Rescue",
+            "approvalRequired": true,
+            "creationSource": "RESPONDER",
+            "incidentId": "-P68xe2Lz0-4hmOyBW1U",
+            "patients": [
+              {
+                "Firstname": "Ydhd",
+                "Lastname": "Idjdjd",
+                "PATIENT_ADDRESS": "Hdjdjabwnofifkfkf",
+                "PATIENT_AGE": 2,
+                "PATIENT_CIVIL_STATUS_spinner": "Single",
+                "PATIENT_GENDER_spinner": "Male",
+                "PATIENT_INJURY": "Hdjdjdjfjaijsd",
+                "PATIENT_RELIGION": "Idjdjdjdjd",
+                "PATIENT_STATUS": "Hzjdjdjsjs"
+              }
+            ],
+            "reviewRemarks": "",
+            "reviewedAt": 1794398366819,
+            "reviewedBy": "SxGx3DHmp0OXUT2Bfol82EZael03",
+            "revision": 1,
+            "schemaVersion": 2,
+            "status": "APPROVED",
+            "submittedAt": 1794397845080,
+            "submittedBy": "CrDQeervajQa37CNQY3EO2rS5b93",
+            "submittedByName": "BFP Dagupan Responder",
+            "teamId": "BFP_DAGUPAN_TEAM_01",
+            "teamName": "BFP Dagupan Response Team 01"
+          },
+          "0bb4e11f-5294-4fee-9988-5a6e9a03dbcb": {
+            "AMBULANCE": "sd",
+            "CASUALTY": 1,
+            "CONCERN": "sd",
+            "CRASH_TYPE": "COLLISION",
+            "DATE": "2026-11-19",
+            "NAME_OF_CALLER": "sd",
+            "SCENE_LOCATION": "sd",
+            "TAG": "sd",
+            "TEAM": "sds",
+            "TIME_ARRIVAL": "20:57",
+            "TIME_CALL": "20:57",
+            "VEHICLE_TYPE": "CAR",
+            "agencyId": "TABUK_TEST_FIRE",
+            "agencyName": "Tabuk Test Fire Unit",
+            "approvalRequired": false,
+            "creationSource": "AGENCY_MANUAL",
+            "patients": [
+              {
+                "Firstname": "sd",
+                "LICENSED": "LICENSED",
+                "Lastname": "sd",
+                "PATIENT_ADDRESS": "sd",
+                "PATIENT_AGE": 2,
+                "PATIENT_CIVIL_STATUS_spinner": "Single",
+                "PATIENT_GENDER_spinner": "Male",
+                "PATIENT_INJURY": "sd",
+                "PATIENT_RELIGION": "sd",
+                "PATIENT_STATUS": "sd",
+                "SEVERITY": "MODERATE",
+                "VICTIM_ROLE": "OTHER"
+              }
+            ],
+            "revision": 1,
+            "schemaVersion": 2,
+            "status": "APPROVED",
+            "submittedAt": 1795093073742,
+            "submittedBy": "65UmmTitcsblCH15muI21A8iQ842",
+            "submittedByName": "admin12345"
+          },
+          "320eb94c-2613-4d4d-a3c7-c7126800471c": {
+            "AMBULANCE": "werfeqrw",
+            "CASUALTY": 2,
+            "CONCERN": "Fire",
+            "DATE": "2026-11-16",
+            "NAME_OF_CALLER": "Charlou Ybarley",
+            "SCENE_LOCATION": "CFV3+5CG, National Road, City of Tabuk, Kalinga, Philippines",
+            "TAG": "asas",
+            "TEAM": "BFP TEAM A",
+            "TIME_ARRIVAL": "17:20",
+            "TIME_CALL": "17:19",
+            "agencyId": "BFP",
+            "agencyName": "Fire and Rescue",
+            "approvalRequired": false,
+            "assignmentId": "b146c6d0-a5b7-4ce1-bc42-a38b5d8188fc",
+            "creationSource": "AGENCY_MANUAL",
+            "incidentId": "-P6Ydu3wu3VxE0wEI4X0",
+            "revision": 1,
+            "schemaVersion": 2,
+            "status": "APPROVED",
+            "submittedAt": 1794820819060,
+            "submittedBy": "SxGx3DHmp0OXUT2Bfol82EZael03",
+            "submittedByName": "BFP DAGUPAN"
+          },
+          "3a239cec-7d7f-480f-a4a3-95d092702a00": {
+            "AMBULANCE": "sd",
+            "CASUALTY": 1,
+            "CONCERN": "sd",
+            "CRASH_TYPE": "",
+            "DATE": "2026-11-19",
+            "NAME_OF_CALLER": "sdcsd",
+            "SCENE_LOCATION": "sd",
+            "TAG": "sd",
+            "TEAM": "sd",
+            "TIME_ARRIVAL": "21:02",
+            "TIME_CALL": "21:02",
+            "VEHICLE_TYPE": "",
+            "agencyId": "TABUK_TEST_FIRE",
+            "agencyName": "Tabuk Test Fire Unit",
+            "approvalRequired": false,
+            "creationSource": "AGENCY_MANUAL",
+            "patients": [
+              {
+                "Firstname": "sd",
+                "LICENSED": "",
+                "Lastname": "sd2",
+                "PATIENT_ADDRESS": "dsz",
+                "PATIENT_AGE": 2,
+                "PATIENT_CIVIL_STATUS_spinner": "Single",
+                "PATIENT_GENDER_spinner": "Male",
+                "PATIENT_INJURY": "sd",
+                "PATIENT_RELIGION": "xz",
+                "PATIENT_STATUS": "sdxsd",
+                "SEVERITY": "CRITICAL",
+                "VICTIM_ROLE": "PASSENGER"
+              }
+            ],
+            "revision": 1,
+            "schemaVersion": 2,
+            "status": "APPROVED",
+            "submittedAt": 1795093405384,
+            "submittedBy": "65UmmTitcsblCH15muI21A8iQ842",
+            "submittedByName": "admin12345"
+          },
+          "51d0441a-fd50-4e2b-a5f2-8d0d8b58a0a0": {
+            "AMBULANCE": "dfad",
+            "CASUALTY": 23,
+            "CONCERN": "Road Accident",
+            "DATE": "2026-11-10",
+            "NAME_OF_CALLER": "Charlou Ybarley",
+            "SCENE_LOCATION": "Device GPS location",
+            "TAG": "asdfcs",
+            "TEAM": "adscasd",
+            "TIME_ARRIVAL": "00:16",
+            "TIME_CALL": "05:37",
+            "agencyId": "BFP",
+            "agencyName": "Fire and Rescue",
+            "approvalRequired": false,
+            "creationSource": "AGENCY_MANUAL",
+            "incidentId": "-P61EgPaDlnTfaDhM3YZ",
+            "patients": [
+              {
+                "Firstname": "ASDCASD",
+                "Lastname": "FASDFASD",
+                "PATIENT_ADDRESS": "sdcsda",
+                "PATIENT_AGE": 23,
+                "PATIENT_CIVIL_STATUS_spinner": "Single",
+                "PATIENT_GENDER_spinner": "Male",
+                "PATIENT_INJURY": "asd",
+                "PATIENT_RELIGION": "ASEasd",
+                "PATIENT_STATUS": "a dsas"
+              }
+            ],
+            "revision": 1,
+            "schemaVersion": 2,
+            "status": "APPROVED",
+            "submittedAt": 1794266193084,
+            "submittedBy": "SxGx3DHmp0OXUT2Bfol82EZael03",
+            "submittedByName": "BFP DAGUPAN"
+          },
+          "6c701f8c-3700-41be-bcb7-564d83179b8e": {
+            "AMBULANCE": "qqweqweqwe",
+            "CASUALTY": 1,
+            "CONCERN": "Fire",
+            "DATE": "2026-11-07",
+            "NAME_OF_CALLER": "Charlou Ybarley",
+            "SCENE_LOCATION": "CFV3+5CG, National Road, City of Tabuk, Kalinga, Philippines",
+            "TAG": "sdfsdfsdf",
+            "TEAM": "fsdfsdf",
+            "TIME_ARRIVAL": "17:34",
+            "TIME_CALL": "22:07",
+            "agencyId": "BFP",
+            "agencyName": "Fire and Rescue",
+            "approvalRequired": false,
+            "creationSource": "AGENCY_MANUAL",
+            "incidentId": "-P5qKOt7fX7PYCBMmKrf",
+            "patients": [
+              {
+                "Firstname": "fsdfsdf",
+                "Lastname": "sdfsdf",
+                "PATIENT_ADDRESS": "sdasd",
+                "PATIENT_AGE": 22,
+                "PATIENT_CIVIL_STATUS_spinner": "Single",
+                "PATIENT_GENDER_spinner": "Male",
+                "PATIENT_INJURY": "ads",
+                "PATIENT_RELIGION": "asd",
+                "PATIENT_STATUS": "asd"
+              }
+            ],
+            "revision": 1,
+            "schemaVersion": 2,
+            "status": "APPROVED",
+            "submittedAt": 1794260101251,
+            "submittedBy": "SxGx3DHmp0OXUT2Bfol82EZael03",
+            "submittedByName": "BFP DAGUPAN"
+          },
+          "b2950673-dc06-441f-a405-54a40b25d1f8": {
+            "AMBULANCE": "as",
+            "CASUALTY": 0,
+            "CONCERN": "as",
+            "CRASH_TYPE": "",
+            "DATE": "2026-11-19",
+            "NAME_OF_CALLER": "as",
+            "SCENE_LOCATION": "as",
+            "TAG": "sd",
+            "TEAM": "as",
+            "TIME_ARRIVAL": "21:18",
+            "TIME_CALL": "21:17",
+            "VEHICLE_TYPE": "",
+            "agencyId": "TABUK_TEST_FIRE",
+            "agencyName": "Tabuk Test Fire Unit",
+            "approvalRequired": false,
+            "creationSource": "AGENCY_MANUAL",
+            "revision": 1,
+            "schemaVersion": 2,
+            "status": "APPROVED",
+            "submittedAt": 1795094292168,
+            "submittedBy": "65UmmTitcsblCH15muI21A8iQ842",
+            "submittedByName": "admin12345"
+          }
+        }
+      },
+      "command_stations": {
+        "a9ca5c30-4aa0-43f7-be6e-a97615e97a72": {
+          "active": true,
+          "createdAt": 1794904049128,
+          "createdBy": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+          "hotline": "09776226185",
+          "latitude": 17.470793,
+          "location": "Dagupan, Magsaysay, Tabuk City, Kalinga",
+          "longitude": 121.467226,
+          "name": "CDRRMC COMMAND CENTER"
+        }
+      },
+      "public_advisories": {
+        "9666e7f7-2241-4f47-9215-725233784a5d": {
+          "actions": [
+            "Avoid steep slopes, road cuts and river banks",
+            "Use main roads and follow traffic advice",
+            "Report cracks, falling rocks or flowing water to the CDRRMO hotline right away",
+            "Move to higher, safer ground if you hear rumbling or see the ground moving"
+          ],
+          "agencyName": "Command Center",
+          "area": "CITYWIDE",
+          "category": "WARNING",
+          "expiresAt": 1795361820000,
+          "fullMessage": "Heavy rain may loosen soil and rocks on hillsides and road cuts across Tabuk City. Avoid steep slopes, river banks and road cuts, and use the main roads where possible. Report cracks in the ground, falling rocks, or water flowing down slopes to the CDRRMO hotline right away.\n\nWhat citizens should do (add each as a separate action.",
+          "issuedAt": 1794969406808,
+          "severity": "HIGH",
+          "shortDescription": "Landslides are possible on hillsides and road cuts after heavy rain. Stay alert and avoid slopes.",
+          "title": "Landslide warning"
+        }
+      },
+      "shared_locations": {
+        "UKBvnP4CseYvoeMQjWdJJh4IOFB3": {
+          "displayLabel": "CDRRMC COMMAND CENTER",
+          "isSimulated": false,
+          "latitude": 17.470803630707824,
+          "longitude": 121.46720945835115,
+          "source": "MANUAL",
+          "updatedAt": 1794964933377
+        }
+      },
+      "system_config": {
+        "dispatch": {
+          "acknowledgmentTimeoutSeconds": 60,
+          "locationFreshnessSeconds": 120,
+          "mode": "HYBRID",
+          "requireOperatorApproval": true,
+          "useRoadTravelTime": true
+        },
+        "environment": "DEVELOPMENT",
+        "locationTracking": {
+          "allowManualLocationEntry": true,
+          "enabled": true,
+          "incidentLocationSource": "DEVICE_GPS_AT_REPORT_TIME",
+          "locationFreshnessSeconds": 120,
+          "maximumAcceptedAccuracyMeters": 100,
+          "neverUseDemoCoordinatesForLiveIncidents": true,
+          "requireExplicitPermission": true,
+          "storeWhenUserOptsIn": true,
+          "useOnlyAuthorizedAgencyAccess": true,
+          "userLocationPath": "user_locations/{uid}"
+        },
+        "stationLocationSearch": {
+          "allowManualPin": true,
+          "allowUnverifiedStationsForRealDispatch": false,
+          "allowedAgencyIds": {
+            "BFP": true,
+            "CDRRMC": true,
+            "PNP": true
+          },
+          "defaultSearchArea": "Tabuk City, Kalinga, Philippines",
+          "enabled": true,
+          "geocodingProviderConfigured": false,
+          "mapCenter": {
+            "latitude": 17.44331742500108,
+            "longitude": 121.45255721834727
+          },
+          "mode": "SAVED_STATIONS_ONLY",
+          "note": "Saved stations may be listed; imported coordinates remain unverified. Live dispatch must exclude unverified stations.",
+          "requireAdminConfirmation": true,
+          "simulationOnly": false
+        }
+      },
+      "users": {
+        "5ad8ESdTKtQRJtjeXerTaW09Ebh1": {
+          "active": true,
+          "createdAt": 1793274889679,
+          "displayName": "Charlou Ybarley",
+          "email": "ybarleycharlou04@gmail.com",
+          "role": "CITIZEN"
+        },
+        "65UmmTitcsblCH15muI21A8iQ842": {
+          "active": true,
+          "agencyId": "TABUK_TEST_FIRE",
+          "approvedAt": 1794887755916,
+          "approvedBy": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+          "authProvisioned": true,
+          "createdAt": 1794887755916,
+          "createdBy": "UKBvnP4CseYvoeMQjWdJJh4IOFB3",
+          "displayName": "admin12345",
+          "email": "admin@gmail.com",
+          "role": "AGENCY_ADMIN",
+          "stationId": "d1afee29-4d9c-456b-95db-c520a7fb657d"
+        },
+        "8rctOPZZuuVyDLLE0UjE2VVPkLg1": {
+          "active": false,
+          "agencyId": "BFP",
+          "deletedAt": 1794845823904,
+          "deletedBy": "SxGx3DHmp0OXUT2Bfol82EZael03",
+          "displayName": "niko",
+          "role": "RESPONDER"
+        },
+        "AK71vY4uPtb8sjoZTmzfGndV3FR2": {
+          "active": true,
+          "agencyId": "BFP",
+          "approvedAt": 1794867722524,
+          "approvedBy": "SxGx3DHmp0OXUT2Bfol82EZael03",
+          "authProvisioned": true,
+          "birthdate": "2001-03-15",
+          "createdAt": 1794867722524,
+          "createdBy": "SxGx3DHmp0OXUT2Bfol82EZael03",
+          "displayName": "Gildy France Villanueva",
+          "email": "gildy@gmail.com",
+          "emergencyContactName": "09277433290",
+          "emergencyContactPhone": "09277433290",
+          "phoneNumber": "09277433290",
+          "residentialAddress": "anything",
+          "role": "RESPONDER",
+          "sex": "MALE",
+          "stationId": "339774dd-c3b8-4a71-9e80-0177d7096bc4"
+        },
+        "CrDQeervajQa37CNQY3EO2rS5b93": {
+          "active": true,
+          "agencyId": "BFP",
+          "authProvisioned": false,
+          "authVerified": true,
+          "birthdate": "2001-03-15",
+          "displayName": "BFP Dagupan Responder",
+          "email": "responder@gmail.com",
+          "emergencyContactName": "",
+          "emergencyContactPhone": "",
+          "phoneNumber": "09776226185",
+          "residentialAddress": "Appas Tabuk City Kalinga",
+          "role": "RESPONDER",
+          "sex": "MALE",
+          "stationId": "BFP_DAGUPAN",
+          "status": "PENDING_AUTH_VERIFICATION",
+          "teamId": "BFP_DAGUPAN_TEAM_01",
+          "updatedAt": 1794283890107
+        },
+        "I0xkosp798b23TQsJKovF4vjfGa2": {
+          "active": true,
+          "createdAt": 1794916646758,
+          "displayName": "Gildy France K. Villanueva",
+          "email": "gildyfrancekvillanueva@gmail.com",
+          "role": "CITIZEN"
+        },
+        "Sc7mRgVE8kajLJ4Tkqib5XXRClx2": {
+          "active": true,
+          "agencyId": "TABUK_TEST_FIRE",
+          "approvedAt": 1794889380349,
+          "approvedBy": "65UmmTitcsblCH15muI21A8iQ842",
+          "authProvisioned": true,
+          "birthdate": "2001-03-15",
+          "createdAt": 1794889380349,
+          "createdBy": "65UmmTitcsblCH15muI21A8iQ842",
+          "displayName": "Gildy France Villanuava",
+          "email": "gildy1@gmail.com",
+          "emergencyContactName": "Generose",
+          "emergencyContactPhone": "09277433290",
+          "phoneNumber": "09277433290",
+          "residentialAddress": "Appas Tabuk City",
+          "role": "RESPONDER",
+          "sex": "MALE",
+          "stationId": "d1afee29-4d9c-456b-95db-c520a7fb657d",
+          "teamId": "044cdc4f-0632-4cf9-9fe0-d521872569ab",
+          "updatedAt": 1794889415080
+        },
+        "SxGx3DHmp0OXUT2Bfol82EZael03": {
+          "active": true,
+          "agencyId": "BFP",
+          "agencyMemberships": {
+            "BFP": {
+              "active": false,
+              "agencyId": "BFP",
+              "authVerified": false,
+              "canDispatch": false,
+              "role": "AGENCY_ADMIN",
+              "stationId": "BFP_DAGUPAN",
+              "status": "PENDING_AUTH_VERIFICATION"
+            }
+          },
+          "authProvisioned": true,
+          "displayName": "BFP DAGUPAN",
+          "email": "charlouybarley.dost@gmail.com",
+          "role": "AGENCY_ADMIN",
+          "stationId": "BFP_DAGUPAN",
+          "status": "PENDING_AUTH_VERIFICATION"
+        },
+        "UKBvnP4CseYvoeMQjWdJJh4IOFB3": {
+          "active": true,
+          "agencyId": "CDRRMC",
+          "displayName": "CDRRMC COMMAND CENTER",
+          "email": "dezekilb@gmail.com",
+          "role": "SYSTEM_ADMIN",
+          "stationId": "a9ca5c30-4aa0-43f7-be6e-a97615e97a72",
+          "stationSource": "COMMAND_CENTER"
+        },
+        "zkXzrbpziidyRVSJylOoGBZKRr42": {
+          "active": true,
+          "createdAt": 1794888188642,
+          "displayName": "Charlou Ybarley",
+          "email": "ybarleycharlou04@gmail.com",
+          "role": "CITIZEN"
+        }
+      }
+    }
+  },
+  "team_assignments": {
+    "044cdc4f-0632-4cf9-9fe0-d521872569ab": {
+      "30eb3df4-5507-40cc-8af2-66f7f0691e32": true,
+      "76c4d415-9de5-4ca4-832d-ea8f402edb6f": true,
+      "b043c691-213d-4be5-97e8-f4da56de68c2": true,
+      "c3dddf2d-926b-4f93-9d07-72404f2c4bbf": true,
+      "c476ffa5-2c96-4aa5-b508-f901d96b4bac": true,
+      "d6bfd37d-18ce-4aa2-93b1-8fbd4aa98f00": true,
+      "de48bea9-eda6-4c59-97a0-b4c98d2bfd77": true,
+      "fa792e4f-cef5-483f-8223-cfe11bb9733d": true
+    }
+  },
+  "teams": {
+    "044cdc4f-0632-4cf9-9fe0-d521872569ab": {
+      "active": true,
+      "agencyId": "TABUK_TEST_FIRE",
+      "name": "TEAM BFP 1",
+      "stationId": "d1afee29-4d9c-456b-95db-c520a7fb657d",
+      "status": "AVAILABLE",
+      "updatedAt": 1794889434777
+    }
+  },
+  "users": {
+    "5ad8ESdTKtQRJtjeXerTaW09Ebh1": {
+      "active": true,
+      "createdAt": 1793665304549,
+      "displayName": "Charlou Ybarley",
+      "email": "ybarleycharlou04@gmail.com",
+      "role": "CITIZEN"
+    },
+    "UKBvnP4CseYvoeMQjWdJJh4IOFB3": {
+      "displayName": "CDRRMC-COMMAND CENTER"
+    },
+    "zkXzrbpziidyRVSJylOoGBZKRr42": {
+      "active": true,
+      "createdAt": 1794886545893,
+      "displayName": "Charlou Ybarley",
+      "email": "ybarleycharlou04@gmail.com",
+      "role": "CITIZEN"
+    }
+  }
+}

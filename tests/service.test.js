@@ -65,7 +65,7 @@ test('response reports enforce team submission, agency review, correction and im
   assert.equal(standaloneSaved.incidentId, null); assert.equal(standaloneSaved.incidentLocation, standaloneInput.incidentLocation);
   assert.equal(standaloneSaved.emergencyType, standaloneInput.emergencyType); assert.equal(standaloneSaved.status, 'APPROVED');
   assert.equal(standaloneSaved.incidentDateTime, 100); assert.equal(standaloneSaved.descriptionCause, standaloneInput.descriptionCause);
-  const xmlInput = { TIME_CALL: '23:00', TIME_ARRIVAL: '23:15', DATE: '2026-11-06', NAME_OF_CALLER: 'Caller', CONCERN: 'Road accident', SCENE_LOCATION: 'Manually typed location', AMBULANCE: 'Ambulance 1', CASUALTY: 1, TEAM: 'Volunteer team', TAG: 'Yellow',
+  const xmlInput = { emergencyType: 'ROAD_ACCIDENT', TIME_CALL: '23:00', TIME_ARRIVAL: '23:15', DATE: '2026-11-06', NAME_OF_CALLER: 'Caller', CONCERN: 'Road accident', SCENE_LOCATION: 'Manually typed location', AMBULANCE: 'Ambulance 1', CASUALTY: 1, TEAM: 'Volunteer team', TAG: 'Yellow',
     patients: [{ Firstname: 'Ana', Lastname: 'Cruz', PATIENT_AGE: 30, PATIENT_ADDRESS: 'Tabuk', PATIENT_RELIGION: 'Catholic', PATIENT_STATUS: 'Stable', PATIENT_INJURY: 'Arm injury', PATIENT_GENDER_spinner: 'Female', PATIENT_CIVIL_STATUS_spinner: 'Single' }] };
   const xmlResult = await s.service.submitResponseReport('fireAdmin', xmlInput);
   const xmlSaved = s.city().command_center.response_reports[xmlResult.id];
@@ -79,6 +79,9 @@ test('response reports enforce team submission, agency review, correction and im
   await assert.rejects(s.service.submitResponseReport('responder', xmlInput), /assigned responding team/);
   await assert.rejects(s.service.submitResponseReport('fireAdmin', { ...xmlInput, DATE: '2026-02-30' }), /Invalid Date/);
   await assert.rejects(s.service.submitResponseReport('fireAdmin', { ...xmlInput, TIME_CALL: '25:00' }), /Call Time/);
+  // Every structured report needs an incident type (from the form, or the incident it is filed on).
+  await assert.rejects(s.service.submitResponseReport('fireAdmin', { ...xmlInput, emergencyType: '' }), /Choose the type of emergency/);
+  await assert.rejects(s.service.submitResponseReport('fireAdmin', { ...xmlInput, emergencyType: 'BOGUS' }), /Choose the type of emergency/);
   await assert.rejects(s.service.submitResponseReport('fireAdmin', { ...xmlInput, TIME_ARRIVAL: '25:00' }), /Arrival Time/);
   await assert.rejects(s.service.submitResponseReport('fireAdmin', { ...xmlInput, CASUALTY: 0 }), /patient list/);
   assert.equal(s.data.incidents[standalone.id], undefined);
@@ -635,6 +638,23 @@ async function responderSetup() {
   s.input = { displayName: 'Fire Responder', email: ' Fire@Example.com ', password: ' initial-secret ', stationId: 'fireStation', phoneNumber: '0917 123 4567' };
   return s;
 }
+
+test('only a responder on the assigned team can acknowledge a dispatch, and only once', async () => {
+  const s = await responderSetup();
+  s.city().users.responder = { role: 'RESPONDER', agencyId: 'BFP', teamId: 'fireTeam', active: true, displayName: 'Fire Responder' };
+  s.city().users.otherResponder = { role: 'RESPONDER', agencyId: 'BFP', teamId: 'otherTeam', active: true };
+  s.data.dispatch_assignments = { a1: { incidentId: 'fire', agencyId: 'BFP', teamId: 'fireTeam', status: 'PENDING_ACKNOWLEDGMENT', assignedAt: 100 } };
+  await assert.rejects(s.service.acknowledgeAssignment('otherResponder', 'a1'), /assigned team/);
+  await assert.rejects(s.service.acknowledgeAssignment('fireAdmin', 'a1'), /assigned team/);
+  await assert.rejects(s.service.acknowledgeAssignment('responder', 'missing'), /assigned team/);
+  assert.equal((await s.service.acknowledgeAssignment('responder', 'a1')).message, 'Assignment acknowledged.');
+  const saved = s.data.dispatch_assignments.a1;
+  assert.equal(saved.status, 'ACKNOWLEDGED'); assert.equal(saved.acknowledgedBy, 'responder');
+  assert.equal(saved.acknowledgedByName, 'Fire Responder'); assert.ok(saved.acknowledgedAt > 0);
+  assert.equal((await s.service.acknowledgeAssignment('responder', 'a1')).message, 'Assignment was already acknowledged.');
+  s.data.dispatch_assignments.a1.status = 'COMPLETED';
+  await assert.rejects(s.service.acknowledgeAssignment('responder', 'a1'), /can no longer be acknowledged/);
+});
 
 test('agency admins create Firebase responders in their own agency with no approval or password in data', async () => {
   const s = await responderSetup();
@@ -1295,9 +1315,11 @@ test('the monthly summary counts road crashes by month, type, casualties, severi
     r3: { status: 'APPROVED', agencyId: 'PNP', DATE: '2026-08-21', TIME_CALL: '10:00', emergencyType: 'FIRE', patients: [] },
     r4: { status: 'RETURNED', agencyId: 'BFP', DATE: '2026-08-22', TIME_CALL: '10:00', emergencyType: 'ROAD_ACCIDENT', patients: [{ PATIENT_GENDER_spinner: 'Female' }] },
   } };
-  const summary = await s.service.responseSummary('command', { month: '2026-08' });
+  const summary = await s.service.responseSummary('command', { month: '2026-08', emergencyType: 'ROAD_ACCIDENT' });
   assert.equal(summary.totalIncidents, 2);
   assert.deepEqual(summary.byCrashType, { SELF_ACCIDENT: 1, COLLISION: 1, NOT_RECORDED: 0 });
+  // Without a type the summary covers every incident type (the fire report counts too).
+  assert.equal((await s.service.responseSummary('command', { month: '2026-08' })).totalIncidents, 3);
   assert.equal(summary.byVehicleType.MOTORCYCLE, 2);
   assert.deepEqual(summary.casualties, { total: 2, male: 2, female: 0, unknown: 0 });
   assert.equal(summary.bySeverity.CRITICAL, 1);

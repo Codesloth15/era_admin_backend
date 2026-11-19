@@ -60,6 +60,10 @@ Do not set `PORT`, `AGENCY_API_TARGET` or `OWNER_API_TARGET`. Those belong to th
 
 ## 5. Connect the web apps
 
+Backend address on Render: `https://era-admin-backend.onrender.com`.
+
+The web admin (`era_web_admin/vercel.json`) and the owner app (`sentra_corp/vercel.json`) forward `/api/agencies/...` on Vercel to that address. The browser only sees the Vercel site, so CORS isn't involved for those calls. Keep `CORS_ALLOWED_ORIGINS` set to the web addresses anyway.
+
 The web admin and owner app call the API at `/api/agencies`, on the same site. In development, a proxy forwards those calls to `127.0.0.1:5000`. That proxy doesn't exist in production, so choose one of these before users sign in:
 
 - **Option A (simplest):** serve the web admin from the same domain as the API, with a reverse proxy that sends `/api/agencies` to Render.

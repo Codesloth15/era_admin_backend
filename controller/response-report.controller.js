@@ -6,5 +6,6 @@ export function createResponseReportController(service) {
     responseSummary: respond(req => service.responseSummary(req.uid, { month: req.query.month, emergencyType: req.query.emergencyType })),
     submitResponseReport: respond(req => service.submitResponseReport(req.uid, req.body)),
     reviewResponseReport: respond(req => service.reviewResponseReport(req.uid, req.params.id, req.body)),
+    acknowledgeAssignment: respond(req => service.acknowledgeAssignment(req.uid, req.params.id)),
   };
 }

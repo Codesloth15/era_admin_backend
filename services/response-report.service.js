@@ -1,5 +1,6 @@
 import { CITY } from '../config/data-paths.js';
 import { fail, key, agencyInvolvedInIncident } from './rules/agency.rules.js';
+import { INCIDENT_TYPES, normalizeIncidentType } from './rules/incident.rules.js';
 
 // Structured answers for road-crash style reporting. Empty means not recorded; older reports have none.
 const VEHICLE_TYPES = ['MOTORCYCLE', 'CAR', 'TRICYCLE', 'TRUCK', 'BUS', 'OTHER'];
@@ -130,7 +131,7 @@ function createResponseReports({ repo, id, now }) {
       const user = operator(state, uid);
       if (!['AGENCY_ADMIN', 'COMMAND_ADMIN', 'SYSTEM_ADMIN'].includes(user.role)) fail('Administrator access is required for summaries.', 403);
       const month = typeof input.month === 'string' && /^\d{4}-(0[1-9]|1[0-2])$/.test(input.month) ? input.month : fail('Choose a month (YYYY-MM).');
-      const emergencyType = typeof input.emergencyType === 'string' && input.emergencyType ? input.emergencyType : 'ROAD_ACCIDENT';
+      const emergencyType = typeof input.emergencyType === 'string' && input.emergencyType ? input.emergencyType : 'ALL';
       const incidents = incidentsOf(state);
       const scoped = user.role === 'AGENCY_ADMIN';
       const typeOf = report => report.emergencyType || incidents[report.incidentId]?.type || '';
@@ -144,7 +145,7 @@ function createResponseReports({ repo, id, now }) {
         .map(([reportId, report]) => ({ ...report, reportId }))
         .filter(report => report && report.status !== 'RETURNED' && (!scoped || report.agencyId === user.agencyId))
         .map(report => ({ ...report, when: whenOf(report) ?? report.submittedAt }))
-        .filter(report => Number.isFinite(report.when) && phDate(report.when).toISOString().slice(0, 7) === month && typeOf(report) === emergencyType);
+        .filter(report => Number.isFinite(report.when) && phDate(report.when).toISOString().slice(0, 7) === month && (emergencyType === 'ALL' || typeOf(report) === emergencyType));
       // One incident counts once, even when several reports cover it.
       const byIncident = new Map();
       for (const report of reports) {
@@ -206,8 +207,11 @@ function createResponseReports({ repo, id, now }) {
           const incidentId = assignment?.incidentId || (agencyCreated && input.incidentId ? key(input.incidentId, 'incident') : null);
           if (agencyCreated && incidentId && !assignment && !agencyIncident(state, user, incidentId, incidentsOf(state)[incidentId])) fail('This incident is outside your agency. Only agencies that lead it, responded to it, or had a team dispatched to it can file its report.', 403);
           if (incidentId && (!incidentsOf(state)[incidentId] || incidentsOf(state)[incidentId].isSimulation === true)) fail('A live incident is required.');
+          // A report on an incident takes the incident's type; a report without one needs a type from the form.
+          const emergencyType = incidentId ? normalizeIncidentType(incidentsOf(state)[incidentId].type) : input.emergencyType;
+          if (!INCIDENT_TYPES.includes(emergencyType)) fail('Choose the type of emergency.');
           city.command_center ||= {}; city.command_center.response_reports ||= {};
-          city.command_center.response_reports[reportId] = { ...details, assignmentId, incidentId, agencyId: user.agencyId,
+          city.command_center.response_reports[reportId] = { ...details, emergencyType, assignmentId, incidentId, agencyId: user.agencyId,
             agencyName: city.agency[user.agencyId].profile.name || user.agencyId,
             submittedBy: uid, submittedByName: user.displayName || uid, submittedAt: timestamp,
             status: agencyCreated ? 'APPROVED' : 'PENDING_REVIEW', creationSource: agencyCreated ? 'AGENCY_MANUAL' : 'RESPONDER', approvalRequired: !agencyCreated,
@@ -259,6 +263,23 @@ function createResponseReports({ repo, id, now }) {
         return state;
       });
       return { message: input.status === 'APPROVED' ? 'Report approved and saved.' : 'Report returned for correction.' };
+    },
+    // A responder on the assigned team confirms they have received the dispatch.
+    async acknowledgeAssignment(uid, assignmentId) {
+      assignmentId = key(assignmentId, 'assignment');
+      const timestamp = now();
+      let alreadyAcknowledged = false;
+      await repo.transact('/', state => {
+        const user = operator(state, uid);
+        const location = state.dispatch_assignments?.[assignmentId] ? state.dispatch_assignments : cityOf(state).command_center?.dispatch_assignments;
+        const assignment = location?.[assignmentId];
+        if (user.role !== 'RESPONDER' || !user.teamId || !assignment || assignment.agencyId !== user.agencyId || assignment.teamId !== user.teamId) fail('Only a responder on the assigned team can acknowledge this assignment.', 403);
+        if (assignment.status === 'ACKNOWLEDGED') { alreadyAcknowledged = true; return state; }
+        if (assignment.status !== 'PENDING_ACKNOWLEDGMENT') fail('This assignment can no longer be acknowledged.', 409);
+        Object.assign(assignment, { status: 'ACKNOWLEDGED', acknowledgedAt: timestamp, acknowledgedBy: uid, acknowledgedByName: user.displayName || uid });
+        return state;
+      });
+      return { message: alreadyAcknowledged ? 'Assignment was already acknowledged.' : 'Assignment acknowledged.' };
     },
   };
 }
