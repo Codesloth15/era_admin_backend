@@ -281,6 +281,34 @@ function createResponseReports({ repo, id, now }) {
       });
       return { message: alreadyAcknowledged ? 'Assignment was already acknowledged.' : 'Assignment acknowledged.' };
     },
+    // Responder progress after acknowledging: Acknowledge → En route → Arrived (on scene).
+    async markAssignmentEnRoute(uid, assignmentId) {
+      return progressAssignment(uid, assignmentId, { from: 'ACKNOWLEDGED', to: 'EN_ROUTE', timeField: 'enRouteAt', byField: 'enRouteBy',
+        refused: 'Acknowledge the assignment before going en route.', repeated: 'Already marked en route.', done: 'Marked en route.' });
+    },
+    async markAssignmentArrived(uid, assignmentId) {
+      return progressAssignment(uid, assignmentId, { from: 'EN_ROUTE', to: 'ON_SCENE', timeField: 'arrivedAt', byField: 'arrivedBy',
+        refused: 'Mark the assignment en route before arriving.', repeated: 'Arrival was already recorded.', done: 'Arrival recorded.' });
+    },
   };
+  async function progressAssignment(uid, assignmentId, step) {
+    assignmentId = key(assignmentId, 'assignment');
+    const timestamp = now();
+    let repeated = false;
+    await repo.transact('/', state => {
+      const user = operator(state, uid);
+      const location = state.dispatch_assignments?.[assignmentId] ? state.dispatch_assignments : cityOf(state).command_center?.dispatch_assignments;
+      const assignment = location?.[assignmentId];
+      if (user.role !== 'RESPONDER' || !user.teamId || !assignment || assignment.agencyId !== user.agencyId || assignment.teamId !== user.teamId) fail('Only a responder on the assigned team can update this assignment.', 403);
+      if (assignment.status === step.to) { repeated = true; return state; }
+      if (assignment.status !== step.from) fail(step.refused, 409);
+      Object.assign(assignment, { status: step.to, [step.timeField]: timestamp, [step.byField]: uid });
+      // The team follows its assignment, but a team already released or made unavailable is left alone.
+      const team = state.teams?.[assignment.teamId];
+      if (team && ['DISPATCHED', 'EN_ROUTE', 'ON_SCENE'].includes(team.status)) Object.assign(team, { status: step.to, updatedAt: timestamp });
+      return state;
+    });
+    return { message: repeated ? step.repeated : step.done };
+  }
 }
 export { createResponseReports };

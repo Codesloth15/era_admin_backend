@@ -7,5 +7,7 @@ export function createResponseReportController(service) {
     submitResponseReport: respond(req => service.submitResponseReport(req.uid, req.body)),
     reviewResponseReport: respond(req => service.reviewResponseReport(req.uid, req.params.id, req.body)),
     acknowledgeAssignment: respond(req => service.acknowledgeAssignment(req.uid, req.params.id)),
+    markAssignmentEnRoute: respond(req => service.markAssignmentEnRoute(req.uid, req.params.id)),
+    markAssignmentArrived: respond(req => service.markAssignmentArrived(req.uid, req.params.id)),
   };
 }

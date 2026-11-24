@@ -6,3 +6,5 @@ node_modules/
 firebase/*.json
 *service-account*.json
 *firebase-adminsdk*.json
+# Database exports contain personal data; keep them out of git
+*rtdb-export*.json
