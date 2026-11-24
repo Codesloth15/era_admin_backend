@@ -656,6 +656,30 @@ test('only a responder on the assigned team can acknowledge a dispatch, and only
   await assert.rejects(s.service.acknowledgeAssignment('responder', 'a1'), /can no longer be acknowledged/);
 });
 
+test('a responder on the assigned team goes en route and then arrives, in that order', async () => {
+  const s = await responderSetup();
+  s.city().users.responder = { role: 'RESPONDER', agencyId: 'BFP', teamId: 'fireTeam', active: true };
+  s.city().users.otherResponder = { role: 'RESPONDER', agencyId: 'BFP', teamId: 'otherTeam', active: true };
+  s.data.teams = { fireTeam: { agencyId: 'BFP', active: true, status: 'DISPATCHED' } };
+  s.data.dispatch_assignments = { a1: { incidentId: 'fire', agencyId: 'BFP', teamId: 'fireTeam', status: 'PENDING_ACKNOWLEDGMENT', assignedAt: 100 } };
+  await assert.rejects(s.service.markAssignmentEnRoute('responder', 'a1'), /Acknowledge the assignment/);
+  await s.service.acknowledgeAssignment('responder', 'a1');
+  await assert.rejects(s.service.markAssignmentArrived('responder', 'a1'), /en route before arriving/);
+  await assert.rejects(s.service.markAssignmentEnRoute('otherResponder', 'a1'), /assigned team/);
+  await assert.rejects(s.service.markAssignmentEnRoute('fireAdmin', 'a1'), /assigned team/);
+  assert.equal((await s.service.markAssignmentEnRoute('responder', 'a1')).message, 'Marked en route.');
+  const saved = () => s.data.dispatch_assignments.a1;
+  assert.equal(saved().status, 'EN_ROUTE'); assert.equal(saved().enRouteBy, 'responder'); assert.ok(saved().enRouteAt > 0);
+  assert.equal(s.data.teams.fireTeam.status, 'EN_ROUTE');
+  assert.equal((await s.service.markAssignmentEnRoute('responder', 'a1')).message, 'Already marked en route.');
+  assert.equal((await s.service.markAssignmentArrived('responder', 'a1')).message, 'Arrival recorded.');
+  assert.equal(saved().status, 'ON_SCENE'); assert.equal(saved().arrivedBy, 'responder'); assert.ok(saved().arrivedAt > 0);
+  assert.equal(s.data.teams.fireTeam.status, 'ON_SCENE');
+  assert.equal((await s.service.markAssignmentArrived('responder', 'a1')).message, 'Arrival was already recorded.');
+  saved().status = 'COMPLETED';
+  await assert.rejects(s.service.markAssignmentArrived('responder', 'a1'), /en route before arriving/);
+});
+
 test('agency admins create Firebase responders in their own agency with no approval or password in data', async () => {
   const s = await responderSetup();
   const result = await s.service.createResponder('fireAdmin', 'bfp', { ...s.input, agencyId: 'PNP', uid: 'forged' });

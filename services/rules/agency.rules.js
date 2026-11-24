@@ -171,10 +171,14 @@ function applyAgencyCommand(state, uid, input, ids, timestamp) {
       if (!incident.agencyAcknowledgements?.[user.agencyId] && incident.acknowledgedByAgencyId !== user.agencyId) fail('Your agency must acknowledge this incident before dispatching a team.', 403);
       const teamId = key(input.teamId, 'team ID'); const team = state.teams?.[teamId];
       if (!team || team.agencyId !== user.agencyId) fail('You may dispatch teams only from your agency.', 403);
-      if (team.active !== true) fail('Team is inactive.');
-      if (Boolean(team.isSimulation) !== simulation) fail('Simulation and live operations must use separate teams.');
+      // Read the team the way the dispatch screen shows it: the agency's own team record wins
+      // over the root copy, whose status can be left at DISPATCHED after an assignment ends.
+      const current = { ...team, ...state.server['City of Tabuk'].agency[user.agencyId].teams?.[teamId] };
+      if (current.active !== true) fail('Team is inactive.');
+      if (Boolean(current.isSimulation) !== simulation) fail('Simulation and live operations must use separate teams.');
       // Readiness alone decides dispatch; responder GPS location is not required.
-      if (team.status !== 'AVAILABLE' || Object.values(state.dispatch_assignments || {}).some(item => item.teamId === teamId && activeAssignment(item))) fail('Team is unavailable or already assigned.');
+      if (current.status !== 'AVAILABLE') fail('Team is not marked available.');
+      if (Object.values(state.dispatch_assignments || {}).some(item => item.teamId === teamId && activeAssignment(item))) fail('Team already has an active assignment.');
       state.dispatch_assignments ||= {};
       state.dispatch_assignments[ids.assignmentId] = { incidentId, teamId, agencyId: user.agencyId, agencyName, status: 'PENDING_ACKNOWLEDGMENT', assignedBy: uid, assignedAt: timestamp, isSimulation: simulation };
       for (const [collection, parent, child] of [['incident_assignments', incidentId, ids.assignmentId], ['team_assignments', teamId, ids.assignmentId], ['agency_incidents', user.agencyId, incidentId]]) {
