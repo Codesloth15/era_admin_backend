@@ -11,5 +11,8 @@ export function createResponseReportRouter(service) {
   router.post('/:id/review', controller.reviewResponseReport);
   // Responders on the assigned team: POST /api/agencies/response-reports/assignments/:id/acknowledge
   router.post('/assignments/:id/acknowledge', controller.acknowledgeAssignment);
+  // Then, in order: .../assignments/:id/en-route and .../assignments/:id/arrived
+  router.post('/assignments/:id/en-route', controller.markAssignmentEnRoute);
+  router.post('/assignments/:id/arrived', controller.markAssignmentArrived);
   return router;
 }

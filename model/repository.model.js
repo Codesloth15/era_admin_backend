@@ -31,6 +31,13 @@ function createRepository(db) {
       }
       await bumpRevision(db);
     },
+    // Deletes the record at path only when shouldRemove(current) is true; returns whether it is gone.
+    // The callback must be synchronous and safe to retry. Not shown on agency pages, so no revision bump.
+    async removeIf(path, shouldRemove) {
+      // A first call with null is only a local guess: proposing null makes Firebase retry with the saved value.
+      const result = await db.ref(path).transaction(state => (state === null || shouldRemove(state) ? null : undefined), undefined, false);
+      return result.committed;
+    },
   };
 }
 

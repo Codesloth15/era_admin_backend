@@ -3,10 +3,13 @@ import admin from 'firebase-admin';
 import { initializeApp, applicationDefault } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 import { getDatabase } from 'firebase-admin/database';
+import { getMessaging } from 'firebase-admin/messaging';
 import { JWT } from 'google-auth-library';
 import { readConfig } from '../config/env.js';
 import { createRepository } from '../model/repository.model.js';
 import { createFileStorage } from '../model/file-storage.model.js';
+import { createPushMessaging } from '../model/push-messaging.model.js';
+import { createIncidentFeed } from '../model/incident-feed.model.js';
 
 function readServiceAccount(file) {
   try {
@@ -58,7 +61,7 @@ export function initializeFirebase(config) {
   return admin.app();
 }
 
-// Repository, identity and file storage adapters handed to the services.
+// Repository, identity, file storage, push messaging and incident feed adapters handed to the services.
 export function createFirebaseDependencies(environment = process.env, existingApp) {
   const { databaseURL, projectId, storageBucket } = readConfig(environment).firebase;
   if (!databaseURL && !existingApp) {
@@ -69,5 +72,12 @@ export function createFirebaseDependencies(environment = process.env, existingAp
     databaseURL,
     ...(projectId ? { projectId } : {}),
   });
-  return { repository: createRepository(getDatabase(app)), auth: getAuth(app), files: createFileStorage(app, storageBucket) };
+  const db = getDatabase(app);
+  return {
+    repository: createRepository(db),
+    auth: getAuth(app),
+    files: createFileStorage(app, storageBucket),
+    push: createPushMessaging(getMessaging(app)),
+    incidentFeed: createIncidentFeed(db),
+  };
 }

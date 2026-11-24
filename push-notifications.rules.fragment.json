@@ -1,0 +1,33 @@
+{
+  "rules": {
+    "incidents": {
+      ".indexOn": [
+        "createdAt"
+      ]
+    },
+    "server": {
+      "City of Tabuk": {
+        "command_center": {
+          "responder": {
+            "active_user": {
+              "$uid": {
+                ".read": "auth != null && auth.uid === $uid",
+                ".write": "auth != null && auth.uid === $uid && (!newData.exists() || (root.child('server/City of Tabuk/users').child(auth.uid).child('role').val() === 'RESPONDER' && root.child('server/City of Tabuk/users').child(auth.uid).child('active').val() === true))",
+                ".validate": "newData.hasChildren(['fcmToken', 'updatedAt'])",
+                "fcmToken": {
+                  ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 4096"
+                },
+                "updatedAt": {
+                  ".validate": "newData.val() === now"
+                },
+                "$other": {
+                  ".validate": false
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

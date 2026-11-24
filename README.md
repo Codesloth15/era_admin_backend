@@ -26,16 +26,19 @@ The Node.js/Express server uses ES modules (`"type": "module"`) and the same fla
 
 ```text
 era_admin_backend/
-  server.js                     # Startup only: settings, Firebase, compose services, listen
+  server.js                     # Startup only: settings, Firebase, compose services, alert push listener, listen
   app.js                        # Express app: middleware, routers, error middleware
   config/
     env.js                      # Every environment setting, read in one place
-    data-paths.js               # Existing data hierarchy (CITY)
+    data-paths.js               # Existing data hierarchy (CITY, incidents, push tokens, alert send log)
+    tabuk-barangays.json        # Tabuk City barangay boundaries (copy of the web admin's file)
   database/
     firebase.js                 # Firebase Admin app and the adapters handed to services
   model/
-    repository.model.js         # read(path) / transact(path, change) on the Realtime Database
+    repository.model.js         # read(path) / transact(path, change) / removeIf(path, test) on the Realtime Database
     file-storage.model.js       # Firebase Storage uploads
+    push-messaging.model.js     # Firebase Cloud Messaging: send one message to many phones
+    incident-feed.model.js      # Listener for new citizen alerts
   routes/                       # One router per resource (*.routes.js)
     agency.routes.js            # /api/agencies; mounts the routers below
     advisory.routes.js          # /api/agencies/advisories
@@ -51,6 +54,7 @@ era_admin_backend/
     agency.service.js           # Composes the agency services
     agency-context.service.js   # Authorization and audited mutations
     *.service.js                # Advisories, invitations, reports, dashboard, incidents
+    alert-notification.service.js # Push new Tabuk City alerts to every active responder
     rules/                      # Validation and business rules (no Express or Firebase)
   utils/
     http-error.js               # HttpError and fail(message, status)
@@ -62,11 +66,23 @@ Rules in `services/rules` do not import Express or Firebase. Services depend on 
 
 Errors: services throw with `fail(message, status)` from `utils/http-error.js`. `middleware/error.middleware.js` returns `{ error, code? }` with that status. Express request errors (bad JSON, body too large) keep their 4xx status. Any other error, including upstream errors that carry a status, is logged and returns a generic 500 message. A request without a JSON body is treated as an empty object, so it gets the usual 400 validation messages.
 
-The repository contract is `read(path)` and `transact(path, change)`. Transaction callbacks must be synchronous and safe to retry; all related authorization, membership, invitation, and audit changes remain in one transaction. The identity adapter uses `getUser(uid)`, `getUserByEmail(email)`, `createUser(details)`, and `deleteUser(uid)`; HTTP authentication separately uses `verifyIdToken(token, checkRevoked)`. Tests supply in-memory implementations without importing Firebase.
+The repository contract is `read(path)`, `transact(path, change)` and `removeIf(path, shouldRemove)` (deletes a record only when the test passes). Transaction callbacks must be synchronous and safe to retry; all related authorization, membership, invitation, and audit changes remain in one transaction. The identity adapter uses `getUser(uid)`, `getUserByEmail(email)`, `createUser(details)`, and `deleteUser(uid)`; HTTP authentication separately uses `verifyIdToken(token, checkRevoked)`. Tests supply in-memory implementations without importing Firebase.
 
 Keep new business rules in `services/rules`, orchestration in `services`, SDK access in `model`/`database`, and HTTP concerns in routes, controllers and middleware. A new resource gets its own `*.routes.js` and `*.controller.js`, mounted in `agency.routes.js` before the `/:code/...` routes. Existing endpoint paths, data paths, and response shapes are preserved.
 
 Run the server's automated tests from the workspace root with `npm test --prefix era_admin_backend`. Manual and live Firebase testing require user approval.
+
+## Push notifications for new alerts
+
+When a citizen alert is added to `incidents/{id}`, the backend pushes it to every active responder's phone (`server/City of Tabuk/users/{uid}` with `role: RESPONDER` and `active: true`) through Firebase Cloud Messaging.
+
+- **Tabuk City only.** The alert's GPS point is checked against the official barangay boundaries in `config/tabuk-barangays.json`. Alerts outside the city or without a GPS point are logged as `OUTSIDE_TABUK` and not sent. The typed address is not used for the check.
+- **Not sent:** simulations, resolved, cancelled or closed alerts, and alerts older than 10 minutes when the backend first sees them, so a restart or first deploy never resends old alerts.
+- **Once per alert.** The backend claims `server/City of Tabuk/command_center/alert_notifications/{incidentId}` before sending and records `status` (`SENT`, `NO_RECIPIENTS`, `OUTSIDE_TABUK`, `FAILED`), `barangay`, `recipients`, `successCount`, `failureCount`, `removedTokens`, `claimedAt` and `finishedAt`. No tokens or account IDs are stored there. A failed send is not retried.
+- **Tokens.** The responder app saves `{ fcmToken, updatedAt }` at `server/City of Tabuk/command_center/responder/active_user/{uid}` on sign-in and token refresh, and removes it on logout. Tokens that Firebase reports as no longer registered are removed, unless the phone has saved a new one meanwhile.
+- **Message.** Title "New fire alert" (from the alert type), body "Brgy. {barangay} · {address}", data `{ incidentId, type, priority }`, Android high priority on channel `emergency_alerts`, which the responder app must create.
+
+The listener runs inside the API process, so the backend must stay running. Merge `push-notifications.rules.fragment.json` into the live rules: it lets each active responder write only their own token and adds an index on `incidents/createdAt`. The service account needs the Firebase Cloud Messaging API enabled in the Google Cloud project. Dispatch `notification_jobs` are a separate queue and are still not delivered.
 
 ## Account onboarding
 
