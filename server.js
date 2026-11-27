@@ -6,6 +6,7 @@ import { initializeFirebase, createFirebaseDependencies } from './database/fireb
 import { createService } from './services/agency.service.js';
 import { createAlertNotifications } from './services/alert-notification.service.js';
 import { MAX_ALERT_AGE_MS } from './services/rules/alert-notification.rules.js';
+import { createRoadRouting } from './model/road-routing.model.js';
 import { createApp } from './app.js';
 
 // Pushes each new citizen alert inside Tabuk City to every active responder's phone.
@@ -32,7 +33,7 @@ const startServer = () => {
   const dependencies = createFirebaseDependencies(process.env, firebaseApp);
 
   const app = createApp({
-    service: createService({ ...dependencies, id: randomUUID }),
+    service: createService({ ...dependencies, roadRouting: createRoadRouting(config.routingUrl), id: randomUUID }),
     auth: dependencies.auth,
     corsOrigins: config.corsOrigins,
   });

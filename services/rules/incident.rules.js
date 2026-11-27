@@ -19,10 +19,11 @@ const optionalText = (value, label, max) => {
 };
 
 // Routing is automatic: every active agency whose emergencyTypes include the incident type, and that has an
-// active station with an available team inside the radius, is recommended. The nearest one leads; the others
-// are supporting. Recommendations guide people; they never block anyone from seeing, acknowledging or
-// responding to an incident. With no location or no recommended agency, the Command Center owns it.
-// The radius is read from settings (system_config.dispatch.routing.radiusKm), 30 km by default.
+// active station with an available team inside the radius, is recommended. The closest one leads; the others
+// are supporting. "Closest" means the shortest driving time when road travel times are known, otherwise the
+// shortest straight-line distance. Recommendations guide people; they never block anyone from seeing,
+// acknowledging or responding to an incident. With no location or no recommended agency, the Command Center owns it.
+// The radius (straight-line) is read from settings (system_config.dispatch.routing.radiusKm), 30 km by default.
 const DEFAULT_RADIUS_KM = 30;
 const toRadians = value => value * Math.PI / 180;
 function distanceKm(a, b) {
@@ -30,28 +31,49 @@ function distanceKm(a, b) {
   const h = Math.sin(dLat / 2) ** 2 + Math.cos(toRadians(a.latitude)) * Math.cos(toRadians(b.latitude)) * Math.sin(dLon / 2) ** 2;
   return 6371 * 2 * Math.asin(Math.sqrt(h));
 }
-// agencies: [{ id, active, emergencyTypes: [], stations: [{ id, latitude, longitude, active, hasAvailableTeam }] }]
-// routing: { radiusKm }
-function routeIncident(type, location, agencies, routing = {}) {
+// Station IDs are only unique within an agency.
+const stationKey = (agencyId, stationId) => `${agencyId}/${stationId}`;
+// Every qualifying station inside the radius, grouped by covering agency; null when the incident has no location.
+function qualifyingStations(type, location, agencies, routing) {
+  if (!Number.isFinite(location?.latitude) || !Number.isFinite(location?.longitude)) return null;
   const wanted = normalizeIncidentType(type);
   const radiusKm = Number.isFinite(routing?.radiusKm) && routing.radiusKm > 0 ? routing.radiusKm : DEFAULT_RADIUS_KM;
-  const hasLocation = Number.isFinite(location?.latitude) && Number.isFinite(location?.longitude);
-  const commandCenter = { leadAgencyId: null, owner: 'COMMAND_CENTER', pendingLeadAgencyIds: [], recommendedAgencies: {}, recommendedStations: {} };
-  if (!hasLocation) return { ...commandCenter, routingMethod: 'NO_LOCATION' };
   const origin = { latitude: location.latitude, longitude: location.longitude };
-  // Each covering agency is recommended at its nearest qualifying station.
-  const recommended = agencies
+  return agencies
     .filter(agency => agency.active !== false && (agency.emergencyTypes || []).some(item => normalizeIncidentType(item) === wanted))
-    .map(agency => {
-      const nearest = agency.stations
+    .map(agency => ({
+      agencyId: agency.id,
+      stations: agency.stations
         .filter(station => station.active !== false && station.hasAvailableTeam === true && Number.isFinite(station.latitude) && Number.isFinite(station.longitude))
         .map(station => ({ station, distance: distanceKm(origin, station) }))
-        .filter(item => item.distance <= radiusKm)
-        .sort((a, b) => a.distance - b.distance || String(a.station.id).localeCompare(String(b.station.id)))[0];
-      return nearest ? { agencyId: agency.id, stationId: nearest.station.id, distance: nearest.distance } : null;
+        .filter(item => item.distance <= radiusKm),
+    }))
+    .filter(agency => agency.stations.length);
+}
+// The stations to ask the road routing service about: { key, latitude, longitude }.
+function roadRoutingCandidates(type, location, agencies, routing = {}) {
+  return (qualifyingStations(type, location, agencies, routing) || []).flatMap(({ agencyId, stations }) =>
+    stations.map(({ station }) => ({ key: stationKey(agencyId, station.id), latitude: station.latitude, longitude: station.longitude })));
+}
+// Stations with a known driving time come first (fastest first); stations without one follow, nearest first.
+const travel = item => (Number.isFinite(item.seconds) ? item.seconds : Infinity);
+const closer = (a, b) => (travel(a) === travel(b) ? 0 : travel(a) - travel(b)) || a.distance - b.distance;
+// agencies: [{ id, active, emergencyTypes: [], stations: [{ id, latitude, longitude, active, hasAvailableTeam }] }]
+// routing: { radiusKm }
+// travelSeconds: optional driving time in seconds per station, keyed `${agencyId}/${stationId}`.
+function routeIncident(type, location, agencies, routing = {}, travelSeconds = {}) {
+  const commandCenter = { leadAgencyId: null, owner: 'COMMAND_CENTER', pendingLeadAgencyIds: [], recommendedAgencies: {}, recommendedStations: {} };
+  const covering = qualifyingStations(type, location, agencies, routing);
+  if (!covering) return { ...commandCenter, routingMethod: 'NO_LOCATION' };
+  // Each covering agency is recommended at its closest qualifying station.
+  const recommended = covering
+    .map(({ agencyId, stations }) => {
+      const best = stations
+        .map(item => ({ ...item, seconds: travelSeconds?.[stationKey(agencyId, item.station.id)] }))
+        .sort((a, b) => closer(a, b) || String(a.station.id).localeCompare(String(b.station.id)))[0];
+      return { agencyId, stationId: best.station.id, distance: best.distance, seconds: best.seconds };
     })
-    .filter(Boolean)
-    .sort((a, b) => a.distance - b.distance || a.agencyId.localeCompare(b.agencyId));
+    .sort((a, b) => closer(a, b) || a.agencyId.localeCompare(b.agencyId));
   if (!recommended.length) return { ...commandCenter, routingMethod: 'NO_LEAD_IN_RANGE' };
   const leadAgencyId = recommended[0].agencyId;
   return {
@@ -60,7 +82,7 @@ function routeIncident(type, location, agencies, routing = {}) {
     pendingLeadAgencyIds: [],
     recommendedAgencies: Object.fromEntries(recommended.map(item => [item.agencyId, true])),
     recommendedStations: Object.fromEntries(recommended.map(item => [item.agencyId, item.stationId])),
-    routingMethod: 'NEAREST_STATION',
+    routingMethod: Number.isFinite(recommended[0].seconds) ? 'FASTEST_ROAD_ROUTE' : 'NEAREST_STATION',
   };
 }
 
@@ -90,4 +112,4 @@ function staffIncidentInput(input) {
   };
 }
 
-export { INCIDENT_TYPES, DEFAULT_RADIUS_KM, normalizeIncidentType, routeIncident, staffIncidentInput };
+export { INCIDENT_TYPES, DEFAULT_RADIUS_KM, normalizeIncidentType, routeIncident, roadRoutingCandidates, staffIncidentInput };

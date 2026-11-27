@@ -5,7 +5,8 @@ import { fileURLToPath } from 'node:url';
 import { createService } from '../services/agency.service.js';
 import { CITY } from '../config/data-paths.js';
 import { code, hotline } from '../services/rules/agency.rules.js';
-import { routeIncident } from '../services/rules/incident.rules.js';
+import { roadRoutingCandidates, routeIncident } from '../services/rules/incident.rules.js';
+import { createRoadRouting } from '../model/road-routing.model.js';
 import { createFirebaseDependencies } from '../database/firebase.js';
 import { readConfig } from '../config/env.js';
 
@@ -194,7 +195,7 @@ test('a new agency can start with a hotline', async () => {
   await s.create('PNP');
   assert.equal('hotline' in s.city().agency.PNP.profile, false);
 });
-function setup() {
+function setup({ roadRouting } = {}) {
   const data = { users: { root: { role: 'SYSTEM_ADMIN', active: true } }, server: { 'City of Tabuk': {} } };
   let counter = 0;
   const get = path => path === '/' ? data : path.split('/').reduce((value, part) => value?.[part], data) ?? null;
@@ -227,7 +228,7 @@ function setup() {
   let time = 1000;
   const stored = new Map();
   const files = { async save(path, buffer, contentType) { stored.set(path, { buffer, contentType }); return `https://files.test/${path}`; }, async remove(path) { stored.delete(path); } };
-  const service = createService({ repository: repo, auth, files, id: () => `id_${++counter}`, now: () => time });
+  const service = createService({ repository: repo, auth, files, roadRouting, id: () => `id_${++counter}`, now: () => time });
   const city = () => get(CITY);
   const create = (agencyCode = 'PNP') => service.createAgency('root', { emergencyTypes: ['FIRE'], name: 'Philippine National Police', code: agencyCode, type: 'POLICE', contactEmail: 'office@example.com', contactNumber: '09123456789', address: 'Tabuk' });
   const invite = () => service.invite('root', 'PNP', { displayName: 'Agency Admin', email: 'admin@example.com' });
@@ -573,6 +574,53 @@ test('an incident with no location goes to the Command Center, not to an agency 
   assert.equal(routed.routingMethod, 'NO_LOCATION');
 });
 
+test('with road travel times, the fastest station by road leads instead of the nearest in a straight line', () => {
+  // BFP's bfpMain is nearest in a straight line, but a river crossing makes PNP faster by road.
+  const travelSeconds = { 'BFP/bfpMain': 900, 'BFP/bfpSub': 600, 'CDRRMC/cdrrmo': 700, 'PNP/pnp': 300 };
+  const routed = routeIncident('FIRE', nearTabuk, routingAgencies(), {}, travelSeconds);
+  assert.equal(routed.leadAgencyId, 'PNP');
+  assert.equal(routed.owner, 'PNP');
+  assert.equal(routed.recommendedStations.BFP, 'bfpSub');
+  assert.deepEqual(routed.recommendedAgencies, { BFP: true, CDRRMC: true, PNP: true });
+  assert.equal(routed.routingMethod, 'FASTEST_ROAD_ROUTE');
+});
+
+test('stations with no road route rank after stations with a driving time; none known keeps straight-line routing', () => {
+  const partial = routeIncident('FIRE', nearTabuk, routingAgencies(), {}, { 'CDRRMC/cdrrmo': 1200 });
+  assert.equal(partial.leadAgencyId, 'CDRRMC');
+  assert.equal(partial.routingMethod, 'FASTEST_ROAD_ROUTE');
+  const none = routeIncident('FIRE', nearTabuk, routingAgencies(), {}, {});
+  assert.equal(none.leadAgencyId, 'BFP');
+  assert.equal(none.routingMethod, 'NEAREST_STATION');
+});
+
+test('road routing is asked only about qualifying stations inside the radius', () => {
+  const agencies = routingAgencies();
+  agencies[0].stations[1].hasAvailableTeam = false;
+  agencies[2].stations[0].latitude = 18.5;
+  assert.deepEqual(roadRoutingCandidates('FIRE', nearTabuk, agencies, {}).map(item => item.key), ['BFP/bfpMain', 'CDRRMC/cdrrmo']);
+  assert.deepEqual(roadRoutingCandidates('FIRE', null, agencies, {}), []);
+});
+
+test('the road routing adapter asks OSRM for one row of driving times and maps missing routes to null', async () => {
+  let requested;
+  const fetch = async url => { requested = url; return { ok: true, json: async () => ({ code: 'Ok', durations: [[0, 412.5, null]] }) }; };
+  const road = createRoadRouting('https://osrm.test', { fetch });
+  const seconds = await road.travelSeconds({ latitude: 17.4, longitude: 121.4 }, [{ latitude: 17.41, longitude: 121.44 }, { latitude: 17.42, longitude: 121.45 }]);
+  assert.deepEqual(seconds, [412.5, null]);
+  assert.equal(requested, 'https://osrm.test/table/v1/driving/121.4,17.4;121.44,17.41;121.45,17.42?sources=0&annotations=duration');
+  assert.deepEqual(await road.travelSeconds({ latitude: 17.4, longitude: 121.4 }, []), []);
+  const failing = createRoadRouting('https://osrm.test', { fetch: async () => ({ ok: false, status: 429 }) });
+  await assert.rejects(failing.travelSeconds({ latitude: 17.4, longitude: 121.4 }, [{ latitude: 17.41, longitude: 121.44 }]), /429/);
+  const empty = createRoadRouting('https://osrm.test', { fetch: async () => ({ ok: true, json: async () => ({ code: 'NoTable' }) }) });
+  await assert.rejects(empty.travelSeconds({ latitude: 17.4, longitude: 121.4 }, [{ latitude: 17.41, longitude: 121.44 }]), /no travel times/);
+});
+
+test('the road routing server comes from ROUTING_URL, with the public OSRM server as the default', () => {
+  assert.equal(readConfig({}).routingUrl, 'https://router.project-osrm.org');
+  assert.equal(readConfig({ ROUTING_URL: ' https://osrm.example.ph/ ' }).routingUrl, 'https://osrm.example.ph');
+});
+
 test('Command Center verification routes a citizen report once', async () => {
   const s = await responderSetup();
   s.city().users.command = { role: 'COMMAND_ADMIN', active: true };
@@ -588,6 +636,48 @@ test('Command Center verification routes a citizen report once', async () => {
   assert.equal(incident.needsOperatorVerification, false);
   assert.equal(incident.version, 2);
   await assert.rejects(s.service.verifyIncident('command', 'report'), /already been verified/);
+});
+
+// BFP's station is nearest in a straight line; the fake road service says PNP's station is faster to drive from.
+async function roadRoutingSetup(roadRouting) {
+  const s = await responderSetup({ roadRouting });
+  s.city().users.command = { role: 'COMMAND_ADMIN', active: true, displayName: 'Ops Desk' };
+  s.city().agency.BFP.stations.fireStation = { name: 'Fire station', latitude: 17.4125, longitude: 121.444 };
+  s.city().agency.BFP.teams = { fireTeam: { active: true, status: 'AVAILABLE', stationId: 'fireStation' } };
+  s.city().agency.PNP.stations = { policeStation: { name: 'Police station', latitude: 17.42, longitude: 121.45 } };
+  s.city().agency.PNP.teams = { policeTeam: { active: true, status: 'AVAILABLE', stationId: 'policeStation' } };
+  return s;
+}
+const fakeRoad = seconds => {
+  const calls = [];
+  return { calls, async travelSeconds(origin, destinations) { calls.push({ origin, keys: destinations.map(item => item.key) }); return destinations.map(item => seconds[item.key] ?? null); } };
+};
+
+test('staff emergencies and verified reports are routed by driving time when the road service answers', async () => {
+  const road = fakeRoad({ 'BFP/fireStation': 900, 'PNP/policeStation': 300 });
+  const s = await roadRoutingSetup(road);
+  const created = await s.service.createStaffIncident('command', { type: 'FIRE', latitude: 17.4128, longitude: 121.4441 });
+  const incident = s.data.incidents[created.id];
+  assert.equal(incident.leadAgencyId, 'PNP');
+  assert.deepEqual(incident.recommendedAgencies, { BFP: true, PNP: true });
+  assert.equal(incident.routingMethod, 'FASTEST_ROAD_ROUTE');
+  assert.deepEqual(road.calls[0].keys.sort(), ['BFP/fireStation', 'PNP/policeStation']);
+  assert.equal(road.calls[0].origin.latitude, 17.4128);
+
+  s.data.incidents.report = { type: 'FIRE', needsOperatorVerification: true, location: { latitude: 17.4128, longitude: 121.4441 }, version: 1 };
+  await s.service.verifyIncident('command', 'report');
+  assert.equal(s.data.incidents.report.leadAgencyId, 'PNP');
+  assert.equal(s.data.incidents.report.routingMethod, 'FASTEST_ROAD_ROUTE');
+});
+
+test('when the road service fails, emergencies are still created and routed by straight-line distance', async () => {
+  const s = await roadRoutingSetup({ async travelSeconds() { throw new Error('timed out'); } });
+  const warn = console.warn; console.warn = () => {};
+  try {
+    const created = await s.service.createStaffIncident('command', { type: 'FIRE', latitude: 17.4128, longitude: 121.4441 });
+    assert.equal(s.data.incidents[created.id].leadAgencyId, 'BFP');
+    assert.equal(s.data.incidents[created.id].routingMethod, 'NEAREST_STATION');
+  } finally { console.warn = warn; }
 });
 
 test('every administrator creates their own stations and deploys from one; responders are refused', async () => {
@@ -626,8 +716,8 @@ test('every administrator creates their own stations and deploys from one; respo
   assert.equal((await s.service.agencyDispatchData('fireAdmin', 'stations')).data[created.id], undefined);
 });
 
-async function responderSetup() {
-  const s = setup();
+async function responderSetup(options) {
+  const s = setup(options);
   await s.create('BFP');
   await s.create('PNP');
   s.city().users = {

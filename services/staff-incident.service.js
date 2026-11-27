@@ -1,5 +1,6 @@
+import { CITY, INCIDENTS } from '../config/data-paths.js';
 import { fail, key } from './rules/agency.rules.js';
-import { routeIncident, staffIncidentInput } from './rules/incident.rules.js';
+import { roadRoutingCandidates, routeIncident, staffIncidentInput } from './rules/incident.rules.js';
 
 const COMMAND_ROLES = ['SYSTEM_ADMIN', 'COMMAND_ADMIN'];
 // The active agencies that incidents can be routed to, with their emergency types and station points.
@@ -26,10 +27,30 @@ const routingTable = city => city.system_config?.dispatch?.routing;
 
 // Staff create emergencies from the Emergency Monitor map. The incident is written to
 // incidents/ in the same shape as citizen reports, so every screen picks it up.
-function createStaffIncidents({ repo, id, now }) {
+function createStaffIncidents({ repo, roadRouting, id, now }) {
+  // Driving times from the incident to each candidate station, keyed `${agencyId}/${stationId}`. Read before the
+  // write so the network call stays outside the transaction. On any failure stations are ranked by
+  // straight-line distance, so routing never stops an emergency from being created or verified.
+  async function roadTravelSeconds(type, location) {
+    if (!roadRouting) return {};
+    try {
+      const city = {
+        agency: await repo.read(`${CITY}/agency`),
+        system_config: { dispatch: { routing: await repo.read(`${CITY}/system_config/dispatch/routing`) } },
+      };
+      const candidates = roadRoutingCandidates(type, location, routingAgencies(city), routingTable(city));
+      if (!candidates.length) return {};
+      const seconds = await roadRouting.travelSeconds(location, candidates);
+      return Object.fromEntries(candidates.map((candidate, index) => [candidate.key, seconds[index]]).filter(([, value]) => Number.isFinite(value)));
+    } catch (error) {
+      console.warn(`Road travel times unavailable; routing by straight-line distance. (${error.message})`);
+      return {};
+    }
+  }
   return {
     async createStaffIncident(uid, input) {
       const details = staffIncidentInput(input);
+      const travelSeconds = await roadTravelSeconds(details.type, details);
       const incidentId = id(); const eventId = id(); const auditId = id(); const timestamp = now();
       await repo.transact('/', state => {
         state ||= {};
@@ -41,7 +62,7 @@ function createStaffIncidents({ repo, id, now }) {
         if (!command && !agencyAdmin) fail('Command Center or agency administrator access is required.', 403);
         if (state.incidents?.[incidentId]) fail('Please try again.', 409);
 
-        const routed = routeIncident(details.type, { latitude: details.latitude, longitude: details.longitude }, routingAgencies(city), routingTable(city));
+        const routed = routeIncident(details.type, { latitude: details.latitude, longitude: details.longitude }, routingAgencies(city), routingTable(city), travelSeconds);
         const leadAgencyId = agencyAdmin ? user.agencyId : routed.leadAgencyId;
         const agencyName = agencyAdmin ? city.agency[user.agencyId].profile.name || user.agencyId : 'Command Center';
         const incident = {
@@ -90,6 +111,8 @@ function createStaffIncidents({ repo, id, now }) {
     // agencies that handle its type), then marked verified. It can only be done once.
     async verifyIncident(uid, incidentId) {
       incidentId = key(incidentId, 'incident ID');
+      const pending = await repo.read(`${INCIDENTS}/${incidentId}`);
+      const travelSeconds = pending?.needsOperatorVerification === true ? await roadTravelSeconds(pending.type, pending.location) : {};
       const auditId = id(); const timestamp = now();
       await repo.transact('/', state => {
         const city = state?.server?.['City of Tabuk'] || {};
@@ -98,7 +121,7 @@ function createStaffIncidents({ repo, id, now }) {
         const incident = state?.incidents?.[incidentId];
         if (!incident) fail('Incident no longer exists.', 404);
         if (incident.needsOperatorVerification !== true) fail('This report has already been verified.', 409);
-        const routed = routeIncident(incident.type, incident.location, routingAgencies(city), routingTable(city));
+        const routed = routeIncident(incident.type, incident.location, routingAgencies(city), routingTable(city), travelSeconds);
         Object.assign(incident, {
           leadAgencyId: routed.leadAgencyId, owner: routed.owner,
           recommendedAgencies: routed.recommendedAgencies, recommendedStations: routed.recommendedStations, routingMethod: routed.routingMethod,

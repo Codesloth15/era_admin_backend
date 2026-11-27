@@ -1,7 +1,7 @@
 import { CITY } from '../config/data-paths.js';
 import { fail, key } from './rules/agency.rules.js';
 
-function createAgencyContext({ repository: repo, auth, files, id, now = Date.now }) {
+function createAgencyContext({ repository: repo, auth, files, roadRouting, id, now = Date.now }) {
   const profile = async uid => (await repo.read(`${CITY}/users/${uid}`)) ?? (await repo.read(`users/${uid}`));
   const permit = (actor, agencyId, systemOnly = false, stationAccess = false) => {
     if (stationAccess && !systemOnly && actor?.active === true && actor.role === 'COMMAND_ADMIN') return;
@@ -32,7 +32,7 @@ function createAgencyContext({ repository: repo, auth, files, id, now = Date.now
     });
   }
   const pending = item => item.status.startsWith('PENDING_') && item.expiresAt > now();
-  return { repo, auth, files, id, now, profile, permit, actor, mutate, pending };
+  return { repo, auth, files, roadRouting, id, now, profile, permit, actor, mutate, pending };
 }
 
 export { createAgencyContext };

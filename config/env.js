@@ -23,6 +23,8 @@ export function readConfig(environment = process.env) {
     port: pick(environment.PORT) || 5000,
     // Browser origins allowed to call the API, comma-separated. Empty means browsers on other sites are refused.
     corsOrigins: (environment.CORS_ALLOWED_ORIGINS || '').split(',').map(origin => origin.trim()).filter(Boolean),
+    // OSRM-compatible server that gives driving times for incident routing, without a trailing slash.
+    routingUrl: (pick(environment.ROUTING_URL) || 'https://router.project-osrm.org').replace(/\/+$/, ''),
     firebase: {
       projectId: pick(environment.FIREBASE_PROJECT_ID),
       // The REACT_APP_* names are the old ones. They are still read so older .env files keep working.
